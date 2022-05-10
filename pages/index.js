@@ -5,6 +5,9 @@ import styles from '../styles/Home.module.css'
 export default function Home() {
   return (
     <div className={styles.main}>
+      <Head>
+         <meta name='theme-color' color='black'/>
+      </Head>
       <div className={styles.largeViewer}>
         <div style={{margin:5}}>
         <h1 className={styles.titleFont}>Hi,It's sreedhar</h1>
@@ -26,7 +29,7 @@ export default function Home() {
               </div>
               
            </div>
-           <p>hello@sreed.me</p>
+           <p style={{fontSize:20,fontWeight:600}}>hello@sreed.me</p>
       </div>
       <div className={styles.largeViewer}>
         <h1 className={styles.titleFont}>My projects</h1>
