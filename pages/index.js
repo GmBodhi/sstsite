@@ -4,13 +4,33 @@ import styles from '../styles/Home.module.css'
 
 export default function Home() {
   return (
-    <div>
-      <h1>Welcome to my site</h1>
-      <p>It's me sreedhar</p>
-      <footer>
-        <p>This site is under development and i just bought new domain name to connect this !</p>
-        <p>Started the project on 10-05-2022</p>
-      </footer>
+    <div className={styles.main}>
+      <div className={styles.largeViewer}>
+        <div style={{margin:5}}>
+        <h1 className={styles.titleFont}>Hi,It's sreedhar</h1>
+        <p style={{color:'white'}}>This is my personal site and blog scroll down to see more...</p>
+        </div>
+      </div>
+      <div className={styles.shortViewer}>
+          <h1 className={[styles.titleFont,styles.textColorBlack]} >Contact me</h1>
+          <div className={styles.contactContainer}>
+              <div className={styles.contactIndividuals}>
+              <a href='https://www.github.com/mellofordev/'><img src='https://cdn3.iconfinder.com/data/icons/inficons/512/github.png' style={{height:50,width:50,borderRadius:15}}/></a>
+              </div>
+              <div  className={styles.contactIndividuals}>
+              <a href='https://www.github.com/mellofordev/'><img src='https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Instagram_colored_svg_1-512.png' style={{height:50,width:50,borderRadius:15}}/></a>
+              
+              </div>
+              <div  className={styles.contactIndividuals}>
+              <a href='https://www.github.com/mellofordev/'><img src='https://cdn3.iconfinder.com/data/icons/inficons/512/twitter.png' style={{height:50,width:50,borderRadius:15}}/></a>
+              </div>
+              
+           </div>
+           <p>hello@sreed.me</p>
+      </div>
+      <div className={styles.largeViewer}>
+        <h1 className={styles.titleFont}>My projects</h1>
+      </div>
     </div>
   )
 }
