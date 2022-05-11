@@ -8,8 +8,6 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .largeViewer{
@@ -20,16 +18,42 @@
   flex-direction:column;
   justify-content: center;
   align-items: center;
+  
+}
+.largeViewerTop{
+  background-color: black;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction:column;
+
+}
+.viewerCentered{
+  justify-content: center;
+  align-items: center;
 }
 .shortViewer{
-  background-color: white;
-  height: 47vh;
+  background-color:black;
+  height: 80vh;
   width: 100%;
+  display: flex;
+  flex-direction:column;
+}
+.shortContactViewer{
+  background-color: white;
+  height:60vh;
+  width: 50%;
   display: flex;
   flex-direction:column;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
+  
+}
+.cardViewer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 .textColorBlack{
   color: black;
@@ -52,9 +76,18 @@
 .contactContainer{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content:center;
+  align-items: center;
   margin: 5px;
+  width: 100%;
 
+}
+.awardsContainer{
+  display:flex;
+  flex-direction:row;
+  justify-content: center;
+  align-items: center;
+  
 }
 .contactIndividuals{
   margin-left: 8px;
@@ -63,5 +96,24 @@
   .grid {
     width: 100%;
     flex-direction: column;
+  }
+  .largeViewer{
+    background-color: black;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction:column;
+    
+  }
+  .shortContactViewer{
+    width: 100vw;
+  }
+  .cardViewer{
+    flex-direction: column;
+    margin: 5px;
+  }
+  .awardsContainer{
+    flex-direction: row;
+    justify-content: space-around;
   }
 }
