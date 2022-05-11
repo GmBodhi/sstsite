@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
-  const imgdata=['https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg','https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg','https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'];
+  const imgdata=[{id:1,pic:'https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'},{id:2,pic:'https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'},{id:2,pic:'https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'}];
   return (
     <div className={styles.main}>
       <Head>
@@ -44,7 +44,7 @@ export default function Home() {
             
             {imgdata.map((i)=>{
               return(
-                <img src={i} style={{height:250,width:350,marginBottom:5,marginRight:5,borderRadius:10}} />
+                <img key={i.id} src={i.pic} style={{height:250,width:350,marginBottom:5,marginRight:5,borderRadius:10}} />
               );
             })}
         </div>
