@@ -13,9 +13,7 @@ export default function Home() {
         <div style={{margin:5}}>
         <h1 className={styles.titleFont} style={{textAlign:'left'}}>Hi,It's sreedhar</h1>
         <p style={{color:'white',textAlign:'left',fontSize:20,fontWeight:400}}>This is my personal site and blog. Sroll down to see more...</p>
-        <div style={{margin:5,justifyContent:'center',alignItems:'center'}}>
-        <img src='https://valovhomes.com/wp-content/uploads/2021/03/fed601_315c4b108c764be8ab9b188846abff8d_mv2.gif' style={{height:100}}/>
-        </div>
+        
         </div>
       </div>
   
