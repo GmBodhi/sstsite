@@ -82,12 +82,12 @@ export default function Home() {
           <h3 className={styles.titleFont}>Blog</h3>
           {Data.map((i)=>{
             return(
-          <div class="w3-col l3   w3-margin-bottom w3-blue w3-hover-black w3-round-xlarge">
+          <div key={i.id} className="w3-col l3   w3-margin-bottom w3-blue w3-hover-black w3-round-xlarge">
             <img src={`https://sreedbackend.pythonanywhere.com/${i.pic}`} alt="pic" style={{width:'100%',borderRadius:15,objectFit:'cover',marginTop:5}}/>
             <h3>{i.title}</h3>
-            <p class="w3-pink w3-round-xlarge w3-center" style={{width:'25%'}}>{i.tag}</p>
+            <p className="w3-pink w3-round-xlarge w3-center" style={{width:'25%'}}>{i.tag}</p>
             <p>{i.content.slice(0,55)+'...read more'}</p>
-            <p><button class="w3-button w3-light-grey w3-block w3-round-xlarge">Read</button></p>
+            <p><button className="w3-button w3-light-grey w3-block w3-round-xlarge">Read</button></p>
           </div>
             )
           })}
