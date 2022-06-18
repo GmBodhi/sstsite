@@ -1,19 +1,43 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import TopNavBarComponent from './TopNavBarComponent';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
   const imgdata=[{id:1,pic:'https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'},{id:2,pic:'https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'},{id:2,pic:'https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'}];
+  const [Data,setData]=useState([]);
+  const apireq=()=>{
+    fetch('https://sreedbackend.pythonanywhere.com/graphql',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        
+      },
+      body:JSON.stringify({query:'{blogList{id,title,tag,content,pic}}'})
+    })
+    .then(response=>response.json())
+    .then(data=>{
+      
+      setData(data.data.blogList);
+      
+      
+    })
+    .catch(e=>{console.log(e)})
+  }
+  useEffect(()=>{
+    apireq();
+  },[])
   return (
     <div className={styles.main}>
+      <TopNavBarComponent/>
       <Head>
          <meta name='theme-color' color='black'/>
       </Head>
       <div className={styles.largeViewer}>
         <div style={{margin:5}}>
         <h1 className={styles.titleFont} style={{textAlign:'left'}}>Hi,It's sreedhar</h1>
-        <p style={{color:'white',textAlign:'left',fontSize:20,fontWeight:400}}>This is my personal site and blog. Sroll down to see more...</p>
-        
+        <p style={{color:'white',textAlign:'left',fontSize:20,fontWeight:400}}>19 year old,Engineering student from kerala!. This site is all about my projects and blogs scroll down to see more...</p>
         </div>
       </div>
   
@@ -42,7 +66,7 @@ export default function Home() {
             
             {imgdata.map((i)=>{
               return(
-                <img key={i.id} src={i.pic} style={{height:250,width:350,marginBottom:5,marginRight:5,borderRadius:10}} />
+                <img key={i.id} src={i.pic} style={{height:250,width:350,marginBottom:10,marginRight:5,borderRadius:15}} />
               );
             })}
         </div>
@@ -54,7 +78,30 @@ export default function Home() {
               <img src='https://api.badgr.io/public/assertions/Mg64QqtzRmiOSjB906LZCA/image' style={{borderRadius:15,height:155,width:155}}/>
            </div>
         </div>
+        <div className='w3-row-padding'>
+          <h3 className={styles.titleFont}>Blog</h3>
+          {Data.map((i)=>{
+            return(
+          <div class="w3-col l3   w3-margin-bottom w3-blue w3-hover-black w3-round-xlarge">
+            <img src={`https://sreedbackend.pythonanywhere.com/${i.pic}`} alt="pic" style={{width:'100%',borderRadius:15,objectFit:'cover',marginTop:5}}/>
+            <h3>{i.title}</h3>
+            <p class="w3-pink w3-round-xlarge w3-center" style={{width:'25%'}}>{i.tag}</p>
+            <p>{i.content.slice(0,55)+'...read more'}</p>
+            <p><button class="w3-button w3-light-grey w3-block w3-round-xlarge">Read</button></p>
+          </div>
+            )
+          })}
+      
+        </div>
+        <div>
+          
+        </div>
+        <div className='w3-row-padding-16  w3-center' style={{backgroundColor:'#242526'}}>
+          <p className='w3-text-white'>Sreedhar k.s</p>
+          <p className='w3-text-white'>Find out my portfolio source code in github ✨</p>
+        </div>
       </div>
+    
     </div>
   )
 }
