@@ -23,3 +23,10 @@ a {
   display: flex;
   flex-direction: column;
 }
+.projectView{
+  overflow: auto;
+  white-space: nowrap;
+}
+.projectViewChild{
+  display: inline-block;
+}

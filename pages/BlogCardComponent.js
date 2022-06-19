@@ -35,7 +35,7 @@ export default function BlogCardComponent(){
                 <img src={`https://sreedbackend.pythonanywhere.com/${i.pic}`} alt="pic" style={{width:'100%',borderRadius:15,objectFit:'cover',marginTop:5}}/>
                 <h3>{i.title}</h3>
                 <p className="w3-pink w3-round-xlarge w3-center" style={{width:'25%'}}>{i.tag}</p>
-                <p>{i.content.slice(0,55)+'...read more'}</p>
+                <p>{i.content.slice(0,55)+'... '}</p>
                 <p><button className="w3-button w3-light-grey w3-block w3-round-xlarge" onClick={()=>{router.push(`/blog/${i.id}/`)}} >Read</button></p>
             </div>
                 )
