@@ -38,7 +38,7 @@ export default function Blog(){
             <div key={Data.id} style={{width:'100%'}}>
                 <button  style={{color:'lightblue',backgroundColor:'black',fontSize:19,borderColor:'black',borderWidth:1}} onClick={()=>{get_id.back()}}>close</button>
                 <h1 style={{color:'white',fontSize:55,marginLeft:25}}>{Data.title}</h1>
-                <div>
+                <div key={Data.id}>
                   <img style={{margin:24,borderRadius:15,width:'90%',height:'100%'}} src={`https://sreedbackend.pythonanywhere.com/${Data.pic}`}/>
                 </div>
                 <p style={{color:'white',fontSize:25,margin:24,textAlign:'left',fontStretch:'expanded'}} >{Data.content}</p>
