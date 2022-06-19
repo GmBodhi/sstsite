@@ -42,17 +42,7 @@ export default function Home() {
     
       </div>
       <div className={styles.shortViewer}>
-        <h1 className={styles.titleFont}>My projects</h1>
-        <div style={{flexDirection:'column',margin:15,marginInline:10}}>
-            
-            {imgdata.map((i)=>{
-              return(
-                <div key={i.id} style={{overflowY:'hidden',overflowX:'scroll',whiteSpace:'nowrap'}}>
-                <img  src={i.pic} style={{height:250,width:350,marginBottom:10,marginRight:5,borderRadius:15,flexDirection:'row'}} />
-                </div>
-              );
-            })}
-        </div>
+      
        
         <div style={{margin:20}}>
            <h1 className={styles.titleFont}>Awards</h1>
