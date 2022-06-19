@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-export default function blogs(){
+export default function Blog(){
     const get_id = useRouter();
     let _id=get_id.query.id;
     let _tag=get_id.query._tag;
