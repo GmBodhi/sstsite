@@ -2,6 +2,7 @@ import { useState,useEffect } from "react";
 import { useRouter } from "next/router";
 export default function BlogCardComponent(){
     const [Data,setData]=useState([]);
+    const [loading,setLoading]=useState(true);
     const router =useRouter();
     const apireq=()=>{
       fetch('https://sreedbackend.pythonanywhere.com/graphql',{
@@ -16,6 +17,7 @@ export default function BlogCardComponent(){
       .then(data=>{
         
         setData(data.data.blogList);
+        setLoading(false);
         
         
       })
@@ -26,6 +28,7 @@ export default function BlogCardComponent(){
     },[])
     return(
         <div className='w3-row-padding'>
+            {loading==true && <p style={{color:'white',textAlign:'center',fontSize:34}}>loading...</p>}
             {Data.map((i)=>{
                 return(
             <div key={i.id} className="w3-col l3   w3-margin-bottom w3-blue w3-hover-pink w3-round-xlarge w3-margin-right">
