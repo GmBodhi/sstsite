@@ -35,7 +35,7 @@ export default function Blog(){
     return(
         <div className="main">
             
-            <div style={{width:'100%'}}>
+            <div key={Data.id} style={{width:'100%'}}>
                 <button  style={{color:'lightblue',backgroundColor:'black',fontSize:19,borderColor:'black',borderWidth:1}} onClick={()=>{get_id.back()}}>close</button>
                 <h1 style={{color:'white',fontSize:55,marginLeft:25}}>{Data.title}</h1>
                 <div>
