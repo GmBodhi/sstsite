@@ -67,8 +67,8 @@ export default function Home() {
             
             {imgdata.map((i)=>{
               return(
-                <div style={{overflowY:'hidden',overflowX:'scroll',whiteSpace:'nowrap'}}>
-                <img key={i.id} src={i.pic} style={{height:250,width:350,marginBottom:10,marginRight:5,borderRadius:15,flexDirection:'row'}} />
+                <div key={i.id} style={{overflowY:'hidden',overflowX:'scroll',whiteSpace:'nowrap'}}>
+                <img  src={i.pic} style={{height:250,width:350,marginBottom:10,marginRight:5,borderRadius:15,flexDirection:'row'}} />
                 </div>
               );
             })}
