@@ -3,8 +3,9 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import TopNavBarComponent from './TopNavBarComponent';
 import { useEffect, useState } from 'react';
-
+import { useRouter } from 'next/router';
 export default function Home() {
+  const router=useRouter();
   const imgdata=[{id:1,pic:'https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'},{id:2,pic:'https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'},{id:2,pic:'https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'}];
   const [Data,setData]=useState([]);
   const apireq=()=>{
@@ -66,7 +67,9 @@ export default function Home() {
             
             {imgdata.map((i)=>{
               return(
-                <img key={i.id} src={i.pic} style={{height:250,width:350,marginBottom:10,marginRight:5,borderRadius:15}} />
+                <div style={{overflowY:'hidden',overflowX:'scroll',whiteSpace:'nowrap'}}>
+                <img key={i.id} src={i.pic} style={{height:250,width:350,marginBottom:10,marginRight:5,borderRadius:15,flexDirection:'row'}} />
+                </div>
               );
             })}
         </div>
@@ -82,12 +85,12 @@ export default function Home() {
           <h3 className={styles.titleFont}>Blog</h3>
           {Data.map((i)=>{
             return(
-          <div key={i.id} className="w3-col l3   w3-margin-bottom w3-blue w3-hover-black w3-round-xlarge">
+          <div key={i.id} className="w3-col l3   w3-margin-bottom w3-blue w3-hover-pink w3-round-xlarge w3-margin-right">
             <img src={`https://sreedbackend.pythonanywhere.com/${i.pic}`} alt="pic" style={{width:'100%',borderRadius:15,objectFit:'cover',marginTop:5}}/>
             <h3>{i.title}</h3>
             <p className="w3-pink w3-round-xlarge w3-center" style={{width:'25%'}}>{i.tag}</p>
             <p>{i.content.slice(0,55)+'...read more'}</p>
-            <p><button className="w3-button w3-light-grey w3-block w3-round-xlarge">Read</button></p>
+            <p><button className="w3-button w3-light-grey w3-block w3-round-xlarge" onClick={()=>{router.push(`/blog/${i.id}/`)}} >Read</button></p>
           </div>
             )
           })}
