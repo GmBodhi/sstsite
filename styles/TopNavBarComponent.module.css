@@ -14,13 +14,3 @@
     background-color: rgba(59, 59, 59, 0.15);
     
 }
-.blurred{
-    position: relative;
-    filter: blur(5px);
-    background-position: top;
-}
-.blurred span{
-    
-    color: #ccc;
-    z-index: 0;
-}
