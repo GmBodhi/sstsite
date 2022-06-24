@@ -13,7 +13,7 @@ export default function Home() {
     <div className={styles.main}>
       <TopNavBarComponent/>
       <Head>
-         <meta name='theme-color' color='black'/>
+         <meta name='theme-color' color='#0000'/>
       </Head>
       <div className={styles.largeViewer}>
         <div style={{margin:5}}>
