@@ -17,7 +17,7 @@ export default function Home() {
          <meta name='description' content='Sreedhar k.s, portfolio and blog,sreedhar k.s blog, sreedhar,'/>
          <title>Sreedhar's portfolio</title>
          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3756551500003661"
-          crossorigin="anonymous"></script>
+          crossOrigin="anonymous"></script>
       </Head>
       <div className={styles.largeViewer}>
         <div style={{margin:5}}>
