@@ -16,8 +16,6 @@ export default function Home() {
          <meta name='theme-color' color='#0000'/>
          <meta name='description' content='Sreedhar k.s, portfolio and blog,sreedhar k.s blog, sreedhar,'/>
          <title>Sreedhar's portfolio</title>
-         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3756551500003661"
-          crossOrigin="anonymous"></script>
       </Head>
       <div className={styles.largeViewer}>
         <div style={{margin:5}}>
