@@ -1,4 +1,17 @@
+@font-face {
+    font-family: 'TheGoodMonolith';
+    font-style: normal;
+    font-weight: 500;
+    src: local('TheGoodMonolith'), url('https://fonts.cdnfonts.com/s/32398/TheGoodMonolith.woff') format('woff');
+  }
+@font-face {
+    font-family: 'HAKSEN';
+    font-style: normal;
+    font-weight: 400;
+    src: local('HAKSEN'), url('https://fonts.cdnfonts.com/s/83986/Haksen-BWmp8.woff') format('woff');
+  }  
 .aboutTitle{
+    font-family: 'HAKSEN';
     font-size: 55;
     font-weight: bold;
     margin-top: 55px;
@@ -6,6 +19,7 @@
     margin-left: 23px;
 }
 .aboutFont{
+    font-family: 'TheGoodMonolith';
     margin: 23px;
     color:white;
     font-size:24px;

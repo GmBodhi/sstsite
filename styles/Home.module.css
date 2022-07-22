@@ -9,6 +9,12 @@
   display: flex;
   flex-direction: column;
 }
+@font-face {
+  font-family: 'HAKSEN';
+  font-style: normal;
+  font-weight: 400;
+  src: local('HAKSEN'), url('https://fonts.cdnfonts.com/s/83986/Haksen-BWmp8.woff') format('woff');
+}
 
 .largeViewer{
   background-color: black;

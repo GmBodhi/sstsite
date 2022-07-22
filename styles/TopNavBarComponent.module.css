@@ -1,12 +1,18 @@
+@font-face {
+    font-family: 'TheGoodMonolith';
+    font-style: normal;
+    font-weight: 500;
+    src: local('TheGoodMonolith'), url('https://fonts.cdnfonts.com/s/32398/TheGoodMonolith.woff') format('woff');
+}
 .header{
     position: fixed;
     background-color: rgb(16, 16, 16);
     color: azure;
     display: flex;
+    font-family: 'TheGoodMonolith';
 }
 .nav{
     display: flex;
-    
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -14,3 +20,4 @@
     background-color: rgba(59, 59, 59, 0.15);
     
 }
+
