@@ -5,6 +5,7 @@ import TopNavBarComponent from './TopNavBarComponent';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import BlogCardComponent from './BlogCardComponent';
+import HorizontalScrollComponent from './HorizontalScrollComponent';
 export default function Home() {
   const router=useRouter();
   const imgdata=[{id:1,pic:'https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'},{id:2,pic:'https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'},{id:2,pic:'https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'}];
@@ -52,6 +53,9 @@ export default function Home() {
               <img src='https://media.badgr.com/uploads/badges/assertion-yPMh9dMtS8Kan4Zmy4ZALw.png' style={{borderRadius:15,height:140,width:140}}/>
               <img src='https://api.badgr.io/public/assertions/Mg64QqtzRmiOSjB906LZCA/image' style={{borderRadius:15,height:155,width:155}}/>
            </div>
+        </div>
+        <div>
+          <HorizontalScrollComponent/>
         </div>
         <div>
           <h3 className={styles.titleFont}>Blog</h3>
