@@ -17,4 +17,9 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    transition:  transform 2s;
 }
+.card:hover{
+    transform: scale(0.9);
+    
+  }
