@@ -10,6 +10,8 @@
     color: azure;
     display: flex;
     font-family: 'TheGoodMonolith';
+    z-index: 10;
+    backdrop-filter:13px;
 }
 .nav{
     display: flex;

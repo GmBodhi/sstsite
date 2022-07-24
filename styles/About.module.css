@@ -9,7 +9,8 @@
     font-style: normal;
     font-weight: 400;
     src: local('HAKSEN'), url('https://fonts.cdnfonts.com/s/83986/Haksen-BWmp8.woff') format('woff');
-  }  
+  }
+  
 .aboutTitle{
     font-family: 'HAKSEN';
     font-size: 55;

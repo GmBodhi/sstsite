@@ -32,7 +32,7 @@ export default function BlogCardComponent(){
             {loading==true && <p style={{color:'white',textAlign:'center',fontSize:34,fontFamily:'Enhanced LED Board-7'}}>loading...</p>}
             {Data.map((i)=>{
                 return(
-            <div key={i.id} className="w3-col l3   w3-margin-bottom w3-blue w3-hover-pink w3-round-xlarge w3-margin-right">
+            <div key={i.id} className="w3-col l3  w3-margin-bottom w3-blue w3-hover-pink w3-round-xlarge w3-margin-right w3-animate-bottom">
                 <img src={`https://sreedbackend.pythonanywhere.com/${i.pic}`} alt="pic" style={{width:'100%',borderRadius:15,objectFit:'cover',marginTop:5}}/>
                 <h3>{i.title}</h3>
                 <p className="w3-pink w3-round-xlarge w3-center" style={{width:'25%'}}>{i.tag}</p>

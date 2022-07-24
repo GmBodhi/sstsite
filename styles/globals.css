@@ -23,12 +23,36 @@ a {
   display: flex;
   flex-direction: column;
 }
+.backgroundMain{
+  
+  background-color: #000000; 
+  background-image: linear-gradient(315deg, #000000 0%, #1e1d1d 74%);
+}
 .projectView{
   overflow: auto;
   white-space: nowrap;
 }
 .projectViewChild{
   display: inline-block;
+}
+.header{
+  position: fixed;
+  background-color: rgb(16, 16, 16);
+  color: azure;
+  display: flex;
+  font-family: 'TheGoodMonolith';
+  z-index: 10;
+
+}
+.nav{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: rgba(17, 17, 17, 0.671);  
+  backdrop-filter: blur(5px);
+  
 }
 
 @font-face {
