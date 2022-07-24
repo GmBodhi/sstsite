@@ -6,8 +6,9 @@ export default function Blog(){
     let _tag=get_id.query._tag;
     const [Data,setData]=useState({});
     const [routerReady,setRouterReady]=useState(false);
+    const [loading,setLoading]=useState(true);
     const apireq=()=>{
-        console.log(_id);
+        
         fetch('https://sreedbackend.pythonanywhere.com/graphql',{
             method:'POST',
             headers:{
@@ -17,24 +18,29 @@ export default function Blog(){
         })
         .then(response=>response.json())
         .then(data=>{
-            setData(data.data.nodeBlog);
-            console.log(Data);
+            if(get_id.isReady==true){
+                setRouterReady(true);
+                setData(data.data.nodeBlog);
+                setLoading(false);
+               }
+               
+            
+            
         })
         .catch(e=>{console.log(e)})
 
     }
     useEffect(()=>{
-       if(get_id.isReady==true){
-        setRouterReady(true);
-       }
-       
-    },[get_id.isReady])
-    if(routerReady==true){
-        apireq();
-    }
+        if(routerReady!=true){
+            apireq();
+            
+        }  
+
+    },[])
+
     return(
         <div className="main">
-            
+            {loading==true? <p style={{fontFamily:'Enhanced LED Board-7',fontSize:45,color:'white'}}>loading...</p>:(
             <div key={Data.id} style={{width:'100%'}}>
                 <button  style={{color:'lightblue',backgroundColor:'black',fontSize:19,borderColor:'black',borderWidth:1}} onClick={()=>{get_id.back()}}>close</button>
                 <h1 style={{color:'white',fontSize:55,marginLeft:25}}>{Data.title}</h1>
@@ -43,6 +49,8 @@ export default function Blog(){
                 </div>
                 <p style={{color:'white',fontSize:25,margin:24,textAlign:'left',fontStretch:'expanded'}} >{Data.content}</p>
             </div>
+            )}
+            
         </div>
     )
 }
