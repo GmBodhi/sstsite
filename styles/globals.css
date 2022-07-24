@@ -42,7 +42,6 @@ a {
   display: flex;
   font-family: 'TheGoodMonolith';
   z-index: 10;
-
 }
 .nav{
   display: flex;
@@ -52,7 +51,8 @@ a {
   color: white;
   background-color: rgba(17, 17, 17, 0.671);  
   backdrop-filter: blur(5px);
-  
+  border-radius: 15px;
+  margin-top: 5px;
 }
 
 @font-face {
