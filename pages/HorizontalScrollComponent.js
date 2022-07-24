@@ -1,6 +1,6 @@
 import styles from '../styles/HorizontalScrollComponent.module.css';
 
-const contents=['https://venturebeat.com/wp-content/uploads/2021/03/article23-1.jpg?w=1200&strip=all','https://imageio.forbes.com/specials-images/imageserve/62380c71af36178f0f91f59d/0x0.jpg?format=jpg&width=1200','https://243138.fs1.hubspotusercontent-na1.net/hubfs/243138/metaverse-virtual-city-1.jpg']
+const contents=['https://i.ibb.co/mStgMbZ/Whats-App-Image-2022-07-24-at-12-51-46-PM.jpg','https://i.ibb.co/W6RWGch/Whats-App-Image-2022-07-24-at-12-51-48-PM.jp']
 export default function HorizontalScrollComponent(){
     return(
         <div className={styles.Hcontainer}>
