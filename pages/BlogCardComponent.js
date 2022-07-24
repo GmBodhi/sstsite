@@ -37,7 +37,7 @@ export default function BlogCardComponent(){
                 <h3>{i.title}</h3>
                 <p className="w3-pink w3-round-xlarge w3-center" style={{width:'25%'}}>{i.tag}</p>
                 <p>{i.content.slice(0,55)+'... '}</p>
-                <p><button style={{fontFamily:'Enhanced LED Board-7',fontWeight:'bolder'}} className="w3-button w3-light-grey w3-block w3-round-xlarge" onClick={()=>{router.push(`/blog/${i.id}/`)}} >Read</button></p>
+                <p><button style={{fontFamily:'Enhanced LED Board-7',fontWeight:'bolder',textAlign:'center'}} className="w3-button w3-light-grey w3-block w3-round-xlarge" onClick={()=>{router.push(`/blog/${i.id}/`)}} >Read</button></p>
             </div>
                 )
             })}
