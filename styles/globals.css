@@ -61,3 +61,9 @@ a {
   font-weight: 400;
   src: local('Enhanced LED Board-7'), url('https://fonts.cdnfonts.com/s/71718/enhanced_led_board-7.woff') format('woff');
 }
+@font-face {
+  font-family: 'TheGoodMonolith';
+  font-style: normal;
+  font-weight: 500;
+  src: local('TheGoodMonolith'), url('https://fonts.cdnfonts.com/s/32398/TheGoodMonolith.woff') format('woff');
+}
