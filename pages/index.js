@@ -26,7 +26,7 @@ export default function Home() {
       </div>
   
       <div className={styles.shortContactViewer}>
-          <h1 className={[styles.titleFont,styles.textColorBlack]} >Contact me</h1>
+          <h1 className={styles.contactmeFont} >Contact me</h1>
           <div className={styles.contactContainer}>
               <div className={styles.contactIndividuals}>
               <a href='https://www.github.com/mellofordev/'><img src='https://cdn3.iconfinder.com/data/icons/inficons/512/github.png' style={{height:50,width:50,borderRadius:15}}/></a>
@@ -46,7 +46,9 @@ export default function Home() {
       </div>
       <div className={styles.shortViewer}>
       
-       
+        <div style={{marginTop:25}}>
+          <HorizontalScrollComponent/>
+        </div>
         <div style={{margin:20}}>
            <h1 className={styles.titleFont}>Awards</h1>
            <div className={styles.awardsContainer}>
@@ -54,9 +56,7 @@ export default function Home() {
               <img src='https://api.badgr.io/public/assertions/Mg64QqtzRmiOSjB906LZCA/image' style={{borderRadius:15,height:155,width:155}}/>
            </div>
         </div>
-        <div>
-          <HorizontalScrollComponent/>
-        </div>
+      
         <div>
           <h3 className={styles.titleFont}>Blog</h3>
           <BlogCardComponent/>

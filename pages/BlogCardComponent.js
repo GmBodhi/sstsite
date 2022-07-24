@@ -28,7 +28,8 @@ export default function BlogCardComponent(){
     },[])
     return(
         <div className='w3-row-padding'>
-            {loading==true && <p style={{color:'white',textAlign:'center',fontSize:34}}>loading...</p>}
+            
+            {loading==true && <p style={{color:'white',textAlign:'center',fontSize:34,fontFamily:'Enhanced LED Board-7'}}>loading...</p>}
             {Data.map((i)=>{
                 return(
             <div key={i.id} className="w3-col l3   w3-margin-bottom w3-blue w3-hover-pink w3-round-xlarge w3-margin-right">
@@ -36,7 +37,7 @@ export default function BlogCardComponent(){
                 <h3>{i.title}</h3>
                 <p className="w3-pink w3-round-xlarge w3-center" style={{width:'25%'}}>{i.tag}</p>
                 <p>{i.content.slice(0,55)+'... '}</p>
-                <p><button className="w3-button w3-light-grey w3-block w3-round-xlarge" onClick={()=>{router.push(`/blog/${i.id}/`)}} >Read</button></p>
+                <p><button style={{fontFamily:'Enhanced LED Board-7',fontWeight:'bolder'}} className="w3-button w3-light-grey w3-block w3-round-xlarge" onClick={()=>{router.push(`/blog/${i.id}/`)}} >Read</button></p>
             </div>
                 )
             })}
