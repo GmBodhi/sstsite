@@ -34,9 +34,12 @@
   flex-direction:column;
   justify-content: center;
   align-items: center;
-  background-image: url('https://hbr.org/resources/images/article_assets/2022/01/Jan22_03_1270015925.jpg');
+  background-image: url('https://i.pinimg.com/originals/35/c9/1e/35c91e79ba8b6b6cb6ac0846051c77f9.gif');
   background-repeat: no-repeat;
   background-size: cover;
+  background-attachment:fixed;
+  
+  
 }
 .largeViewerTop{
   background-color: black;
@@ -130,6 +133,9 @@
     
   }
   .shortContactViewer{
+    display:flex;
+    justify-content: center;
+    align-items: center;
     width: 100vw;
   }
   .cardViewer{

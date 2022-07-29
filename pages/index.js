@@ -1,15 +1,11 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import TopNavBarComponent from './TopNavBarComponent';
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import BlogCardComponent from './BlogCardComponent';
 import HorizontalScrollComponent from './HorizontalScrollComponent';
 export default function Home() {
   const router=useRouter();
-  const imgdata=[{id:1,pic:'https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'},{id:2,pic:'https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'},{id:2,pic:'https://static.vecteezy.com/system/resources/previews/000/247/824/original/vector-beautiful-landscape-illustration.jpg'}];
-
   return (
     <div className={styles.main}>
       <TopNavBarComponent/>
@@ -21,7 +17,7 @@ export default function Home() {
       <div className={styles.largeViewer}>
         <div style={{margin:5}}>
         <h1 className={styles.titleFont} style={{textAlign:'left'}}>Hi,It's sreedhar</h1>
-        <p style={{color:'white',textAlign:'left',fontSize:20,fontWeight:400}}>19 year old,Engineering student from kerala!. This site is all about my projects and blogs scroll down to see more...</p>
+        <p className='lowerText'>19 year old,Engineering student from kerala!. <br/>This site is all about my projects and blog scroll down to see more...</p>
         </div>
       </div>
   
