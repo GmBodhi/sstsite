@@ -77,7 +77,7 @@ a {
 .blogCard img:hover{
   z-index: 5;
   border-radius:45px;
-  transform: translate(-2px);
+  transform: translateY(-2px);
   transition-duration: 3s;
 }
 @font-face {
