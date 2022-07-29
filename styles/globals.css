@@ -57,6 +57,29 @@ a {
   text-align: left;
 
 }
+
+.navitem{
+  z-index: 5px;
+  transform: translateY(-1px);
+  transition-duration: 5s;
+  transition-delay: transform 5s;
+}
+.navitemAll:hover{
+  transition-duration: 5s;
+  background-color: rgb(14, 13, 13);
+  border-radius: 25px;
+}
+.blogCard img{
+  z-index: 2;
+  border-radius:15px;
+  
+}
+.blogCard img:hover{
+  z-index: 5;
+  border-radius:45px;
+  transform: translate(-2px);
+  transition-duration: 3s;
+}
 @font-face {
   font-family: 'Enhanced LED Board-7';
   font-style: normal;
