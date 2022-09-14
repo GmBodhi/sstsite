@@ -26,18 +26,25 @@
   font-size: 45px;
   font-weight: bold;
 }
+.mainContents{
+  margin-left:100px;
+}
 .largeViewer{
   background-color: black;
   height: 100vh;
-  width: 100%;
   display: flex;
   flex-direction:column;
   justify-content: center;
   align-items: center;
-  background-image: url('https://i.pinimg.com/originals/35/c9/1e/35c91e79ba8b6b6cb6ac0846051c77f9.gif');
+  background-image: url('https://blog-frontend.envato.com/cdn-cgi/image/width=1200,quality=85,format=auto/uploads/2020/03/Design-trends-2020.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment:fixed;
+  width: 90vw;
+  border-bottom-left-radius: 35px;
+  border-bottom-right-radius:35px;
+  margin-top:3px;
+
   
   
 }
@@ -61,6 +68,11 @@
   display: flex;
   flex-direction:column;
 }
+.contactFlexBox{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .shortContactViewer{
   background-color: white;
   height:60vh;
@@ -69,13 +81,19 @@
   flex-direction:column;
   justify-content: center;
   align-items: center;
-  border-radius: 10px;
+  border-radius: 35px;
+  margin-left: 90px;
   
 }
 .cardViewer{
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content:space-evenly;
+}
+.rightContactImage{
+  margin:20px;
+  margin-right:150px;
+  margin-top:0px;
 }
 .textColorBlack{
   color: black;
@@ -121,7 +139,30 @@
   align-items: center;
   height: 40vh;
 }
+.titleFont{
+  animation-name: BackgroundP;
+ 
+  animation-duration: 3s;
+}
+@keyframes BackgroundP{
+  from{
+    transform:translateY(-22px) rotateX(180deg)
+    
+  }
+  to{
+    transform:translateY(0px) 
+  }
+}
+.contactFlexBox{
+  flex-direction: row;
+  margin-top:20px;
+}
+
 @media (max-width: 600px) {
+  .mainContents{
+    margin-left:0px;
+
+  }
   .grid {
     width: 100%;
     flex-direction: column;
@@ -132,17 +173,27 @@
     width: 100%;
     display: flex;
     flex-direction:column;
-    
+    margin-left:0px;
+    margin-top:0px;
+  }
+
+  .contactFlexBox{
+    flex-direction: column;
+
   }
   .shortContactViewer{
     display:flex;
     justify-content: center;
     align-items: center;
     width: 100vw;
+    margin-left: 0px;
   }
   .cardViewer{
     flex-direction: column;
     margin: 5px;
+  }
+  .rightContactImage{
+    display: none;
   }
   .awardsContainer{
     flex-direction: row;

@@ -17,12 +17,30 @@
     font-weight: bold;
     margin-top: 55px;
     color:white;
-    margin-left: 23px;
+    margin-left: 100px;
+    margin-right:134px;
 }
 .aboutFont{
     font-family: 'TheGoodMonolith';
     margin: 23px;
     color:white;
     font-size:24px;
+    margin-left:100px;
 
+}
+.listabout{
+  margin-left:100px ;
+}
+@media (max-width:600px){
+  .aboutTitle{
+    margin-left: 23px;
+  }
+  .aboutFont{
+    margin-left:23px;
+  }
+  .listabout{
+    margin-left:0px;
+
+  }
+  
 }

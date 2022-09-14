@@ -11,7 +11,7 @@ export default function About(){
                <p className={styles.aboutFont}>I started coding at the age of 13 by building static sites using html,css&javascript.Now I'm a full stack developer who loves to solve problems and help humanity.I loves to experiment new technologies,moreover that I loves comptetive programming and weekly tries out problems from Hackerank.com</p>
                <h1 className={styles.aboutTitle}>My tech stack.</h1>
                <p className={styles.aboutFont}>These are my most used libraries or framework while building a software</p>
-               <ul style={{color:'white',fontSize:23}}>
+               <ul className={styles.listabout} style={{color:'white',fontSize:23}}>
                 <li>Django</li>
                 <li>React</li>
                 <li>React Native</li>
@@ -20,7 +20,7 @@ export default function About(){
                </ul>
                <h1 className={styles.aboutTitle}>Programming Languages.</h1>
                <p className={styles.aboutFont}>I'm fluent in these languages.</p>
-               <ul style={{color:'white',fontSize:23}}>
+               <ul className={styles.listabout} style={{color:'white',fontSize:23}}>
                 <li>Python</li>
                 <li>Javascript</li>
                 <li>C/C++</li>

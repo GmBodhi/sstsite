@@ -9,17 +9,29 @@
     background-color: rgb(16, 16, 16);
     color: azure;
     display: flex;
+    height:100vh;
     font-family: 'TheGoodMonolith';
     z-index: 10;
     backdrop-filter:13px;
 }
 .nav{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     color: white;
     background-color: rgba(59, 59, 59, 0.15);
     
 }
-
+@media (max-width:600px){
+    .header{
+        position: fixed;
+        background-color: rgb(16, 16, 16);
+        color: azure;
+        display: flex;
+        font-family: 'TheGoodMonolith';
+        z-index: 10;
+        backdrop-filter:13px;
+        
+    }
+}
