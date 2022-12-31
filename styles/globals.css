@@ -127,7 +127,7 @@ a {
   font-family: 'TheGoodMonolith';
   font-style: normal;
   font-weight: 500;
-  src: local('TheGoodMonolith'), url('https://fonts.cdnfonts.com/s/32398/TheGoodMonolith.woff') format('woff');
+  src: local('TheGoodMonolith'), url('../public/theseasonsbold.otf') format('opentype');
 }
 @media (max-width:600px) {
   .projectView{
