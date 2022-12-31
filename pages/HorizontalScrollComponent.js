@@ -15,7 +15,7 @@ export default function HorizontalScrollComponent(){
             {contents.map((i)=>{
                 return(
                     <>
-                      <a href={i.url} target={'_blank'}>
+                      <a href={i.url} target={'_blank'} rel="norefferer">
                         <img 
                             className={styles.card}
                             key={i.id}
