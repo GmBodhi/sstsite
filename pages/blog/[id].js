@@ -41,7 +41,7 @@ export default function Blog(){
     return(
         <div className="main">
             {loading==true? <p style={{fontFamily:'Enhanced LED Board-7',fontSize:45,color:'white'}}>loading...</p>:(
-            <div key={Data.id} style={{width:'100%'}}>
+            <div key={Data.id} style={{width:'100%'}} className="blogContentView">
                 <button  style={{color:'lightblue',backgroundColor:'black',fontSize:19,borderColor:'black',borderWidth:1}} onClick={()=>{get_id.back()}}>close</button>
                 <h1 style={{color:'white',fontSize:55,marginLeft:25}}>{Data.title}</h1>
                 <div key={Data.id}>

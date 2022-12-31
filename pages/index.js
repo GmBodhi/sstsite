@@ -5,9 +5,37 @@ import { useRouter } from 'next/router';
 import BlogCardComponent from './BlogCardComponent';
 import HorizontalScrollComponent from './HorizontalScrollComponent';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 export default function Home() {
   const router=useRouter();
+ // testing out some animation 
+  let animator=null;
+
+  useEffect(()=>{
+    animator = new IntersectionObserver((elements)=>{
+      elements.forEach((items)=>{
+        if(items.isIntersecting){
+          items.target.childNodes.forEach((nodes)=>{
+            console.log(nodes);
+          })
+          console.log(items.target.children);
+          items.target.classList.add("show");
+          items.target.classList.add("showtext");
+  
+        }else{
+          items.target.classList.remove("show");
+          items.target.classList.remove("showtext");
+  
+        }
+      })
+    })
+  let get_items = document.querySelectorAll(".hidden");
+  get_items.forEach((i)=>{
+    animator.observe(i);
+  });
+  },[])
+
   return (
     <div className="main">
       <TopNavBarComponent/>
@@ -24,29 +52,33 @@ export default function Home() {
         <p className='lowerText'>19 year old,Engineering student from kerala!. <br/>This site is all about my projects and blog scroll down to see more...</p>
         </div>
       </div>
-      <div className={styles.contactFlexBox}>
-          <div className={styles.shortContactViewer}>
-              <h1 className={styles.contactmeFont} >Contact me</h1>
-              <div className={styles.contactContainer}>
-                  <div className={styles.contactIndividuals}>
-                  <a href='https://www.github.com/mellofordev/'><img src='https://cdn3.iconfinder.com/data/icons/inficons/512/github.png' style={{height:50,width:50,borderRadius:15}}/></a>
+      <div className='hidden'>
+        <div className={styles.contactFlexBox}>
+            <div className={styles.shortContactViewer}>
+                <h1 className={styles.contactmeFont} >Contact me</h1>
+                <div className='hidden'>
+                  <div className={styles.contactContainer}>
+                      <div className={styles.contactIndividuals}>
+                      <a href='https://www.github.com/mellofordev/'><img src='https://cdn3.iconfinder.com/data/icons/inficons/512/github.png' style={{height:50,width:50,borderRadius:15}}/></a>
+                      </div>
+                      <div  className={styles.contactIndividuals}>
+                      <a href='https://www.instagram.com/sreedhar_k.s/'><img src='https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Instagram_colored_svg_1-512.png' style={{height:50,width:50,borderRadius:15}}/></a>
+                      
+                      </div>
+                      <div  className={styles.contactIndividuals}>
+                      <a href='https://www.twitter.com/boywithacap/'><img src='https://cdn3.iconfinder.com/data/icons/inficons/512/twitter.png' style={{height:50,width:50,borderRadius:15}}/></a>
+                      </div>
+                      
                   </div>
-                  <div  className={styles.contactIndividuals}>
-                  <a href='https://www.instagram.com/sreedhar_k.s/'><img src='https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Instagram_colored_svg_1-512.png' style={{height:50,width:50,borderRadius:15}}/></a>
-                  
-                  </div>
-                  <div  className={styles.contactIndividuals}>
-                  <a href='https://www.twitter.com/boywithacap/'><img src='https://cdn3.iconfinder.com/data/icons/inficons/512/twitter.png' style={{height:50,width:50,borderRadius:15}}/></a>
-                  </div>
-                  
-              </div>
-              <p style={{fontSize:20,fontWeight:600}}>hello@sreed.me</p>
+                </div>
+                <p style={{fontSize:20,fontWeight:600}}>hello@sreed.me</p>
 
-        
-          </div>
-          <div className={styles.rightContactImage}>
-              <Image className={styles.contactImg} src="https://sreedbackend.pythonanywhere.com/media/postpics/sreedhar.png" width={400} height={450} style={{borderRadius:35}}/>
-          </div>
+          
+            </div>
+            <div className={styles.rightContactImage}>
+                <Image className={styles.contactImg} src="https://sreedbackend.pythonanywhere.com/media/postpics/sreedhar.png" width={400} height={450} style={{borderRadius:35}}/>
+            </div>
+        </div>
       </div>
       
       <div className={styles.shortViewer}>
