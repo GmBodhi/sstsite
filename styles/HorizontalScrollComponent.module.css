@@ -23,6 +23,9 @@
     background-repeat: no-repeat;
     background-position: center center;
     transition:  transform 2s;
+    border-color: white;
+    border-style: solid;
+    border-width: thin;
 
     
 }
