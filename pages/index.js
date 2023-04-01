@@ -49,7 +49,7 @@ export default function Home() {
       <div className={styles.largeViewer}>
         <div style={{margin:5}}>
         <h1 className={styles.titleFont} style={{textAlign:'left'}}>Hi,It's sreedhar</h1>
-        <p className='lowerText'>19 year old,Engineering student from kerala!. <br/>This site is all about my projects and blog scroll down to see more...</p>
+        <p className='lowerText'>An Engineering student from kerala <br/>This site is all about my projects and blog scroll down to see more...</p>
         </div>
       </div>
       <div className='hidden'>
@@ -71,12 +71,12 @@ export default function Home() {
                       
                   </div>
                 </div>
-                <p style={{fontSize:20,fontWeight:600}}>hello@sreed.me</p>
+                <p style={{fontSize:20,fontWeight:600}}>sreedharks@ieee.org</p>
 
           
             </div>
             <div className={styles.rightContactImage}>
-                <Image className={styles.contactImg} src="https://sreedbackend.pythonanywhere.com/media/postpics/sreedhar.png" width={400} height={450} style={{borderRadius:35}}/>
+                <Image className={styles.contactImg} src="https://sreedbackend.pythonanywhere.com/media/postpics/sreedhar.png" width={550} height={600} style={{borderRadius:35}}/>
             </div>
         </div>
       </div>

@@ -4,11 +4,14 @@ export default function About(){
     return(
         <div className="main">
             <TopNavBarComponent/>
-            <div className={{justifyContent:'center',alignItems:'center',flexDirection:'column'}}>
+            <div className={styles.mainAbout}>
                <h1 className={styles.aboutTitle}>About me.</h1>
-               <p className={styles.aboutFont}>I'm  an first year under graduate in Computer Science & Engineering from SCT college of Engineering Trivandrum.I completed my schooling from SDV central School,Alappuzha and Carmel International School</p>
+               <p className={styles.aboutFont}>I am a second year undergraduate studying Computer Science  Engineering at SCT College of Engineering Trivandrum. I completed my schooling at SDV Central School in Alappuzha and Carmel International School. </p>
                <h1 className={styles.aboutTitle}>My Journey.</h1>
-               <p className={styles.aboutFont}>I started coding at the age of 13 by building static sites using html,css&javascript.Now I'm a full stack developer who loves to solve problems and help humanity.I loves to experiment new technologies,moreover that I loves comptetive programming and weekly tries out problems from Hackerank.com</p>
+               <p className={styles.aboutFont}>My journey in the field of computer science began during my school years when I first learned about coding and built a few websites as a hobby. As I became more proficient in programming, I discovered a passion for developing apps and tools that could simplify my tasks and make my work more efficient.</p>
+               <p  className={styles.aboutFont}>I also became highly interested in open-source development, which led me to contribute to various open-source projects and collaborate with other developers in the community. Along the way, I gained valuable experience in software development and project management, which helped me to become a more effective team member and leader.</p>
+               <p  className={styles.aboutFont}>Today, as a full stack developer, I continue to work on various projects that interest me and help me to grow my skills in programming and design. I am particularly excited about my work on several metaverse projects, which have allowed me to explore new frontiers in virtual reality and immersive experiences.</p>
+               <p  className={styles.aboutFont}>Overall, my journey in computer science has been a challenging yet rewarding experience, and I look forward to continuing to learn, grow, and contribute to the field in meaningful ways.</p>
                <h1 className={styles.aboutTitle}>My tech stack.</h1>
                <p className={styles.aboutFont}>These are my most used libraries or framework while building a software</p>
                <ul className={styles.listabout} style={{color:'white',fontSize:23}}>

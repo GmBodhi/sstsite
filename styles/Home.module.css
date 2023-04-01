@@ -27,7 +27,7 @@
   font-weight: bold;
 }
 .mainContents{
-  margin-left:100px;
+  margin-left:250px;
 }
 .largeViewer{
   background-color: black;
@@ -40,7 +40,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment:fixed;
-  width: 90vw;
+  width: 100vw/5;
   border-bottom-left-radius: 35px;
   border-bottom-right-radius:35px;
   margin-top:3px;
@@ -76,7 +76,7 @@
 .shortContactViewer{
   background-color: white;
   height:60vh;
-  width: 50%;
+  width: 66%;
   display: flex;
   flex-direction:column;
   justify-content: center;
