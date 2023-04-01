@@ -9,18 +9,7 @@
   display: flex;
   flex-direction: column;
 }
-@font-face {
-  font-family: 'HAKSEN';
-  font-style: normal;
-  font-weight: 400;
-  src: local('HAKSEN'), url('https://fonts.cdnfonts.com/s/83986/Haksen-BWmp8.woff') format('woff');
-}
-@font-face {
-  font-family: 'TheGoodMonolith';
-  font-style: normal;
-  font-weight: 500;
-  src: local('TheGoodMonolith'), url('https://fonts.cdnfonts.com/s/32398/TheGoodMonolith.woff') format('woff');
-}
+
 .contactmeFont{
   font-family: 'TheGoodMonolith';
   font-size: 45px;
@@ -104,8 +93,9 @@
 .titleFont{
   font-size: 56px;
   font-weight: bolder;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: 'Enhanced LED Board-7';
   color: white;
+  overflow-wrap: break-word;
   
 }
 .lowerFont{
@@ -129,6 +119,11 @@
   justify-content: center;
   align-items: center;
   
+}
+.awardsContainer img{
+  border-radius:15px;
+  height:255px;
+  width:255px;
 }
 .contactIndividuals{
   margin-left: 8px;
@@ -198,7 +193,13 @@
     display: none;
   }
   .awardsContainer{
-    flex-direction: row;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: auto auto ;
+    gap: 12px;
+
+  }
+  .awardsContainer img{
+    height: 155px;
+    width: 155px;
   }
 }

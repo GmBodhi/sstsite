@@ -86,11 +86,12 @@ export default function Home() {
         <div style={{marginTop:25}}>
           <HorizontalScrollComponent/>
         </div>
-        <div style={{margin:20}}>
-           <h1 className={styles.titleFont}>Awards</h1>
+        <div >
+           <h1 className={styles.titleFont}>Hackathons</h1>
            <div className={styles.awardsContainer}>
-              <img src='https://media.badgr.com/uploads/badges/assertion-yPMh9dMtS8Kan4Zmy4ZALw.png' style={{borderRadius:15,height:140,width:140}}/>
-              <img src='https://api.badgr.io/public/assertions/Mg64QqtzRmiOSjB906LZCA/image' style={{borderRadius:15,height:155,width:155}}/>
+              <img src='https://github.blog/wp-content/uploads/2022/10/hacktoberfestbanner.jpeg' />
+              <img src='https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-dsc/events/%28For%20Bevy%29%20solutionchallenge-2022-EventThumbnail_oSBXFzI.png'/>
+              <img src='https://api.badgr.io/public/assertions/Mg64QqtzRmiOSjB906LZCA/image'/>
            </div>
         </div>
       
