@@ -1,16 +1,14 @@
 import styles from '../styles/HorizontalScrollComponent.module.css';
 import globalstyles from '../styles/Home.module.css';
 const contents=[
-    {id:2,url:'https://gdscwow.deta.dev',media:'https://i.ibb.co/6nr62Nk/gdscwow.png'},
-    {id:2,url:'https://dhyuthimetaverse.vercel.app',media:'https://i.ibb.co/4sLMfmn/dhyuthi.jpg'},
-    {id:3,url:'https://internshipcell.vercel.app',media:'https://i.ibb.co/hMfjgVG/internship-cell.jpg'},
-    {id:4,url:'https://github.com/mellofordev/potatoapi',media:'https://i.ibb.co/fFvGqVW/punfuel-project.jpg'},
-    {id:5,url:'https://github.com/mellofordev/swag-',media:'https://i.ibb.co/KVtd3Qg/swag.jpg'}
+    {id:2,url:'#',media:'https://i.ibb.co/xYGjRsL/shilpa.jpg'},
+    {id:2,url:'#',media:'https://i.ibb.co/dQgQGz3/lost.jpg'},
+    {id:3,url:'#',media:'https://i.ibb.co/x8JpWRf/og.jpg'},
 ]
 export default function HorizontalScrollComponent(){
     return(
     <>
-       <h1 className={globalstyles.titleFont}>Some projects</h1>
+       <h1 className={globalstyles.titleFont}>Proshow</h1>
         <div className={styles.Hcontainer}>
             
             {contents.map((i)=>{

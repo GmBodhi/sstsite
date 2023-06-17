@@ -25,14 +25,15 @@
   flex-direction:column;
   justify-content: center;
   align-items: center;
-  background-image: url('https://blog-frontend.envato.com/cdn-cgi/image/width=1200,quality=85,format=auto/uploads/2020/03/Design-trends-2020.jpg');
+  background-image: url('https://i0.wp.com/www.maverickbird.com/wp-content/uploads/2020/11/49840102_2517595278257504_8708403271926022144_o.jpg?resize=1024%2C683');
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment:fixed;
   width: 100vw/5;
   border-bottom-left-radius: 35px;
   border-bottom-right-radius:35px;
-  margin-top:3px;
+  margin-top:3px;  
+  -webkit-mask-image: radial-gradient(89% 181% at 56% 20%,#000 16%,transparent 115%);
 
   
   
@@ -63,7 +64,8 @@
   justify-content: space-between;
 }
 .shortContactViewer{
-  background-color: white;
+  background-color: transparent;
+  color: white;
   height:60vh;
   width: 66%;
   display: flex;
@@ -169,6 +171,7 @@
     display: flex;
     flex-direction:column;
     margin-left:0px;
+    background-position-x:-500px ;
     margin-top:0px;
   }
 
@@ -184,6 +187,7 @@
     width: 100vw;
     margin-top:6px;
     margin-left: 0px;
+    -webkit-mask-image: radial-gradient(89% 181% at 56% 20%,#000 16%,transparent 115%);
   }
   .cardViewer{
     flex-direction: column;

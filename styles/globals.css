@@ -160,8 +160,8 @@ a {
     width:100vw;
     background-color: rgba(17, 17, 17, 0.671);  
     backdrop-filter: blur(5px);
-    border-radius: 15px;
-    margin-top: 5px;
+    border-radius: 0px;
+    margin-top: 0px;
   }
   .lowerText{
     font-family: 'TheGoodMonolith';

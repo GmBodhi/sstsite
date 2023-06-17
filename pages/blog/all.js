@@ -10,8 +10,9 @@ export default function All(){
                 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
             </Head>
             <div className="blogContainer">
-                <h1 style={{color:'white',fontSize:55,fontWeight:'bold',marginTop:55,marginLeft:10}}>Blog</h1>
-                <BlogCardComponent/>
+                <h1 style={{color:'white',fontSize:55,fontWeight:'bold',marginTop:55,marginLeft:10}}>Events</h1>
+                {/* <BlogCardComponent/> */}
+                <p style={{color:'white',textAlign:'center',fontSize:28}}>events coming soon</p>
             </div>
 
         </div>
