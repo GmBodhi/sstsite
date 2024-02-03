@@ -1,0 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@600&display=swap");
+
+
+
+
+
+$speed: 9s;
+$wordCount: 3;
+
+.morphing {
+  position: relative;
+  font-size: 100px;
+  background-color: transparent;
+  color: #fff;
+  min-height: 100vh;
+  font-family: 'Noto Sans Malayalam', sans-serif;
+  text-shadow: 0.1rem 0.1rem 0.4rem #4a4a4a9b;
+  filter: contrast(5) blur(0.5px);
+}
+
+.word {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: word $speed infinite ease-in-out;
+
+  @for $i from 0 to $wordCount {
+    &:nth-child(#{$i + 1}) {
+      animation-delay: ($speed / ($wordCount + 1) * $i) - $speed;
+    }
+  }
+
+  @keyframes word {
+    0%, 5%, 100% { filter: blur(0px); opacity: 1; }        
+    20%, 80% { filter: blur(100px); opacity: 0.1; }        
+  }
+}
