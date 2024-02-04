@@ -1,10 +1,10 @@
 import BlogCardComponent from "../BlogCardComponent";
 import Head from "next/head";
-import TopNavBarComponent from "../TopNavBarComponent";
+import BottomNavBarComponent from "../BottomNavBarComponent";
 export default function All(){
     return(
         <div >
-            <TopNavBarComponent/>
+            <BottomNavBarComponent/>
             <Head>
                 <meta name='theme-color' color='black'/>
                 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>

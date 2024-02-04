@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import TopNavBarComponent from './TopNavBarComponent';
+import BottomNavBarComponent from './BottomNavBarComponent';
 import { useRouter } from 'next/router';
 import BlogCardComponent from './BlogCardComponent';
 import HorizontalScrollComponent from './HorizontalScrollComponent';
@@ -39,7 +39,7 @@ export default function Home() {
 
   return (
     <div className="main">
-      <TopNavBarComponent/>
+      <BottomNavBarComponent/>
       <Head>
          <meta name='theme-color' color='#0000'/>
          <meta name='description' content='Sreedhar k.s, portfolio and blog,sreedhar k.s blog, sreedhar,'/>

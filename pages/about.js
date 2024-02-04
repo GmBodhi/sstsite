@@ -1,9 +1,9 @@
-import TopNavBarComponent from "./TopNavBarComponent";
+import BottomNavBarComponent from './BottomNavBarComponent';
 import styles from '../styles/About.module.css';
 export default function About(){
     return(
         <div className="main">
-            <TopNavBarComponent/>
+            <BottomNavBarComponent/>
             <div className={styles.mainAbout}>
                <h1 className={styles.aboutTitle}>About me.</h1>
                <p className={styles.aboutFont}>I am a second year undergraduate studying Computer Science  Engineering at SCT College of Engineering Trivandrum. I completed my schooling at SDV Central School in Alappuzha and Carmel International School. </p>

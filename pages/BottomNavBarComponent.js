@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import {motion} from 'framer-motion';
-export default function TopNavBarComponent(){
+export default function BottomNavBarComponent(){
     const router = useRouter();
     
     return(
