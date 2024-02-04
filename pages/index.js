@@ -59,6 +59,7 @@ export default function Home() {
         >
           <TextMorpher/>
         </motion.div>
+        <img src='https://i.ibb.co/84bZG35/sst-24-label.png' style={{height:200,width:'auto',objectFit:'cover'}}/>
       </motion.div>
       <div className='hidden'>
         <div className={styles.contactFlexBox}>
