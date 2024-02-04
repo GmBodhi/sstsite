@@ -1,8 +1,13 @@
 import '../styles/globals.css'
+import { Toaster } from "@/components/ui/sonner"
+ 
 function MyApp({ Component, pageProps }) {
   return(
-        
-          <Component {...pageProps} />
+    <>
+      <Component {...pageProps} />
+      <Toaster/>
+    </>       
+
        
   );
 }
