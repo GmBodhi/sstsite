@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+
 import { toast } from "sonner"
  
 export default function BlogCardComponent(){
@@ -34,13 +35,6 @@ export default function BlogCardComponent(){
       .catch(e=>{console.log(e)})
     }
     useEffect(()=>{
-      toast("Heads up!", {
-        description: "If you're here for registering for the events do login",
-        action: {
-          label: "Login using Etlab",
-          onClick: () => console.log("Login"),
-        },
-      })
       apireq();
     },[])
     return(
@@ -60,7 +54,15 @@ export default function BlogCardComponent(){
                     </div>
                   </CardContent>
                   <CardFooter className="flex justify-between">
-                    <Button>Register</Button>
+                    <Button onClick={()=>{
+                      toast("Heads up!", {
+                        description: "If you're here for registering for the events do login",
+                        action: {
+                          label: "Login using Etlab",
+                          onClick: () => console.log("Login"),
+                        },
+                      })
+                    }}>Register</Button>
                   </CardFooter>
                 </Card>
                 )
