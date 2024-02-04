@@ -1,6 +1,6 @@
-import BlogCardComponent from "../BlogCardComponent";
+import BlogCardComponent from "../../components/BlogCardComponent";
 import Head from "next/head";
-import BottomNavBarComponent from "../BottomNavBarComponent";
+import BottomNavBarComponent from "../../components/BottomNavBarComponent";
 export default function All(){
     return(
         <div >
@@ -11,8 +11,8 @@ export default function All(){
             </Head>
             <div className="blogContainer">
                 <h1 style={{color:'white',fontSize:55,fontWeight:'bold',marginTop:55,marginLeft:10}}>Events</h1>
-                {/* <BlogCardComponent/> */}
-                <p style={{color:'white',textAlign:'center',fontSize:28}}>events coming soon</p>
+                <BlogCardComponent/>
+                {/* <p style={{color:'white',textAlign:'center',fontSize:28}}>events coming soon</p> */}
             </div>
 
         </div>

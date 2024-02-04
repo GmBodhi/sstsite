@@ -1,4 +1,4 @@
-import BottomNavBarComponent from './BottomNavBarComponent';
+import BottomNavBarComponent from '../components/BottomNavBarComponent';
 import styles from '../styles/About.module.css';
 export default function About(){
     return(

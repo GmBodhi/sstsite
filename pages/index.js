@@ -1,42 +1,20 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import BottomNavBarComponent from './BottomNavBarComponent';
+import BottomNavBarComponent from '../components/BottomNavBarComponent';
 import { useRouter } from 'next/router';
-import BlogCardComponent from './BlogCardComponent';
-import HorizontalScrollComponent from './HorizontalScrollComponent';
-import TextMorpher from './MorphCompoment';
+import BlogCardComponent from '../components/BlogCardComponent';
+import HorizontalScrollComponent from '../components/HorizontalScrollComponent';
+import TextMorpher from '../components/MorphCompoment';
 import Image from 'next/image';
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import TopNavBarComponent from './TopNavBarComponent';
+import TopNavBarComponent from '../components/TopNavBarComponent';
+import { Button } from '@/components/ui/button'
+import LoginComponent from '@/components/LoginComponent';
 export default function Home() {
   const router=useRouter();
  // testing out some animation 
   let animator=null;
-
-  useEffect(()=>{
-    animator = new IntersectionObserver((elements)=>{
-      elements.forEach((items)=>{
-        if(items.isIntersecting){
-          items.target.childNodes.forEach((nodes)=>{
-            console.log(nodes);
-          })
-          console.log(items.target.children);
-          items.target.classList.add("show");
-          items.target.classList.add("showtext");
-  
-        }else{
-          items.target.classList.remove("show");
-          items.target.classList.remove("showtext");
-  
-        }
-      })
-    })
-  let get_items = document.querySelectorAll(".hidden");
-  get_items.forEach((i)=>{
-    animator.observe(i);
-  });
-  },[])
 
   return (
     <div className="main">
@@ -68,11 +46,15 @@ export default function Home() {
             transition={{ ease:'linear', duration: 2 }}
         />
       </motion.div>
-      <div className='hidden'>
+      <motion.div
+         initial={{opacity:0}}
+         whileInView={{opacity:1}}
+         transition={{ ease:'easeIn', duration: 1 }}
+      >
         <div className={styles.contactFlexBox}>
             <div className={styles.shortContactViewer}>
                 <h1 className={styles.contactmeFont} >This February</h1>
-                <div className='hidden'>
+                <div>
                   <div className={styles.contactContainer}>
                       <div className={styles.contactIndividuals}>
                       <h2 className={styles.titleFont}>16</h2>
@@ -86,15 +68,13 @@ export default function Home() {
                       
                   </div>
                 </div>
-                <p style={{fontSize:20,fontWeight:600}}>Register using Etlab</p>
-
-          
+                <LoginComponent/>
             </div>
             <div className={styles.rightContactImage}>
                 <Image className={styles.contactImg} src="https://sreedbackend.pythonanywhere.com/media/postpics/sreedhar.png" width={550} height={600} style={{borderRadius:35}}/>
             </div>
         </div>
-      </div>
+      </motion.div>
       
       
       </div>
