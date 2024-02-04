@@ -10,7 +10,7 @@ export default function TextMorpher(){
               "ചിത്രം",
               "താളം"
             ];
-            const morphTime = 1;
+            const morphTime = 1.78;
             const cooldownTime = 0.25;
             let textIndex = texts.length - 1;
             let time = new Date();

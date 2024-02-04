@@ -15,14 +15,13 @@ export default function BottomNavBarComponent(){
             <motion.nav className='w3-bottom w3-bar nav'
                    initial={{opacity:0,transform:'translateY(20px)',
                             borderTopLeftRadius:0,borderTopRightRadius:0}}
-
                    whileInView={{opacity:1,transform:'translateY(0px)',
-                                 borderTopLeftRadius:15,borderTopRightRadius:15}}
-                   transition={{ ease:'easeIn', duration: 1}}
+                                 borderTopLeftRadius:25,borderTopRightRadius:25}}
+                   transition={{ ease:'linear', duration: 0.5}}
             >
-                <div className={router.asPath=='/' ? 'w3-text-white  w3-bar-item navitem navitemAll navtext' :'w3-text-grey  w3-bar-item navitemAll navtext'} ><Link href="/">Home</Link></div>
-                <div className={router.asPath=='/about' ? 'w3-text-white  w3-bar-item navitem navtext' :'w3-text-grey  w3-bar-item navitemAll navtext'} ><Link href="/about">Events</Link></div>
-                <div className={router.pathname=='/blog/all' ? 'w3-text-white  w3-bar-item navitem navtext' :'w3-text-grey  w3-bar-item navitemAll navtext'}><Link href="/blog/all">Points</Link></div>
+                <div className={router.asPath=='/' ? 'w3-text-white  w3-bar-item navitem navitemAll navtext' :'w3-text-grey  w3-bar-item navitemAll navtext'} ><Link href="/">home</Link></div>
+                <div className={router.asPath=='/about' ? 'w3-text-white  w3-bar-item navitem navtext' :'w3-text-grey  w3-bar-item navitemAll navtext'} ><Link href="/about">points</Link></div>
+                <div className={router.pathname=='/blog/all' ? 'w3-text-white  w3-bar-item navitem navtext' :'w3-text-grey  w3-bar-item navitemAll navtext'}><Link href="/blog/all">events</Link></div>
                
             </motion.nav>
         </header>

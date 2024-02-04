@@ -8,6 +8,7 @@ import TextMorpher from './MorphCompoment';
 import Image from 'next/image';
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import TopNavBarComponent from './TopNavBarComponent';
 export default function Home() {
   const router=useRouter();
  // testing out some animation 
@@ -39,6 +40,7 @@ export default function Home() {
 
   return (
     <div className="main">
+      <TopNavBarComponent/>
       <BottomNavBarComponent/>
       <Head>
          <meta name='theme-color' color='#0000'/>
@@ -59,7 +61,12 @@ export default function Home() {
         >
           <TextMorpher/>
         </motion.div>
-        <img src='https://i.ibb.co/84bZG35/sst-24-label.png' style={{height:200,width:'auto',objectFit:'cover'}}/>
+        <motion.img src='https://i.ibb.co/84bZG35/sst-24-label.png' 
+            style={{height:200,width:'auto',objectFit:'cover'}}
+            initial={{opacity:0,transform:'translateY(50px)',}}
+            whileInView={{opacity:1,transform:'translateY(0px)'}}
+            transition={{ ease:'linear', duration: 2 }}
+        />
       </motion.div>
       <div className='hidden'>
         <div className={styles.contactFlexBox}>
