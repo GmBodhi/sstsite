@@ -7,7 +7,7 @@ import HorizontalScrollComponent from './HorizontalScrollComponent';
 import TextMorpher from './MorphCompoment';
 import Image from 'next/image';
 import { useEffect } from 'react';
-
+import { motion } from 'framer-motion';
 export default function Home() {
   const router=useRouter();
  // testing out some animation 
@@ -47,11 +47,19 @@ export default function Home() {
          <title>സർഗം ചിത്രം താളം</title>
       </Head>
       <div className={styles.mainContents}> 
-      <div className={styles.largeViewer}>
-        <div style={{margin:5}}>
+      <motion.div className={styles.largeViewer}
+       initial={{opacity:0,transform:'translateZ(-120px)'}}
+       whileInView={{opacity:1,transform:'translateZ(0px)'}}
+       transition={{ ease:'easeIn', duration: 2}}
+      >
+        <motion.div style={{margin:5}}
+          initial={{opacity:0,transform:'scaleY(0.98)',}}
+          whileInView={{opacity:1,transform:'scaleY(1)'}}
+          transition={{ ease:'easeIn', duration: 0 }}
+        >
           <TextMorpher/>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
       <div className='hidden'>
         <div className={styles.contactFlexBox}>
             <div className={styles.shortContactViewer}>
