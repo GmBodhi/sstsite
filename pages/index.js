@@ -2,14 +2,11 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import BottomNavBarComponent from '../components/BottomNavBarComponent';
 import { useRouter } from 'next/router';
-import BlogCardComponent from '../components/BlogCardComponent';
-import HorizontalScrollComponent from '../components/HorizontalScrollComponent';
 import TextMorpher from '../components/MorphCompoment';
 import Image from 'next/image';
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import TopNavBarComponent from '../components/TopNavBarComponent';
-import { Button } from '@/components/ui/button'
 import LoginComponent from '@/components/LoginComponent';
 export default function Home() {
   const router=useRouter();
