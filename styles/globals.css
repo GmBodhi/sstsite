@@ -178,7 +178,6 @@ a {
     align-items: center;
     font-family: 'TheGoodMonolith';
     z-index: 10;
-
     
   }
   .topnav{
@@ -191,6 +190,7 @@ a {
     width: 100vw;
     background-color: rgba(0,0,0,.3);  
     backdrop-filter: blur(0.3rem);
+    border-bottom: 1px solid hsla(0,0%,100%,.155);
 
   }
   .lowerText{
