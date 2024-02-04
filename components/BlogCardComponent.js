@@ -40,7 +40,7 @@ export default function BlogCardComponent(){
             {loading==true && <p style={{color:'white',textAlign:'center',fontSize:34,fontFamily:'Enhanced LED Board-7'}}>loading...</p>}
             {Data.map((i)=>{
                 return(
-                  <Card className="w-auto dark">
+                  <Card className="w-auto dark" key={i.id}>
                   <CardHeader>
                     <CardTitle className="text-3xl font-medium">{i.name}</CardTitle>
                     <CardDescription className="text-2xl">{i.program_comes_under}</CardDescription>
