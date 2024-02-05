@@ -50,10 +50,14 @@ export default function ProfileComponent(){
     },[token]) 
     return(
         <div>
-            {loading==true && <p style={{color:'white',textAlign:'center',fontSize:34,fontFamily:'Enhanced LED Board-7'}}>loading...</p>}
             {
-                isLogged==false ? <LoginComponent/> :(
+                isLogged==false ? 
+                <div className="m-10 flex flex-col justify-items-center">
+                    <LoginComponent/>
+                </div> 
+                :(
              <>
+              {loading==true && <p style={{color:'white',textAlign:'center',fontSize:34,fontFamily:'Enhanced LED Board-7'}}>loading...</p>}
                 <Card className="w-auto bg-gradient-to-r from-cyan-500 to-blue-500 ml-[10px] mr-[10px] mt-[10px]">
                     <CardHeader>
                         <CardTitle className="text-3xl font-medium text-white">{data.name}</CardTitle>
