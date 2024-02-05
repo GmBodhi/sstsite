@@ -6,7 +6,7 @@ export default function TextMorpher(){
             text1: document.getElementById("text1"),
             text2: document.getElementById("text2") };
             const texts = [
-            "സർഗം",
+              "സർഗ്ഗം",
               "ചിത്രം",
               "താളം"
             ];
