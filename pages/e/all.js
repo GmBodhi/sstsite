@@ -21,11 +21,8 @@ export default function All(){
                         <TabsTrigger value="instruments" onClick={()=>setOption("instruments")}>Instruments</TabsTrigger>
                         <TabsTrigger value="dance" onClick={()=>setOption("dance")}>Dance</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="all">
-                        <BlogCardComponent/>
-                    </TabsContent>
-                    <TabsContent value="music">
-                        
+                    <TabsContent value={option}>
+                        <BlogCardComponent option={option}/>
                     </TabsContent>
                 </Tabs>
                 

@@ -12,12 +12,12 @@ import {
 
 import { toast } from "sonner"
  
-export default function BlogCardComponent(){
+export default function BlogCardComponent({option}){
     const [Data,setData]=useState([]);
     const [loading,setLoading]=useState(true);
     const router =useRouter();
     const apireq=()=>{
-      fetch('https://sstapi.pythonanywhere.com/api/programs',{
+      fetch(`https://sstapi.pythonanywhere.com/api/programs/${option}`,{
         method:'GET',
         headers:{
           'Content-Type':'application/json',
