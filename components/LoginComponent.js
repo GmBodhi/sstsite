@@ -62,7 +62,7 @@ export default function LoginComponent(){
               <iframe src="https://clientuserlogin.onrender.com/?embedded=true" width={"100%"} height={"100%"} />
             ) : (
               <div className="flex flex-col items-center m-10">
-                <h1 className="text-2xl mb-5">Successfully registered 🎉</h1>
+                <h1 className="text-2xl mb-5 text-white">Successfully registered 🎉</h1>
                 <DrawerClose asChild>
                   <Button className="w-[300px]">Close</Button>
                 </DrawerClose>
