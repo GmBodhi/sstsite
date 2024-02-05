@@ -23,27 +23,30 @@ export default function ProfileComponent(){
             method:'GET',
             headers:{
             'Content-Type':'application/json',
+            'Accept':'application/json',
             'Authorization': `Token ${token}`
             
             },
         })
         .then(response=>response.json())
-        .then(data=>{
-            setData(data.data);
+        .then(resdata=>{
+            setData(resdata.data);
             setLoading(false);
         })
         .catch(e=>{console.log(e)})
     }
     const getToken=()=>{
         setToken(localStorage.getItem("token"));
-        if(token){
+        if(localStorage.getItem("token")){
             setIsLogged(true);
-            console.log(token);
         }
     } 
     useEffect(()=>{
         getToken();
-        apireq();
+    },[])
+    useEffect(()=>{
+        if(token)
+            apireq();
     },[token]) 
     return(
         <div>
@@ -54,7 +57,8 @@ export default function ProfileComponent(){
                 <Card className="w-auto bg-gradient-to-r from-cyan-500 to-blue-500 ml-[10px] mr-[10px] mt-[10px]">
                     <CardHeader>
                         <CardTitle className="text-3xl font-medium text-white">{data.name}</CardTitle>
-                        <CardDescription className="text-1xl text-white">{data.department}</CardDescription>
+                        <CardDescription className="text-1xl text-white">@{data.username}</CardDescription>
+                        <CardDescription className="text-1xl text-white">Department: {data.department} Chest Number: {data.chest_number}</CardDescription>
                     </CardHeader>
                                     
                 </Card>
@@ -73,11 +77,11 @@ export default function ProfileComponent(){
                                 </Card>
                             ))
                         ) : (
-                            <p>No registered events found</p>
+                            <p className="text-white text-center mt-5">No Group registered events found</p>
                         )}
                     </TabsContent>
                     <TabsContent value="Individual">
-                        {data.solo_registered_events && data.solo_registered_events.length > 0 ? (
+                        {(data.solo_registered_events && data.solo_registered_events.length > 0) ? (
                             data.solo_registered_events.map((i, index) => (
                                 <Card className="w-auto dark mb-5" key={index}>
                                     <CardHeader>
@@ -88,7 +92,7 @@ export default function ProfileComponent(){
                                 </Card>
                             ))
                         ) : (
-                            <p>No registered events found</p>
+                            <p className="text-white text-center mt-5">No Individual registered events found</p>
                         )}
                         
                     </TabsContent>
