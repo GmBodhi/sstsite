@@ -15,6 +15,7 @@ export default function LoginComponent(){
   
     useEffect(() => {
       const localToken = localStorage.getItem("token");
+      console.log(localToken);
       if(localToken){
         setIsLogged(localToken);
         setClose(true);
@@ -32,7 +33,7 @@ export default function LoginComponent(){
             const data = await response.json();
     
             setIsLogged(data.token);
-    
+            console.log(data);
             if (data.token !== "") {
               setClose(true);
               localStorage.setItem("token", data.token);
