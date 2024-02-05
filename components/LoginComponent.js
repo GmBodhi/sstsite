@@ -15,7 +15,6 @@ export default function LoginComponent(){
   
     useEffect(() => {
       const localToken = localStorage.getItem("token");
-      console.log(localToken);
       if(localToken){
         setIsLogged(localToken);
         setClose(true);

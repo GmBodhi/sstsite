@@ -36,13 +36,15 @@ export default function ProfileComponent(){
     }
     const getToken=()=>{
         setToken(localStorage.getItem("token"));
-        if(token)
+        if(token){
             setIsLogged(true);
+            console.log(token);
+        }
     } 
     useEffect(()=>{
         getToken();
         apireq();
-    },[]) 
+    },[token]) 
     return(
         <div>
             {loading==true && <p style={{color:'white',textAlign:'center',fontSize:34,fontFamily:'Enhanced LED Board-7'}}>loading...</p>}
