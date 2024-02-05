@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import {motion} from 'framer-motion';
+import {PersonIcon} from '@radix-ui/react-icons'
 export default function BottomNavBarComponent(){
     const router = useRouter();
     
@@ -22,7 +23,7 @@ export default function BottomNavBarComponent(){
                 <div className={router.asPath=='/' ? 'w3-text-white  w3-bar-item navitem navitemAll navtext' :'w3-text-grey  w3-bar-item navitemAll navtext'} ><Link href="/">home</Link></div>
                 <div className={router.asPath=='/points' ? 'w3-text-white  w3-bar-item navitem navtext' :'w3-text-grey  w3-bar-item navitemAll navtext'} ><Link href="/points">points</Link></div>
                 <div className={router.pathname=='/e/all' ? 'w3-text-white  w3-bar-item navitem navtext' :'w3-text-grey  w3-bar-item navitemAll navtext'}><Link href="/e/all">events</Link></div>
-                <div className={router.pathname=='/profile' ? 'w3-text-white  w3-bar-item navitem navtext' :'w3-text-grey  w3-bar-item navitemAll navtext'}><Link href="/profile">🙎‍♂️</Link></div>
+                <div className={router.pathname=='/profile' ? 'w3-text-white  w3-bar-item navitem navtext' :'w3-text-grey  w3-bar-item navitemAll navtext'}><Link href="/profile"><PersonIcon height={20} width={20}/></Link></div>
 
             </motion.nav>
         </header>
