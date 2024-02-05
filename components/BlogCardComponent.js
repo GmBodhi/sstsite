@@ -44,26 +44,26 @@ export default function BlogCardComponent(){
             {Data.map((i)=>{
                 return(
                   <Card className="w-auto dark mb-5" key={i.id}>
-                  <CardHeader>
-                    <CardTitle className="text-3xl font-medium">{i.name}</CardTitle>
-                    <CardDescription className="text-2xl">{i.program_comes_under}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div>
-                      <p className="text-lg">Type: {i.program_type=="g"? "Group":"Individual"}</p>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <Button onClick={()=>{
-                      toast("Heads up!", {
-                        description: "If you're here for registering for the events do login",
-                        action: {
-                          label: "Login using Etlab",
-                          onClick: () => console.log("Login"),
-                        },
-                      })
-                    }}>Register</Button>
-                  </CardFooter>
+                    <CardHeader>
+                      <CardTitle className="text-3xl font-medium">{i.name}</CardTitle>
+                      <CardDescription className="text-2xl">{i.program_comes_under}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div>
+                        <p className="text-lg">Type: {i.program_type=="g"? "Group":"Individual"}</p>
+                      </div>
+                    </CardContent>
+                    <CardFooter className="flex justify-between">
+                      <Button onClick={()=>{
+                        toast("Heads up!", {
+                          description: "If you're here for registering for the events do login",
+                          action: {
+                            label: "Login using Etlab",
+                            onClick: () => console.log("Login"),
+                          },
+                        })
+                      }}>Register</Button>
+                    </CardFooter>
                 </Card>
                 )
             })}

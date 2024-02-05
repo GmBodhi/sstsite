@@ -22,7 +22,8 @@ export default function BottomNavBarComponent(){
                 <div className={router.asPath=='/' ? 'w3-text-white  w3-bar-item navitem navitemAll navtext' :'w3-text-grey  w3-bar-item navitemAll navtext'} ><Link href="/">home</Link></div>
                 <div className={router.asPath=='/points' ? 'w3-text-white  w3-bar-item navitem navtext' :'w3-text-grey  w3-bar-item navitemAll navtext'} ><Link href="/points">points</Link></div>
                 <div className={router.pathname=='/e/all' ? 'w3-text-white  w3-bar-item navitem navtext' :'w3-text-grey  w3-bar-item navitemAll navtext'}><Link href="/e/all">events</Link></div>
-               
+                <div className={router.pathname=='/profile' ? 'w3-text-white  w3-bar-item navitem navtext' :'w3-text-grey  w3-bar-item navitemAll navtext'}><Link href="/profile">🙎‍♂️</Link></div>
+
             </motion.nav>
         </header>
         </div>
