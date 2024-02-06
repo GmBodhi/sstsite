@@ -69,7 +69,7 @@ export default function Home() {
                 <LoginComponent/>
             </div>
             <div className={styles.rightContactImage}>
-                <Image className={styles.contactImg} src="https://sreedbackend.pythonanywhere.com/media/postpics/sreedhar.png" width={550} height={600} style={{borderRadius:35}}/>
+                <Image className={styles.contactImg} src="https://i.ibb.co/bmM9VqK/sst-side-pic.jpg" width={550} height={600} style={{borderRadius:35}}/>
             </div>
         </div>
       </motion.div>

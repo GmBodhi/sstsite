@@ -3,7 +3,7 @@ const path = require('path')
 const nextConfig = {
   reactStrictMode: true,
   images:{
-    domains:['localhost','sreed.me','sreedbackend.pythonanywhere.com'],
+    domains:['localhost','i.ibb.co'],
     formats:['image/webp']
   },
   sassOptions: {
