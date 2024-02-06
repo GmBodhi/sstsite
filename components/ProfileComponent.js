@@ -115,7 +115,7 @@ export default function ProfileComponent(){
                             <div className="flex flex-col items-center m-10">
                                 {close === false ? (
                                 <div className="flex flex-row justify-spaced">
-                                <Select className="dark " onValueChange={value=>()=>setSelectDepartment(value)}>
+                                <Select className="dark " onValueChange={value=>setSelectDepartment(value)}>
                                     <SelectTrigger className="w-[180px] dark">
                                         <SelectValue placeholder="Add your department" />
                                     </SelectTrigger>
