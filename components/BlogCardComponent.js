@@ -10,7 +10,16 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-import Dialogue from "./DialogueComponent";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 import { toast } from "sonner"
 import { Dialog } from "@radix-ui/react-dialog";
