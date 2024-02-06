@@ -10,13 +10,33 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+  } from "@/components/ui/drawer";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
+  } from "@/components/ui/select"
 import LoginComponent from "./LoginComponent";
+import { Button } from "./ui/button";
 export default function ProfileComponent(){
     const [isLogged,setIsLogged]=useState(false);
     const [token,setToken] = useState(null);
     const [data,setData] = useState([]);
     const [option, setOption] = useState('individual')
     const [loading,setLoading] = useState(true);
+    const [updateloading,setUpdateLoading]=useState(false);
+    const [close, setClose] = useState(false);
+    const departments=['MEA','MEB','ECA','ECB'];
+    const [selectdepartment,setSelectDepartment]=useState('default');
     const apireq=()=>{
         setLoading(true);
         fetch('https://sstapi.pythonanywhere.com/accounts/api/profile/',{
@@ -32,6 +52,25 @@ export default function ProfileComponent(){
         .then(resdata=>{
             setData(resdata.data);
             setLoading(false);
+        })
+        .catch(e=>{console.log(e)})
+    }
+    const update=()=>{
+        console.log(selectdepartment);
+        setUpdateLoading(true);
+        fetch(`https://sstapi.pythonanywhere.com/accounts/api/profile/update/${selectdepartment}`,{
+            method:'POST',
+            headers:{
+            'Content-Type':'application/json',
+            'Accept':'application/json',
+            'Authorization': `Token ${token}`
+            
+            },
+        })
+        .then(response=>response.json())
+        .then(resdata=>{
+            setClose(true);
+            setUpdateLoading(false);
         })
         .catch(e=>{console.log(e)})
     }
@@ -63,6 +102,46 @@ export default function ProfileComponent(){
                         <CardTitle className="text-3xl font-medium text-white">{data.name}</CardTitle>
                         <CardDescription className="text-1xl text-white">@{data.username}</CardDescription>
                         <CardDescription className="text-1xl text-white">Department: {data.department} </CardDescription>
+                        {data.department==='default' &&
+                        <Drawer>
+                        <DrawerTrigger asChild>
+                            <Button variant="outline">add department</Button>
+                        </DrawerTrigger>                                            
+                        <DrawerContent className="dark text-white">
+                        <div className="h-[300px] w-full ">
+                            <DrawerHeader>
+                                <DrawerTitle>Add your department</DrawerTitle>
+                            </DrawerHeader>
+                            <div className="flex flex-col items-center m-10">
+                                {close === false ? (
+                                <div className="flex flex-row justify-spaced">
+                                <Select className="dark " onValueChange={value=>()=>setSelectDepartment(value)}>
+                                    <SelectTrigger className="w-[180px] dark">
+                                        <SelectValue placeholder="Add your department" />
+                                    </SelectTrigger>
+                                    <SelectContent >
+                                        {departments.map((i)=>{
+                                            return <SelectItem className="dark" value={i.toString()}>{i}</SelectItem>
+                                        })}
+                                    </SelectContent>
+                                </Select>
+                                <Button disabled={updateloading==true ? true : false} className="dark" type="submit" onClick={()=>{update()}}>Submit</Button>
+                                </div>
+                                ) : (
+                                    <>
+                                        <h1 className="text-2xl mb-5 text-white">Successfully added department 🎉</h1>
+                                        <p className="text-1xl mb-5 text-white">reload the page to view updated data.</p>
+                                        <DrawerClose asChild>
+                                            <Button className="w-[300px]">Close</Button>
+                                        </DrawerClose>
+                                    </>
+                                )}
+                            </div>
+
+                        </div>
+                        </DrawerContent>
+                        </Drawer>
+                        }
                     </CardHeader>
                                     
                 </Card>
