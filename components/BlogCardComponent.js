@@ -10,18 +10,10 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import Dialogue from "./DialogueComponent";
 
 import { toast } from "sonner"
+import { Dialog } from "@radix-ui/react-dialog";
 
 
  
@@ -100,44 +92,22 @@ export default function BlogCardComponent({option}){
                       </div>
                     </CardContent>
                     <CardFooter className="flex justify-between">
-                      <Dialog>
-                        <DialogTrigger>
-                        <Button  disabled={(registerLoading==true || i.is_registered==true )? true : false} onClick={()=>{
-                                            if(i.program_type=='g'){
-                                              toast("Heads up!", {
-                                                description: "Group events registeration not opened yet !",
-                                                action: {
-                                                  label: "Close",
-                                                  onClick:()=>{console.log("close")}
-                                                },
-                                              })
-                                            }
-                        }}>{i.is_registered==true ? 'Registered':'Register'}</Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                            <DialogTitle>Are you absolutely sure?</DialogTitle>
-                            <DialogDescription>
-                                This action cannot be undone. This will permanently delete your account
-                                and remove your data from our servers.
-                            </DialogDescription>
-                            </DialogHeader>
-                            <DialogFooter className="sm:justify-start">
-                              <DialogClose asChild>
-                                <Button type="button" variant="secondary" onClick={()=>{
-                                  setID(i.id);
-                                  if(id!=0)
-                          
-                                    register();}
-                                }>
-                                  Register
-                                </Button>
-                              </DialogClose>
-                            </DialogFooter>
-
-                        </DialogContent>
-                      </Dialog>
-
+                      <Button  disabled={(registerLoading==true || i.is_registered==true )? true : false} onClick={()=>{
+                        if(i.program_type=='g'){
+                          toast("Heads up!", {
+                            description: "Group events registeration not opened yet !",
+                            action: {
+                              label: "Close",
+                              onClick:()=>{console.log("close")}
+                            },
+                          })
+                        }else{
+                          setID(i.id);
+                          if(id!=0)
+                  
+                            register();
+                        }
+                      }}>{i.is_registered==true ? 'Registered':'Register'}</Button>
                     </CardFooter>
                 </Card>
                 )
