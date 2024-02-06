@@ -29,6 +29,7 @@ import {
   } from "@/components/ui/select"
 import LoginComponent from "./LoginComponent";
 import { Button } from "./ui/button";
+import { ScrollArea } from "./ui/scroll-area";
 export default function ProfileComponent(){
     const router = useRouter();
 
@@ -164,20 +165,24 @@ export default function ProfileComponent(){
                             <TabsTrigger value="Individual" onClick={()=>setOption("Individual")}>Individual</TabsTrigger>
                             <TabsTrigger value="Group" onClick={()=>setOption("Group")}>Group</TabsTrigger>
                     </TabsList>
+                    <ScrollArea>
                     <TabsContent value="Group">
-                        {data.group_registered_events && data.group_registered_events.length > 0 ? (
-                            data.group_registered_events.map((i, index) => (
-                                <Card className="w-auto dark mb-5" key={index}>
-                                    <CardHeader>
-                                        <CardTitle className="text-3xl font-medium">{i}</CardTitle>
-                                    </CardHeader>
-                                </Card>
-                            ))
-                        ) : (
-                            <p className="text-white text-center mt-5">No Group registered events found</p>
-                        )}
+                        
+                            {data.group_registered_events && data.group_registered_events.length > 0 ? (
+                                data.group_registered_events.map((i, index) => (
+                                    <Card className="w-auto dark mb-5" key={index}>
+                                        <CardHeader>
+                                            <CardTitle className="text-3xl font-medium">{i}</CardTitle>
+                                        </CardHeader>
+                                    </Card>
+                                ))
+                            ) : (
+                                <p className="text-white text-center mt-5">No Group registered events found</p>
+                            )}
                     </TabsContent>
-                    <TabsContent value="Individual">
+                    </ScrollArea>
+                    <ScrollArea>
+                    <TabsContent value="Individual">   
                         {(data.solo_registered_events && data.solo_registered_events.length > 0) ? (
                             data.solo_registered_events.map((i, index) => (
                                 <Card className="w-auto dark mb-5" key={index}>
@@ -190,9 +195,9 @@ export default function ProfileComponent(){
                             ))
                         ) : (
                             <p className="text-white text-center mt-5">No Individual registered events found</p>
-                        )}
-                        
+                        )}                       
                     </TabsContent>
+                    </ScrollArea>
                 </Tabs>
             </>
                 )}

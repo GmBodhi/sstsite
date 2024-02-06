@@ -8,6 +8,7 @@ export default function About(){
             <div className={styles.mainAbout}>
                <h1 className={styles.aboutTitle}>Points.</h1>
                <p className={styles.aboutFont}>Hang on , points table are on the way </p>
+               <img src='https://c.tenor.com/9SHzPU5UTn8AAAAC/tenor.gif'/>
             </div>
             
         </div>
