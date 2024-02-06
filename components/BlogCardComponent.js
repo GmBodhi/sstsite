@@ -111,11 +111,6 @@ export default function BlogCardComponent({option}){
                                                   onClick:()=>{console.log("close")}
                                                 },
                                               })
-                                            }else{
-                                              setID(i.id);
-                                              if(id!=0)
-                                      
-                                                register();
                                             }
                         }}>{i.is_registered==true ? 'Registered':'Register'}</Button>
                         </DialogTrigger>
@@ -129,7 +124,12 @@ export default function BlogCardComponent({option}){
                             </DialogHeader>
                             <DialogFooter className="sm:justify-start">
                               <DialogClose asChild>
-                                <Button type="button" variant="secondary">
+                                <Button type="button" variant="secondary" onClick={()=>{
+                                  setID(i.id);
+                                  if(id!=0)
+                          
+                                    register();}
+                                }>
                                   Register
                                 </Button>
                               </DialogClose>
