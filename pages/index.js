@@ -12,6 +12,7 @@ export default function Home() {
   const router=useRouter();
  // testing out some animation 
   let animator=null;
+  
 
   return (
     <div className="main">
@@ -19,7 +20,7 @@ export default function Home() {
       <BottomNavBarComponent/>
       <Head>
          <meta name='theme-color' color='#0000'/>
-         <meta name='description' content='Sreedhar k.s, portfolio and blog,sreedhar k.s blog, sreedhar,'/>
+         <meta name='description' content='Sargam, Chitram, Thaalam. Art fest of SCTCE'/>
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
          <title>സർഗം ചിത്രം താളം</title>
       </Head>

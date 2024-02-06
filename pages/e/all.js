@@ -26,7 +26,9 @@ export default function All(){
             </Head>
             {token==null ? 
              <div className="m-10 flex flex-col justify-items-center">
-                <LoginComponent/>
+                <h1 style={{color:'white',fontSize:55,fontWeight:'bold',marginTop:55,marginLeft:10}}>Events</h1>
+                <p className="text-white ml-[10px] mb-[10px]">Sign it to view the events</p>
+                <LoginComponent />
              </div>
             :(
             <div className="blogContainer mb-10">
