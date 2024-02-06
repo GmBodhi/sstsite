@@ -11,22 +11,26 @@ import {
 } from "@/components/ui/card"
 
 import { toast } from "sonner"
+
  
 export default function BlogCardComponent({option}){
     const [Data,setData]=useState([]);
     const [loading,setLoading]=useState(true);
+    const [registerLoading,setRegisterLoading]=useState(false);
+    
+    const [id,setID]=useState(0);
+    const token = localStorage.getItem("token");
     const router =useRouter();
     const apireq=()=>{
       fetch(`https://sstapi.pythonanywhere.com/api/programs/${option}`,{
         method:'GET',
         headers:{
           'Content-Type':'application/json',
-          
+          'Authorization':`Token ${token}`
         },
       })
       .then(response=>response.json())
       .then(data=>{
-        
         setData(data.data);
         setLoading(false);
         
@@ -34,9 +38,38 @@ export default function BlogCardComponent({option}){
       })
       .catch(e=>{console.log(e)})
     }
+    const register=()=>{
+      setRegisterLoading(true);
+      let toast_msg='';
+      fetch(`https://sstapi.pythonanywhere.com/api/register/${id}`,{
+        method:'GET',
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':`Token ${token}`  
+        },
+      })
+      .then(response=>response.json())
+      .then(data=>{
+        setRegisterLoading(false);
+        if(data.data)
+          toast_msg=data.data;
+        else if(data.error)
+          toast_msg=data.error 
+        toast(toast_msg, {
+          description: "tip :you can see your registerations in profile",
+          action: {
+            label: "Close",
+            onClick:()=>{console.log('close')}
+          },
+        })
+        
+      })
+      .catch(e=>{console.log(e)})
+    }
     useEffect(()=>{
       apireq();
     },[])
+ 
     return(
         <div className='w3-row-padding'>
             
@@ -54,15 +87,21 @@ export default function BlogCardComponent({option}){
                       </div>
                     </CardContent>
                     <CardFooter className="flex justify-between">
-                      <Button onClick={()=>{
-                        toast("Heads up!", {
-                          description: "If you're here for registering for the events do login",
-                          action: {
-                            label: "Login using Etlab",
-                            onClick: () => console.log("Login"),
-                          },
-                        })
-                      }}>Register</Button>
+                      <Button  disabled={(registerLoading==true || i.is_registered==true )? true : false} onClick={()=>{
+                        if(i.program_type=='g'){
+                          toast("Heads up!", {
+                            description: "Group events registeration not opened yet !",
+                            action: {
+                              label: "Close",
+                              onClick:()=>{console.log("close")}
+                            },
+                          })
+                        }else{
+                          setID(i.id);
+                          if(id!=0)
+                            register();
+                        }
+                      }}>{i.is_registered==true ? 'Registered':'Register'}</Button>
                     </CardFooter>
                 </Card>
                 )
