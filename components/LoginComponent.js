@@ -41,7 +41,7 @@ export default function LoginComponent(){
             console.error(error);
           }
         };
-        intervalRef.current = setInterval(fetchData, 5000);  
+        intervalRef.current = setInterval(fetchData, 1000);  
       }
       return () => {
         clearInterval(intervalRef.current);
