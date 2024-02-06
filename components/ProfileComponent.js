@@ -2,6 +2,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Skeleton } from "@/components/ui/skeleton"
  
 import { useState, useEffect } from "react";
+import { useRouter } from 'next/router';
+
 import {
     Card,
     CardContent,
@@ -28,6 +30,8 @@ import {
 import LoginComponent from "./LoginComponent";
 import { Button } from "./ui/button";
 export default function ProfileComponent(){
+    const router = useRouter();
+
     const [isLogged,setIsLogged]=useState(false);
     const [token,setToken] = useState(null);
     const [data,setData] = useState([]);
@@ -80,6 +84,12 @@ export default function ProfileComponent(){
             setIsLogged(true);
         }
     } 
+    const logout=()=>{
+        localStorage.removeItem("token");
+        router.reload();
+
+    }
+
     useEffect(()=>{
         getToken();
     },[])
@@ -87,6 +97,8 @@ export default function ProfileComponent(){
         if(token)
             apireq();
     },[token]) 
+
+
     return(
         <div>
             {
@@ -141,7 +153,9 @@ export default function ProfileComponent(){
                         </div>
                         </DrawerContent>
                         </Drawer>
+
                         }
+                        <Button className="dark" onClick={()=>{logout()}}>Log Out</Button>
                     </CardHeader>
                                     
                 </Card>
