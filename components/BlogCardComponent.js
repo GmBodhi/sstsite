@@ -85,7 +85,7 @@ export default function BlogCardComponent({option}){
             onClick:()=>{console.log('close')}
           },
         })
-        
+        apireq();
       })
       .catch(e=>{console.log(e)})
     }
