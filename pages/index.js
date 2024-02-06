@@ -4,7 +4,6 @@ import BottomNavBarComponent from '../components/BottomNavBarComponent';
 import { useRouter } from 'next/router';
 import TextMorpher from '../components/MorphCompoment';
 import Image from 'next/image';
-import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import TopNavBarComponent from '../components/TopNavBarComponent';
 import LoginComponent from '@/components/LoginComponent';
@@ -16,6 +15,7 @@ export default function Home() {
 
   return (
     <div className="main">
+      
       <TopNavBarComponent/>
       <BottomNavBarComponent/>
       <Head>
