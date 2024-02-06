@@ -121,7 +121,7 @@ export default function ProfileComponent(){
                                     </SelectTrigger>
                                     <SelectContent >
                                         {departments.map((i)=>{
-                                            return <SelectItem className="dark" value={i.toString()}>{i}</SelectItem>
+                                            return <SelectItem className="dark" key={i.toString()} value={i.toString()}>{i}</SelectItem>
                                         })}
                                     </SelectContent>
                                 </Select>
