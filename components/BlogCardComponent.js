@@ -10,7 +10,11 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
+import Dialogue from "./DialogueComponent";
+
 import { toast } from "sonner"
+import { Dialog } from "@radix-ui/react-dialog";
+
 
  
 export default function BlogCardComponent({option}){
@@ -74,6 +78,7 @@ export default function BlogCardComponent({option}){
         <div className='w3-row-padding'>
             
             {loading==true && <p style={{color:'white',textAlign:'center',fontSize:34,fontFamily:'Enhanced LED Board-7'}}>loading...</p>}
+            
             {Data.map((i)=>{
                 return(
                   <Card className="w-auto dark mb-5" key={i.id}>
@@ -99,6 +104,7 @@ export default function BlogCardComponent({option}){
                         }else{
                           setID(i.id);
                           if(id!=0)
+                  
                             register();
                         }
                       }}>{i.is_registered==true ? 'Registered':'Register'}</Button>
