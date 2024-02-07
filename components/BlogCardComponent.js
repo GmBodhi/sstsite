@@ -217,7 +217,7 @@ export default function BlogCardComponent({option}){
                               register();
                           }
                         }}>{i.is_registered==true ? 'Registered':'Register'}</Button>
-                        {i.program_type=='g' && i.is_registered==true && 
+                        {/* {i.program_type=='g' && i.is_registered==true && 
                             <Drawer>
                               <DrawerTrigger>
                                 <Button 
@@ -261,7 +261,7 @@ export default function BlogCardComponent({option}){
                                 </DrawerFooter>
                               </DrawerContent>
                           </Drawer>
-                      }
+                        } */}
                       </CardFooter>
                   </Card>
                   )
