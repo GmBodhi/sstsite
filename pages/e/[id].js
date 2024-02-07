@@ -108,7 +108,7 @@ export default function Blog() {
                                         </CardHeader>
                                     </Card>
                                 }
-                                {data.members.map((index, i) => {
+                                {data.members.map((i,index) => {
                                     return (
                                         <Card className="w-auto dark mb-5" key={index}>
                                             <CardHeader>
