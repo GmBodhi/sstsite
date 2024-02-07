@@ -121,9 +121,9 @@ export default function BlogCardComponent({option}){
         setRegisterLoading(false);
         if(data.data){
           toast_msg=data.data;
-          setShowDialog(true);
-        }else if(data.error)
-          toast_msg=data.error 
+          if(toast_msg!="You cant lead multiple teams.")
+            setShowDialog(true);
+        }
         toast(toast_msg, {
           description: "tip :you can see your registerations in profile",
           action: {
@@ -181,7 +181,7 @@ export default function BlogCardComponent({option}){
                 You can copy/paste and share this code with your team members to join your team
               </DialogDescription>
               <div className="flex w-full max-w-sm items-center space-x-2">
-                <Input type="text"  value={`https://sctarts.in/e/${profile.username}`}/>
+                <Input type="text" disabled  value={`https://sctarts.in/e/${profile.username}`}/>
                 <Button type="submit" onClick={()=>{
                   window.open(`whatsapp://send?text=Hi, link to join my team is https://sctarts.in/e/${profile.username} do not share with outside team members`);
                 }}>Share</Button>
