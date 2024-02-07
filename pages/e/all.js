@@ -27,7 +27,7 @@ export default function All(){
             {token==null ? 
              <div className="m-10 flex flex-col justify-items-center">
                 <h1 style={{color:'white',fontSize:55,fontWeight:'bold',marginTop:55}}>Events</h1>
-                <p className="text-white mb-[10px]">Sign it to view the events</p>
+                <p className="text-white mb-[10px]">Login it to view the events</p>
                 <LoginComponent />
              </div>
             :(
