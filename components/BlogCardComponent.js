@@ -193,7 +193,7 @@ export default function BlogCardComponent({option}){
             </DialogContent>
             </Dialog>
             {Data.map((i)=>{
-                if(i.program_gender_type==profile.gender || i.program_gender_type=='all'){
+                if(i.program_gender_type==profile.gender || i.program_gender_type=='a'){
                   return(
                     
                     <Card className="w-auto dark mb-5" key={i.id}>

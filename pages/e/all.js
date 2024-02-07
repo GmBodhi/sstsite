@@ -39,13 +39,10 @@ export default function All(){
                         <TabsTrigger value="music" onClick={()=>setOption("music")}>Music</TabsTrigger>
                         <TabsTrigger value="instruments" onClick={()=>setOption("instruments")}>Instrument</TabsTrigger>
                         <TabsTrigger value="dance" onClick={()=>setOption("dance")}>Dance</TabsTrigger>
-                        <TabsTrigger value="literary" >Literary</TabsTrigger>
+                        <TabsTrigger value="literary"  onClick={()=>setOption("literary")}>Literary</TabsTrigger>
                     </TabsList>
                     <TabsContent value={option}>
                         <BlogCardComponent option={option}/>
-                    </TabsContent>
-                    <TabsContent value={'literary'}>
-                       <p className="text-white text-center">Literary events coming soon</p>
                     </TabsContent>
                 </Tabs>
                 
