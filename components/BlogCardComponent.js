@@ -123,6 +123,8 @@ export default function BlogCardComponent({option}){
           toast_msg=data.data;
           if(toast_msg!="You cant lead multiple teams.")
             setShowDialog(true);
+        }else if(data.error){
+          toast_msg=data.error;
         }
         toast(toast_msg, {
           description: "tip :you can see your registerations in profile",
