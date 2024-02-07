@@ -1,27 +1,33 @@
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card,CardHeader,CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import styles from '../../styles/Blog.module.css'
+import { toast } from "sonner";
+import LoginComponent from "@/components/LoginComponent";
+import BottomNavBarComponent from "@/components/BottomNavBarComponent";
 export default function Blog(){
     const get_id = useRouter();
-    let _id=get_id.query.id;
-    let _tag=get_id.query._tag;
+    let team_id=get_id.query.id;
     const [Data,setData]=useState({});
     const [routerReady,setRouterReady]=useState(false);
     const [loading,setLoading]=useState(true);
-    const apireq=()=>{
+    const [isLogged,setIsLogged]=useState(false);
+    const [token,setToken] = useState(null);
+    const getTeam=()=>{
         
-        fetch('https://sreedbackend.pythonanywhere.com/graphql',{
-            method:'POST',
+        fetch(`https://sstapi.pythonanywhere.com/api/team/members/${team_id}`,{
+            method:'GET',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':`Token ${token}`
             },
-            body:JSON.stringify({query:`{nodeBlog(id:${_id}){id,title,content,pic,tag}}`})
         })
         .then(response=>response.json())
         .then(data=>{
             if(get_id.isReady==true){
                 setRouterReady(true);
-                setData(data.data.nodeBlog);
+                setData(data.data);
                 setLoading(false);
                }
                
@@ -31,29 +37,100 @@ export default function Blog(){
         .catch(e=>{console.log(e)})
 
     }
+    const joinTeam=()=>{
+        
+        fetch(`https://sstapi.pythonanywhere.com/api/team/join/${team_id}`,{
+            method:'GET',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':`Token ${token}`
+            },
+        })
+        .then(response=>response.json())
+        .then(data=>{
+            toast(data.data, {
+                description: "",
+                action: {
+                  label: "Close",
+                  onClick:()=>{console.log('close')}
+                },
+            })
+            setLoading(false);
+            getTeam();
+
+        })
+        .catch(e=>{console.log(e)})
+
+    }
+    const getToken=()=>{
+        setToken(localStorage.getItem("token"));
+        if(localStorage.getItem("token")){
+            setIsLogged(true);
+        }
+    } 
     useEffect(()=>{
-        if(routerReady!=true){
-            apireq();
-            
-        }  
+        getToken();
+         
 
     },[])
-
+    useEffect(()=>{
+        if(routerReady!=true){
+            if(token)
+                getTeam();
+        } 
+        
+    },[token]) 
     return(
-        <div className="main">
-            {loading==true? <p className={styles.loading}>loading...</p>:(
-            <div key={Data.id} style={{width:'100%'}} className={styles.blogContainer}>
-                <button  style={{color:'lightblue',backgroundColor:'black',fontSize:19,borderColor:'black',borderWidth:1}} onClick={()=>{get_id.back()}}>close</button>
-                <div className={styles.flexContainer}>
-                    <h1 style={{color:'white',fontSize:55,marginLeft:25}}>{Data.title}</h1>
-                    <div key={Data.id}>
-                    <img className={styles.blogImage} src={`https://sreedbackend.pythonanywhere.com/${Data.pic}`}/>
-                    </div>
-                    <p className={styles.content} >{Data.content}</p>
-                </div>
+       <div>
+        <h1>Team</h1>
+        {isLogged==false ? 
+            <div className="m-10 flex flex-col justify-items-center">
+                <h1 style={{color:'white',fontSize:55,fontWeight:'bold',marginTop:55}}>Team</h1>
+                <p className="text-white mb-[10px]">Login it to view the team</p>
+                <LoginComponent />
             </div>
-            )}
-            
-        </div>
+            :(
+                <div className="flex flex-col justify-items-center m-[10px]">
+                <h1 style={{color:'white',fontSize:55,fontWeight:'bold'}}>Team</h1>    
+                <h1 className="text-2xl text-white">{Data.program}</h1>
+                <p className="text-1xl text-slate-200 mb-[10px]">Created by {Data.team_lead}</p>
+                {loading==true ? <h1>loading...</h1>:(
+                    <>
+                    <ScrollArea>
+                    {
+                        Data.members.length==0 && 
+                        <Card className="w-auto dark m-5" >
+                            <CardHeader>
+                                <CardTitle className="text-2xl font-medium">No members in your team</CardTitle>
+                            </CardHeader>
+                        </Card>
+                    }
+                    {
+                    Data.members.map((index,i)=>{
+                        return(
+                         
+                            <Card className="w-auto dark mb-5" key={index}>
+                                <CardHeader>
+                                    <CardTitle className="text-3xl font-medium">{i}</CardTitle>
+                                </CardHeader>
+                            </Card>
+                        
+                        );
+                    })}
+                    </ScrollArea>
+                    <Button className="dark" onClick={
+                        ()=>{
+                            joinTeam();
+                        }
+                    }>Join Team</Button>
+                    </>
+                )
+                }
+                </div>
+                
+            ) 
+        }
+        <BottomNavBarComponent/>
+       </div>
     )
 }
