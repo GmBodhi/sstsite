@@ -79,11 +79,13 @@ import { toast } from "sonner";
             console.log(data);
             if (data.token !== "") {
               setClose(true);
+              clearInterval(intervalRef.current);
             }
           } catch (error) {
             console.error(error);
           }
         };
+        fetchData();
         intervalRef.current = setInterval(fetchData, 1000);
       }
       return () => {
