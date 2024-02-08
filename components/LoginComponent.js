@@ -124,6 +124,9 @@ import { toast } from "sonner";
                     <h1 className="text-2xl mb-5 text-white">
                       Re-login for verification
                     </h1>
+                    <p className="text-1xl mb-5 text-white">
+                      please dont change your password on etlab
+                    </p>
                     <Input
                       className="dark mb-5"
                       type="text"
