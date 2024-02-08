@@ -117,9 +117,8 @@ export default function Blog() {
                                         </Card>
                                     );
                                 })}
-                                <Button className="dark" onClick={joinTeam}>Join Team</Button>
                             </ScrollArea>
-                            
+                            <Button className="dark mb-20" onClick={joinTeam}>Join Team</Button>
                         </>
                     }
                 </div>
