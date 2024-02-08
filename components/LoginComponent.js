@@ -126,7 +126,7 @@ import { toast } from "sonner";
                     </h1>
                     <Input
                       className="dark mb-5"
-                      type="number"
+                      type="text"
                       onChange={(e) => setUsername(e.target.value)}
                       placeholder="Etlab username"
                     />
