@@ -217,7 +217,7 @@ export default function ProfileComponent(){
                                     <Card className="w-auto dark mb-5" key={index}>
                                         <CardHeader>
                                             <CardTitle className="text-3xl font-medium">{i.program.name}</CardTitle>
-                                            <CardDescription className="text-1xl ">created by {data.name==i.program.created_by ? 'you': i.program.created_by}</CardDescription>
+                                            {/* <CardDescription className="text-1xl ">created by {data.name==i.program.created_by ? 'you': i.program.created_by}</CardDescription> */}
                                         </CardHeader>
                                         <Button onClick={()=>{
                                             setID(i.program.id);
