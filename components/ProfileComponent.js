@@ -219,7 +219,7 @@ export default function ProfileComponent(){
                                         </CardHeader>
                                         <Button onClick={()=>{
                                             setID(data.program.id);
-                                            if(id!=0)
+                                            if(id!=0 || id==i.program.id)
                                                 deleteEvent();
                                         }} className="m-5">{data.name==i.program.created_by ? 'Delete team': 'Leave team'}</Button>
                                     </Card>
