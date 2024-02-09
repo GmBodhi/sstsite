@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton"
  
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
-
+import { toast } from "sonner";
 import {
     Card,
     CardContent,
@@ -30,6 +30,7 @@ import {
 import LoginComponent from "./LoginComponent";
 import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
+import profile from "@/pages/profile";
 export default function ProfileComponent(){
     const router = useRouter();
 
@@ -42,6 +43,8 @@ export default function ProfileComponent(){
     const [close, setClose] = useState(false);
     const departments=['MEA','MEB','ECA','ECB'];
     const [selectdepartment,setSelectDepartment]=useState('default');
+    const [id,setID] = useState(0);
+    const [buttonProgramLoading,setButtonProgramLoading] = useState(false);
     const apireq=()=>{
         setLoading(true);
         fetch('https://sstapi.pythonanywhere.com/accounts/api/profile/',{
@@ -76,8 +79,43 @@ export default function ProfileComponent(){
         .then(resdata=>{
             setClose(true);
             setUpdateLoading(false);
+            apireq();
         })
         .catch(e=>{console.log(e)})
+    }
+    const deleteEvent=()=>{
+        
+        setButtonProgramLoading(true);
+        fetch(`https://sstapi.pythonanywhere.com//api/program/delete/${id}`,{
+            method:'DELETE',
+            headers:{
+            'Content-Type':'application/json',
+            'Accept':'application/json',
+            'Authorization': `Token ${token}`
+            
+            },
+        })
+        .then(response=>response.json())
+        .then(resdata=>{
+            toast(resdata.data, {
+                description: "tip :you can again register for this event if you change your mind",
+                action: {
+                  label: "Close",
+                  onClick:()=>{console.log('close')}
+                },
+            })
+            setButtonProgramLoading(false);
+            apireq();
+        })
+        .catch(e=>{console.log(e);
+            toast(e, {
+                description: "tip :you can again register for this event if you change your mind",
+                action: {
+                  label: "Close",
+                  onClick:()=>{console.log('close')}
+                },
+              })
+        })
     }
     const getToken=()=>{
         setToken(localStorage.getItem("token"));
@@ -176,8 +214,14 @@ export default function ProfileComponent(){
                                 data.group_registered_events.map((i, index) => (
                                     <Card className="w-auto dark mb-5" key={index}>
                                         <CardHeader>
-                                            <CardTitle className="text-3xl font-medium">{i}</CardTitle>
+                                            <CardTitle className="text-3xl font-medium">{i.program.name}</CardTitle>
+                                            <CardDescription className="text-1xl ">created by {data.name==i.program.created_by ? 'you': i.program.created_by}</CardDescription>
                                         </CardHeader>
+                                        <Button onClick={()=>{
+                                            setID(data.program.id);
+                                            if(id!=0)
+                                                deleteEvent();
+                                        }} className="m-5">{data.name==i.program.created_by ? 'Delete team': 'Leave team'}</Button>
                                     </Card>
                                 ))
                             ) : (
@@ -191,10 +235,16 @@ export default function ProfileComponent(){
                             data.solo_registered_events.map((i, index) => (
                                 <Card className="w-auto dark mb-5" key={index}>
                                     <CardHeader>
-                                        <CardTitle className="text-3xl font-medium">{i}</CardTitle>
+                                        <CardTitle className="text-3xl font-medium">{i.program.name}</CardTitle>
 
                                     </CardHeader>
-                                    
+                                    <Button 
+                                     onClick={()=>{
+                                        setID(i.program.id);
+                                        if(id!=0)
+                                            deleteEvent();
+                                    }}
+                                    className="m-5" disabled={buttonProgramLoading==true ? true :false}>{buttonProgramLoading==true ? 'Deleting' :'Delete'}</Button>
                                 </Card>
                             ))
                         ) : (
