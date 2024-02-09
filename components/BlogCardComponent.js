@@ -103,6 +103,7 @@ export default function BlogCardComponent({option}){
           },
         })
         apireq();
+        setID(0);
       })
       .catch(e=>{console.log(e)})
     }
@@ -133,6 +134,7 @@ export default function BlogCardComponent({option}){
             onClick:()=>{console.log('close')}
           },
         })
+        setID(0);
         apireq();
       })
       .catch(e=>{console.log(e)})
