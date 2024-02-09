@@ -4,14 +4,13 @@ import BottomNavBarComponent from '../components/BottomNavBarComponent';
 import { useRouter } from 'next/router';
 import TextMorpher from '../components/MorphCompoment';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion} from 'framer-motion';
 import TopNavBarComponent from '../components/TopNavBarComponent';
 import LoginComponent from '@/components/LoginComponent';
+import Footer from '@/components/FooterComponent';
+
 export default function Home() {
   const router=useRouter();
- // testing out some animation 
-  let animator=null;
-  
 
   return (
     <div className="main">
@@ -72,8 +71,7 @@ export default function Home() {
             </div>
         </div>
       </motion.div>
-      
-      
+      <Footer/>
       </div>
       </div>
   )

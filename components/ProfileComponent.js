@@ -31,6 +31,7 @@ import LoginComponent from "./LoginComponent";
 import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
 import profile from "@/pages/profile";
+import Footer from "./FooterComponent";
 export default function ProfileComponent(){
     const router = useRouter();
 
@@ -255,6 +256,7 @@ export default function ProfileComponent(){
                     </TabsContent>
                     </ScrollArea>
                 </Tabs>
+                {loading==false && <Footer/>}
             </>
                 )}
         </div>
