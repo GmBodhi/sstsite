@@ -106,6 +106,7 @@ export default function ProfileComponent(){
             })
             setButtonProgramLoading(false);
             apireq();
+            setID(0);
         })
         .catch(e=>{console.log(e);
             toast(e, {
@@ -115,6 +116,7 @@ export default function ProfileComponent(){
                   onClick:()=>{console.log('close')}
                 },
               })
+            setID(0);
         })
     }
     const getToken=()=>{
@@ -218,8 +220,8 @@ export default function ProfileComponent(){
                                             <CardDescription className="text-1xl ">created by {data.name==i.program.created_by ? 'you': i.program.created_by}</CardDescription>
                                         </CardHeader>
                                         <Button onClick={()=>{
-                                            setID(data.program.id);
-                                            if(id!=0 || id==i.program.id)
+                                            setID(i.program.id);
+                                            if(id!=0)
                                                 deleteEvent();
                                         }} className="m-5">{data.name==i.program.created_by ? 'Delete team': 'Leave team'}</Button>
                                     </Card>
