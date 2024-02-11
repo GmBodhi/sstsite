@@ -157,7 +157,7 @@ export default function ProfileComponent(){
                         <CardDescription className="text-1xl text-white">@{data.username}</CardDescription>
                         <CardDescription className="text-1xl text-white">Department: {data.department} </CardDescription>
                         <Button onClick={()=>{
-                            window.open(`whatsapp://send?phone=9633986935&text=Hi, my profile data is different  id : ${data.username} name : ${data.name}`);
+                            window.open(`whatsapp://send?phone=8075496634&text=Hi, my profile data is different  id : ${data.username} name : ${data.name}`);
                         }}>Report Issue</Button>
                         
                         {data.department==='default' &&
