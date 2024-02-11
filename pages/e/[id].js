@@ -50,8 +50,20 @@ export default function Blog() {
         })
             .then(response => response.json())
             .then(data => {
-                setData(data.data);
-                setLoading(false);
+                if(data.data=="Team does not exits"){
+                    toast(data.data, {
+                        description: "tip :you can see your registerations in profile",
+                        action: {
+                          label: "Close",
+                          onClick:()=>{console.log('close')}
+                        },
+                      })
+                      setLoading(true);
+                }else{
+                    setData(data.data);
+                    setLoading(false);
+                }
+                
             })
             .catch(e => {
                 console.log(e);
@@ -94,21 +106,22 @@ export default function Blog() {
                 </div>
                 :
                 <div className="flex flex-col justify-items-center m-[10px]">
-                    <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold' }}>Team</h1>
-                    <h1 className="text-2xl text-white">{data.program}</h1>
-                    <p className="text-1xl text-slate-200 mb-[10px]">Created by {data.team_lead}</p>
+
                     {loading ?
-                        <h1>loading...</h1> :
+                        <h1 className="text-2xl text-center text-white">loading...</h1> :
                         <>
+                            <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold' }}>Team</h1>
+                            <h1 className="text-2xl text-white">{data.program}</h1>
+                            <p className="text-1xl text-slate-200 mb-[10px]">Created by {data.team_lead}</p>
                             <ScrollArea>
-                                {data.members.length === 0 &&
+                                { data.members && data.members.length === 0 &&
                                     <Card className="w-auto dark m-5" >
                                         <CardHeader>
                                             <CardTitle className="text-2xl font-medium">No members in your team</CardTitle>
                                         </CardHeader>
                                     </Card>
                                 }
-                                {data.members.map((i,index) => {
+                                {data.members && data.members.map((i,index) => {
                                     return (
                                         <Card className="w-auto dark mb-5" key={index}>
                                             <CardHeader>
