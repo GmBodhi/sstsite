@@ -168,6 +168,15 @@ export default function BlogCardComponent({option}){
       })
       .catch(e=>{console.log(e)})
     }
+    const registerationClosed=()=>{
+      toast('Registeration is closed !', {
+        description: "time for registering the events has come to an end !",
+        action: {
+          label: "Close",
+          onClick:()=>{console.log('close')}
+        },
+      })
+    }
     useEffect(()=>{
       apireqProfile();
       apireq();
@@ -210,16 +219,7 @@ export default function BlogCardComponent({option}){
                       </CardContent>
                       <CardFooter className="flex justify-between">
                         <Button  disabled={(registerLoading==true || i.is_registered==true )? true : false} onClick={()=>{
-                          if(i.program_type=='g'){
-                            setID(i.id);                           
-                            if(id!=0)
-                            createTeam();
-                          }else{
-                            setID(i.id);
-                            if(id!=0)
-                    
-                              register();
-                          }
+                          registerationClosed();
                         }}>{i.is_registered==true ? 'Registered':'Register'}</Button>
                         {/* {i.program_type=='g' && i.is_registered==true && 
                             <Drawer>
