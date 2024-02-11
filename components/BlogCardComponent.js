@@ -170,7 +170,7 @@ export default function BlogCardComponent({option}){
     }
     const registerationClosed=()=>{
       toast('Registeration is closed !', {
-        description: "time for registering the events has come to an end !",
+        description: "potte saravilla aduthe vattam nokkam... 🙂",
         action: {
           label: "Close",
           onClick:()=>{console.log('close')}
@@ -180,6 +180,7 @@ export default function BlogCardComponent({option}){
     useEffect(()=>{
       apireqProfile();
       apireq();
+      
     },[])
     
     return(
