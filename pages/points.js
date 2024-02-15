@@ -1,4 +1,5 @@
 import BottomNavBarComponent from '../components/BottomNavBarComponent';
+<<<<<<< HEAD
 import {
     Table,
     TableBody,
@@ -20,9 +21,17 @@ import { ScrollArea,ScrollBar } from '@/components/ui/scroll-area';
 import Footer from '@/components/FooterComponent';
 export default function About(){
     return(
+=======
+import styles from '../styles/About.module.css';
+import Image from 'next/image';
+
+export default function About() {
+    return (
+>>>>>>> 6542f15826a3dfcea08873b4c625ecd1da0fa78e
         <div className="main">
-            <BottomNavBarComponent/>
+            <BottomNavBarComponent />
             <div className="m-10 flex flex-col justify-items-center">
+<<<<<<< HEAD
                 <h1 style={{color:'white',fontSize:55,fontWeight:'bold',marginTop:0}}>Points</h1>
                 <Table>
                 <TableCaption  className="dark">Point table is not normalized</TableCaption>
@@ -68,8 +77,12 @@ export default function About(){
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea>
                 <Footer/>
+=======
+                <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold', marginTop: 55 }}>Points</h1>
+                <p className="text-white mb-[10px]">Hang on, points table will arrive soon!</p>
+                    <Image alt="" width={50} height={50} className='w-full' src="https://c.tenor.com/9SHzPU5UTn8AAAAC/tenor.gif" priority  />
+>>>>>>> 6542f15826a3dfcea08873b4c625ecd1da0fa78e
             </div>
-            
         </div>
     );
 }
