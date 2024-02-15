@@ -220,7 +220,13 @@ export default function BlogCardComponent({option}){
                       </CardContent>
                       <CardFooter className="flex justify-between">
                         <Button  disabled={(registerLoading==true || i.is_registered==true )? true : false} onClick={()=>{
-                           registerationClosed();
+                           if(i.program_type=='g'){
+                            setID(i.id);                           
+                            if(id!=0)
+                            createTeam();
+                          }else{
+                            registerationClosed();
+                          }
                         }}>{i.is_registered==true ? 'Registered':'Register'}</Button>
                         {/* {i.program_type=='g' && i.is_registered==true && 
                             <Drawer>
