@@ -155,7 +155,7 @@ export default function ProfileComponent(){
                     <CardHeader>
                         <CardTitle className="text-3xl font-medium text-white">{data.name}</CardTitle>
                         <CardDescription className="text-1xl text-white">@{data.username}</CardDescription>
-                        <CardDescription className="text-1xl text-white">Department: {data.department} </CardDescription>
+                        <CardDescription className="text-1xl text-white">Department: {data.department} Chest Number: {data.chest_number} </CardDescription>
                         <Button onClick={()=>{
                             window.open(`whatsapp://send?phone=+918075496634&text=Hi, my profile data is different  id : ${data.username} name : ${data.name}`);
                         }}>Report Issue</Button>
