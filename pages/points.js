@@ -35,7 +35,7 @@ export default function About(){
                 <TableBody  className="dark text-white">
                     {['CS','CL','ME','MA','MP','BT','ECA','ECB'].map((i)=>{
                         return(
-                        <TableRow >
+                        <TableRow key={i}>
                             <TableCell className="font-medium ">{i}</TableCell>
                             <TableCell className="text-right">0</TableCell>
                         </TableRow>
@@ -53,9 +53,9 @@ export default function About(){
                 <p className="text-gray-500 font-medium">Events now happening swipe to see more</p>
                 <ScrollArea className="w-full whitespace-nowrap ">
                     <div className="flex w-max space-x-4 p-4">
-                     {[1,2,3,4].map(()=>{
+                     {[1,2,3,4].map((i)=>{
                         return(
-                            <Card className="w-auto dark mb-5" >
+                            <Card className="w-auto dark mb-5" key={i} >
                                 <CardHeader>
                                     <CardTitle className="text-3xl font-medium">Western Vocal Solo</CardTitle>
                                     <CardDescription>on 16/2/24</CardDescription>
