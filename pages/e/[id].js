@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import LoginComponent from "@/components/LoginComponent";
-import BottomNavBarComponent from "@/components/BottomNavBarComponent";
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import LoginComponent from '@/components/LoginComponent';
+import BottomNavBarComponent from '@/components/BottomNavBarComponent';
 
 export default function Blog() {
     const router = useRouter();
@@ -18,7 +18,7 @@ export default function Blog() {
 
     useEffect(() => {
         const getToken = () => {
-            const storedToken = localStorage.getItem("token");
+            const storedToken = localStorage.getItem('token');
             if (storedToken) {
                 setToken(storedToken);
                 setIsLogged(true);
@@ -32,40 +32,46 @@ export default function Blog() {
             setRouterReady(true);
             setTeamId(router.query.id); // Update teamId when router is ready
         }
-    }, [router.isReady]);
+    }, [router.isReady, router.query.id]);
 
     useEffect(() => {
         if (routerReady && token && teamId) {
-            getTeam();
+            const controller = new AbortController();
+            getTeam(controller.signal);
+            return () => {
+                controller.abort();
+            };
         }
     }, [routerReady, token, teamId]);
 
-    const getTeam = () => {
+    const getTeam = (signal) => {
+        setLoading(true);
         fetch(`https://sstapi.pythonanywhere.com/api/team/members/${teamId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
+                Authorization: `Token ${token}`,
             },
+            signal: signal,
         })
-            .then(response => response.json())
-            .then(data => {
-                if(data.data=="Team does not exits"){
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.data == 'Team does not exits') {
                     toast(data.data, {
-                        description: "tip :you can see your registerations in profile",
+                        description: 'tip :you can see your registerations in profile',
                         action: {
-                          label: "Close",
-                          onClick:()=>{console.log('close')}
+                            label: 'Close',
+                            onClick: () => {
+                                console.log('close');
+                            },
                         },
-                      })
-                      setLoading(true);
-                }else{
+                    });
+                } else {
                     setData(data.data);
                     setLoading(false);
                 }
-                
             })
-            .catch(e => {
+            .catch((e) => {
                 console.log(e);
             });
     };
@@ -75,22 +81,24 @@ export default function Blog() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
+                Authorization: `Token ${token}`,
             },
         })
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
+                setLoading(false);
                 toast(data.data, {
-                    description: "",
+                    description: '',
                     action: {
-                        label: "Close",
-                        onClick: () => { console.log('close') }
+                        label: 'Close',
+                        onClick: () => {
+                            console.log('close');
+                        },
                     },
                 });
-                setLoading(false);
                 getTeam();
             })
-            .catch(e => {
+            .catch((e) => {
                 console.log(e);
             });
     };
@@ -98,44 +106,54 @@ export default function Blog() {
     return (
         <div>
             <h1>Team</h1>
-            {!isLogged ?
+            {!isLogged ? (
                 <div className="m-10 flex flex-col justify-items-center">
-                    <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold', marginTop: 55 }}>Team</h1>
+                    <h1
+                        style={{ color: 'white', fontSize: 55, fontWeight: 'bold', marginTop: 55 }}
+                        className="text-white "
+                    >
+                        Team
+                    </h1>
                     <p className="text-white mb-[10px]">Login it to view the team</p>
                     <LoginComponent />
                 </div>
-                :
+            ) : (
                 <div className="flex flex-col justify-items-center m-[10px]">
-
-                    {loading ?
-                        <h1 className="text-2xl text-center text-white">loading...</h1> :
+                    {loading ? (
+                        <h1 className="text-2xl text-center text-white">loading...</h1>
+                    ) : (
                         <>
                             <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold' }}>Team</h1>
                             <h1 className="text-2xl text-white">{data.program}</h1>
                             <p className="text-1xl text-slate-200 mb-[10px]">Created by {data.team_lead}</p>
                             <ScrollArea>
-                                { data.members && data.members.length === 0 &&
-                                    <Card className="w-auto dark m-5" >
+                                {data.members && data.members.length === 0 && (
+                                    <Card className="w-auto dark m-5">
                                         <CardHeader>
-                                            <CardTitle className="text-2xl font-medium">No members in your team</CardTitle>
+                                            <CardTitle className="text-2xl font-medium">
+                                                No members in your team
+                                            </CardTitle>
                                         </CardHeader>
                                     </Card>
-                                }
-                                {data.members && data.members.map((i,index) => {
-                                    return (
-                                        <Card className="w-auto dark mb-5" key={index}>
-                                            <CardHeader>
-                                                <CardTitle className="text-3xl font-medium">{i}</CardTitle>
-                                            </CardHeader>
-                                        </Card>
-                                    );
-                                })}
+                                )}
+                                {data.members &&
+                                    data.members.map((i, index) => {
+                                        return (
+                                            <Card className="w-auto dark mb-5" key={index}>
+                                                <CardHeader>
+                                                    <CardTitle className="text-3xl font-medium">{i}</CardTitle>
+                                                </CardHeader>
+                                            </Card>
+                                        );
+                                    })}
                             </ScrollArea>
-                            <Button className="dark mb-20" onClick={joinTeam}>Join Team</Button>
+                            <Button className="dark mb-20" onClick={joinTeam}>
+                                Join Team
+                            </Button>
                         </>
-                    }
+                    )}
                 </div>
-            }
+            )}
             <BottomNavBarComponent />
         </div>
     );
