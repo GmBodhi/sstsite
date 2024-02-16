@@ -4,6 +4,7 @@ import BottomNavBarComponent from '../../components/BottomNavBarComponent';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LoginComponent from '@/components/LoginComponent';
 import { useState, useEffect } from 'react';
+import { Input } from '@/components/ui/input';
 
 export default function All() {
     const [option, setOption] = useState('all');
@@ -18,7 +19,6 @@ export default function All() {
 
     useEffect(() => {
         getToken();
-        console.log('ddfd');
     }, [token]);
 
     return (
@@ -39,6 +39,9 @@ export default function All() {
                     <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold', marginTop: 55, marginLeft: 10 }}>
                         Events
                     </h1>
+                   <div className='m-3'>
+                    <Input className="dark" type="text"  placeholder="Search Events..."/>
+                   </div>
                     <Tabs defaultValue="all" className="dark m-3">
                         <TabsList className="grid w-full grid-cols-5">
                             <TabsTrigger value="all" onClick={() => setOption('all')}>

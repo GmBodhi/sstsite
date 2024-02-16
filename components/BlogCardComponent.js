@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,8 +16,6 @@ import {
 } from '@/components/ui/drawer';
 
 import { toast } from 'sonner';
-import { Input } from './ui/input';
-import { Skeleton } from './ui/skeleton';
 
 export default function BlogCardComponent({ option }) {
     const [Data, setData] = useState([]);
@@ -50,7 +48,7 @@ export default function BlogCardComponent({ option }) {
             });
     };
 
-    useCallback(() => {
+    useEffect(() => {
         apireqProfile();
     }, [token]);
 

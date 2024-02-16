@@ -24,9 +24,7 @@ const allDept = ['CS', 'CL', 'ME', 'MA', 'MP', 'BT', 'ECA', 'ECB'];
  */
 const fetchPoints = async () => {
     const res = await fetch('https://sstapi.pythonanywhere.com/api/departmentpoints/', {
-        headers: {
-            Authorization: `Token ${localStorage.getItem('token')}`,
-        },
+        method:'GET'
     }).catch(() => void 0);
 
     const response = await res?.json().catch(() => void 0);
