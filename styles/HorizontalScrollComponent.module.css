@@ -1,16 +1,14 @@
-.Hcontainer::-webkit-scrollbar{
+.Hcontainer::-webkit-scrollbar {
     width: 0px;
 }
-.Hcontainer{
+.Hcontainer {
     display: flex;
     overflow-x: scroll;
     width: 100%;
-    background-color:black; 
+    background-color: black;
     backdrop-filter: blur(5px);
 }
-.card{
-    
-
+.card {
     width: 500px;
     height: 500px;
     border-radius: 35px;
@@ -19,26 +17,22 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    transition:  transform 2s;
+    transition: transform 2s;
     border-color: white;
     border-style: solid;
     border-width: thin;
-
-    
 }
 
-.card:hover{
-    transform:translateY(-15px) scale(0.9);
-    
-  }
+.card:hover {
+    transform: translateY(-15px) scale(0.9);
+}
 
-@media (max-width:600px){
-    .Hcontainer{
+@media (max-width: 600px) {
+    .Hcontainer {
         justify-content: flex-start;
         align-items: flex-start;
-
     }
-    .card{
+    .card {
         width: 300px;
         height: 400px;
         border-radius: 35px;
