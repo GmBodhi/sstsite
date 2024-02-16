@@ -37,7 +37,7 @@ const fetchPoints = async () => {
 
     const data = response.data;
 
-    return data?.sort((a, b) => a.overall_score - b.overall_score);
+    return data?.sort((b,a) => (a.solo_event_score + a.group_event_score) - (b.solo_event_score + b.group_event_score));
 };
 
 export default function About() {
