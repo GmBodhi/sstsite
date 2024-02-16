@@ -23,7 +23,7 @@ const allDept = ['CS', 'CL', 'ME', 'MA', 'MP', 'BT', 'ECA', 'ECB'];
  * @returns {Promise<{id: string, department: string, group_event_score: number, solo_event_score: number, overall_score: number}[]>}
  */
 const fetchPoints = async () => {
-    const res = await fetch('http://sstapi.pythonanywhere.com/api/departmentpoints/', {
+    const res = await fetch('https://sstapi.pythonanywhere.com/api/departmentpoints/', {
         headers: {
             Authorization: `Token ${localStorage.getItem('token')}`,
         },
