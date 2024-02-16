@@ -13,7 +13,42 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 import { Button } from '@/components/ui/button';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import Footer from '@/components/FooterComponent';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+
+const allDept = ['CS', 'CL', 'ME', 'MA', 'MP', 'BT', 'ECA', 'ECB'];
+
+/**
+ *
+ * @returns {Promise<{id: string, department: string, group_event_score: number, solo_event_score: number, overall_score: number}[]>}
+ */
+const fetchPoints = async () => {
+    const res = await fetch('http://sstapi.pythonanywhere.com/api/departmentpoints/', {
+        headers: {
+            Authorization: `Token ${localStorage.getItem('token')}`,
+        },
+    }).catch(() => void 0);
+
+    const response = await res?.json().catch(() => void 0);
+
+    if (!res?.ok || !response) {
+        return;
+    }
+
+    const data = response.data;
+
+    return data?.sort((a, b) => a.overall_score - b.overall_score);
+};
+
 export default function About() {
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        fetchPoints().then((d) => {
+            if (!d) toast.error('Failed to fetch points');
+            setData(d);
+        });
+    }, []);
     return (
         <div className="main">
             <BottomNavBarComponent />
@@ -24,43 +59,43 @@ export default function About() {
                     <TableHeader className="dark">
                         <TableRow className="dark">
                             <TableHead className="w-[100px] text-white">Department</TableHead>
-                            <TableHead className="text-right text-white">Points</TableHead>
+                            <TableHead className="text-right text-white">Group Score</TableHead>
+                            <TableHead className="text-right text-white">Solo Score</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody className="dark text-white">
-                        {['CS', 'CL', 'ME', 'MA', 'MP', 'BT', 'ECA', 'ECB'].map((i) => {
+                        {data?.map((i) => {
                             return (
-                                <TableRow key={i}>
-                                    <TableCell className="font-medium ">{i}</TableCell>
-                                    <TableCell className="text-right">0</TableCell>
+                                <TableRow key={i.department}>
+                                    <TableCell className="font-medium ">{i.department}</TableCell>
+                                    <TableCell className="text-right">{i.group_event_score}</TableCell>
+                                    <TableCell className="text-right">{i.solo_event_score}</TableCell>
                                 </TableRow>
                             );
                         })}
                     </TableBody>
-                    <TableFooter className="bg-white">
-                        <TableRow>
-                            <TableCell colSpan={3} className="text-cyan-500">
-                                #RANK 1
-                            </TableCell>
-                            <TableCell className="text-right text-cyan-500">CS</TableCell>
-                        </TableRow>
-                    </TableFooter>
                 </Table>
                 <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold', marginTop: 55 }}>Live</h1>
                 <p className="text-gray-500 font-medium">Events now happening swipe to see more</p>
                 <ScrollArea className="w-full whitespace-nowrap ">
                     <div className="flex w-max space-x-4 p-4">
-                        {[1, 2, 3, 4].map((i) => {
-                            return (
-                                <Card className="w-auto dark mb-5" key={i}>
-                                    <CardHeader>
-                                        <CardTitle className="text-3xl font-medium">Western Vocal Solo</CardTitle>
-                                        <CardDescription>on 16/2/24</CardDescription>
-                                    </CardHeader>
-                                    <Button className="m-5">Stage #1</Button>
-                                </Card>
-                            );
-                        })}
+                        {/* Cards */}
+                        <Card className="w-auto dark mb-5">
+                            <CardHeader>
+                                <CardTitle className="text-3xl font-medium">Thiruvathira</CardTitle>
+                                <CardDescription>on 16/2/24</CardDescription>
+                            </CardHeader>
+                            <Button className="m-5">Stage #1</Button>
+                        </Card>
+                        <Card className="w-auto dark mb-5">
+                            <CardHeader>
+                                <CardTitle className="text-3xl font-medium">Essay Writing</CardTitle>
+                                <CardDescription>on 16/2/24</CardDescription>
+                            </CardHeader>
+                            <Button className="m-5">Room No.112</Button>
+                        </Card>
+
+                        {/* Cards end */}
                     </div>
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea>
