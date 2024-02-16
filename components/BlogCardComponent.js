@@ -14,7 +14,7 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from '@/components/ui/drawer';
-
+import {Input} from '@/components/ui/input';
 import { toast } from 'sonner';
 
 export default function BlogCardComponent({ option }) {
