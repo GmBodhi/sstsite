@@ -15,10 +15,10 @@ export default function All() {
             setIsLogged(true);
         }
     };
-    
+
     useEffect(() => {
         getToken();
-        console.log("ddfd")
+        console.log('ddfd');
     }, [token]);
 
     return (

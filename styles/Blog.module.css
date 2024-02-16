@@ -1,5 +1,5 @@
-.loading{
-    font-family:'Enhanced LED Board-7';
+.loading {
+    font-family: 'Enhanced LED Board-7';
     font-size: 45px;
     color: white;
     display: flex;
@@ -8,37 +8,37 @@
     align-items: center;
 }
 
-.flexContainer{
+.flexContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-.blogImage{
-    margin:24px;
-    border-radius:15px;
-    width:500px;
-    height:500px;
+.blogImage {
+    margin: 24px;
+    border-radius: 15px;
+    width: 500px;
+    height: 500px;
 }
-.content{
-    color:white;
-    font-size:25px;
+.content {
+    color: white;
+    font-size: 25px;
     margin-left: 300px;
     margin-right: 300px;
-    text-align:'left';
+    text-align: 'left';
     overflow-wrap: break-word;
 }
-@media (max-width:600px){
-    .content{
+@media (max-width: 600px) {
+    .content {
         margin-left: 0px;
         margin-right: 0px;
         justify-content: center;
         align-items: center;
-        margin:15px;
+        margin: 15px;
     }
-    .blogImage{
-        margin:15px;
-        width:300px;
+    .blogImage {
+        margin: 15px;
+        width: 300px;
         height: 300px;
     }
 }

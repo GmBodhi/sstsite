@@ -215,7 +215,7 @@ export default function BlogCardComponent({ option }) {
                                 type="submit"
                                 onClick={() => {
                                     window.open(
-                                        `whatsapp://send?text=Hi, link to join my team is https://sctarts.in/e/${profile.username} do not share with outside team members`
+                                        `whatsapp://send?text=Hi, link to join my team is https://sctarts.in/e/${profile.username} do not share with outside team members`,
                                     );
                                 }}
                             >
