@@ -170,17 +170,6 @@ export default function BlogCardComponent({ option }) {
                 console.log(e);
             });
     };
-    const registerationClosed = () => {
-        toast('Registeration is closed !', {
-            description: 'potte saravilla aduthe vattam nokkam... 🙂',
-            action: {
-                label: 'Close',
-                onClick: () => {
-                    console.log('close');
-                },
-            },
-        });
-    };
     useEffect(() => {
         // apireqProfile();
         const controller = new AbortController();
@@ -239,64 +228,50 @@ export default function BlogCardComponent({ option }) {
                                 </div>
                             </CardContent>
                             <CardFooter className="flex justify-between">
-                                <Button
-                                    disabled={registerLoading == true || i.is_registered == true ? true : false}
-                                    onClick={() => {
-                                        if (i.program_type == 'g') {
-                                            setID(i.id);
-                                            if (id != 0) createTeam();
-                                        } else {
-                                            registerationClosed();
-                                        }
-                                    }}
-                                >
-                                    {i.is_registered == true ? 'Registered' : 'Register'}
-                                </Button>
-                                {/* {i.program_type=='g' && i.is_registered==true && 
                             <Drawer>
                               <DrawerTrigger>
-                                <Button 
-                                variant={"outline"}
-                                onClick={
-                                  ()=>{
-                                    getTeam();
-                                  }
-                                }
-                                >View team</Button>
+                                <Button
+                                    disabled={i.first == "None" ? true : false}
+                                    onClick={() => {
+                                        console.log("opened");
+                                    }}
+                                >
+                                    {i.first == "None" ? 'Result will come soon' : 'View Winners'}
+                                </Button>
                               </DrawerTrigger>
-                              <DrawerContent className="dark text-white h-[300px]">
-                                {drawerloading==true ? <h1 className="text-2xl text-center">loading...</h1> :(
+                            <DrawerContent className="dark text-white h-[500px]">
                                   <div className="mx-auto w-full max-w-sm">
                                     <DrawerHeader>
-                                      <DrawerTitle>{members.program}</DrawerTitle>
-                                      <DrawerDescription>Lead {members.team_lead}</DrawerDescription>
+                                      <DrawerTitle>{i.name}</DrawerTitle>
+                                      <DrawerDescription>Winners</DrawerDescription>
                                     </DrawerHeader>
-                                    <Skeleton>
-                                      {members.members.length==0 && 
+                                    <Card className="w-auto dark mb-5" >
+                                          <CardHeader>
+                                              <CardTitle className="text-2xl font-medium">#First {i.first}</CardTitle>
+                                          </CardHeader>
+                                    </Card>
+                                    {i.second!="None" && 
                                       <Card className="w-auto dark mb-5" >
                                         <CardHeader>
-                                            <CardTitle className="text-2xl font-medium">No members in your team</CardTitle>
+                                            <CardTitle className="text-2xl font-medium">#Second {i.second}</CardTitle>
                                         </CardHeader>
                                       </Card>
-                                      }
-                                      {members.members.map((i)=>{
-                                        <Card className="w-auto dark mb-5" key={i}>
-                                          <CardHeader>
-                                              <CardTitle className="text-3xl font-medium">{i}</CardTitle>
-                                          </CardHeader>
-                                        </Card>
-                                      })}
-                                    </Skeleton>
+                                    }
+                                    {i.third!="None" && 
+                                      <Card className="w-auto dark mb-5" >
+                                        <CardHeader>
+                                            <CardTitle className="text-2xl font-medium">#Third {i.third}</CardTitle>
+                                        </CardHeader>
+                                      </Card>
+                                    }
                                   </div>
-                                )}
                               <DrawerFooter>
                                   <DrawerClose>
-                                    <Button variant="outline">Cancel</Button>
+                                    <Button className="w-full">Close</Button>
                                   </DrawerClose>
                                 </DrawerFooter>
-                              </DrawerContent>
+                            </DrawerContent>
                           </Drawer>
-                        } */}
                             </CardFooter>
                         </Card>
                     );
