@@ -13,14 +13,11 @@ import { Button } from '@/components/ui/button';
 export default function DrawerComponent({data}){
     return(
     <Drawer>
-        <DrawerTrigger>
+        <DrawerTrigger disabled={data?.first.length==0 ? true : false}>
           <Button
-              disabled={data?.first == "None" ? true : false}
-              onClick={() => {
-                  console.log("opened");
-              }}
+              disabled={data?.first.length==0 ? true : false}
           >
-              {data?.first == "None" ? 'Result will come soon' : 'View Winners'}
+              {data?.first.length==0 ? 'Result will come soon' : 'View Winners'}
           </Button>
         </DrawerTrigger>
         <DrawerContent className="dark text-white h-[500px]">
@@ -29,25 +26,33 @@ export default function DrawerComponent({data}){
                 <DrawerTitle>{data?.name}</DrawerTitle>
                 <DrawerDescription>Winners</DrawerDescription>
               </DrawerHeader>
-              <Card className="w-auto dark mb-5" >
+              {data?.first!=[] && data.first.map((winner,index)=>{
+                return(
+                  <Card className="w-auto dark mb-5" key={index} >
                     <CardHeader>
-                        <CardTitle className="text-2xl font-medium">#First {data?.first}</CardTitle>
+                        <CardTitle className="text-1xl font-medium">#First {winner}</CardTitle>
                     </CardHeader>
-              </Card>
-              {data?.second!="None" && 
-                <Card className="w-auto dark mb-5" >
-                  <CardHeader>
-                      <CardTitle className="text-2xl font-medium">#Second {data?.second}</CardTitle>
-                  </CardHeader>
-                </Card>
-              }
-              {data?.third!="None" && 
-                <Card className="w-auto dark mb-5" >
-                  <CardHeader>
-                      <CardTitle className="text-2xl font-medium">#Third {data?.third}</CardTitle>
-                  </CardHeader>
-                </Card>
-              }
+                  </Card>
+                );
+              })}
+              {data?.second!=[] && data.second.map((winner,index)=>{
+                return(
+                  <Card className="w-auto dark mb-5" key={index}>
+                    <CardHeader>
+                        <CardTitle className="text-1xl font-medium">#Second {winner}</CardTitle>
+                    </CardHeader>
+                  </Card>
+                );
+              })}
+              {data?.third!=[] && data.third.map((winner,index)=>{
+                return(
+                  <Card className="w-auto dark mb-5" key={index}>
+                    <CardHeader>
+                        <CardTitle className="text-1xl font-medium">#Third {winner}</CardTitle>
+                    </CardHeader>
+                  </Card>
+                );
+              })}
             </div>
             <DrawerFooter>
                 <DrawerClose>

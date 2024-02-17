@@ -91,8 +91,9 @@ export default function About() {
                     <TableHeader className="dark">
                         <TableRow className="dark">
                             <TableHead className="w-[100px] text-white">Department</TableHead>
-                            <TableHead className="text-right text-white">Group Score</TableHead>
-                            <TableHead className="text-right text-white">Solo Score</TableHead>
+                            <TableHead className="text-right text-white">Group</TableHead>
+                            <TableHead className="text-right text-white">Solo</TableHead>
+                            <TableHead className="text-right text-white">Overall</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody className="dark text-white">
@@ -102,6 +103,7 @@ export default function About() {
                                     <TableCell className="font-medium ">{i.department}</TableCell>
                                     <TableCell className="text-right">{i.group_event_score}</TableCell>
                                     <TableCell className="text-right">{i.solo_event_score}</TableCell>
+                                    <TableCell className="text-right">{i.group_event_score+i.solo_event_score}</TableCell>
                                 </TableRow>
                             );
                         })}
