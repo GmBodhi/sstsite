@@ -3,7 +3,7 @@ import Head from 'next/head';
 import BottomNavBarComponent from '../../components/BottomNavBarComponent';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LoginComponent from '@/components/LoginComponent';
-import { useState, useEffect } from 'react';
+import { useState, useEffect} from 'react';
 
 export default function All() {
     const [option, setOption] = useState('all');
@@ -40,23 +40,16 @@ export default function All() {
                     </h1>
                     <Tabs defaultValue="all" className="dark m-3">
                         <TabsList className="grid w-full grid-cols-5">
-                            <TabsTrigger value="all" onClick={() => setOption('all')}>
-                                All
-                            </TabsTrigger>
-                            <TabsTrigger value="music" onClick={() => setOption('music')}>
-                                Music
-                            </TabsTrigger>
-                            <TabsTrigger value="instruments" onClick={() => setOption('instruments')}>
-                                Instrument
-                            </TabsTrigger>
-                            <TabsTrigger value="dance" onClick={() => setOption('dance')}>
-                                Dance
-                            </TabsTrigger>
-                            <TabsTrigger value="literary" onClick={() => setOption('literary')}>
-                                Literary
-                            </TabsTrigger>
+                            {["all","music","instruments","dance","literary"].map((programTypes)=>{
+                                return(
+                                    <TabsTrigger value={programTypes} onClick={() => setOption(programTypes)}>
+                                        {programTypes}
+                                    </TabsTrigger>
+                                );
+                            })}
                         </TabsList>
                         <TabsContent value={option}>
+                            {console.log("rendering...")}
                             <BlogCardComponent option={option} />
                         </TabsContent>
                     </Tabs>

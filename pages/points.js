@@ -53,7 +53,7 @@ export default function About() {
             <div className="m-10 flex flex-col justify-items-center">
                 <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold', marginTop: 0 }}>Points</h1>
                 <Table>
-                    <TableCaption className="dark">Point table is not normalized</TableCaption>
+                    <TableCaption className="dark">Refresh to see updated results</TableCaption>
                     <TableHeader className="dark">
                         <TableRow className="dark">
                             <TableHead className="w-[100px] text-white">Department</TableHead>

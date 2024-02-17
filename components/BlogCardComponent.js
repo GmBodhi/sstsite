@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
     Drawer,
     DrawerClose,
@@ -14,167 +12,62 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from '@/components/ui/drawer';
-import {Input} from '@/components/ui/input';
 import { toast } from 'sonner';
 
 export default function BlogCardComponent({ option }) {
     const [Data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [registerLoading, setRegisterLoading] = useState(false);
     const [profile, setProfile] = useState([]);
-    const [showDialog, setShowDialog] = useState(false);
-    const [id, setID] = useState(0);
-    const [members, setMembers] = useState({});
-    const [drawerloading, setDrawerLoading] = useState(true);
     const token = localStorage.getItem('token');
     const router = useRouter();
-    const apireqProfile = () => {
-        setLoading(true);
-        fetch('https://sstapi.pythonanywhere.com/accounts/api/profile/', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                Authorization: `Token ${token}`,
-            },
-        })
-            .then((response) => response.json())
-            .then((resdata) => {
-                setProfile(resdata.data);
-                setLoading(false);
-            })
-            .catch((e) => {
-                console.log(e);
+
+    const apireqProfile = async() => {
+        try{
+            setLoading(true);
+            const profileAPI = await fetch('https://sstapi.pythonanywhere.com/accounts/api/profile/', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    Authorization: `Token ${token}`,
+                },
             });
+            const profileResponse = await profileAPI.json();
+            setProfile(profileResponse.data);
+        }catch(err){
+            toast.error(err);
+        }
+        setLoading(false);
     };
 
     useEffect(() => {
         apireqProfile();
     }, [token]);
 
-    const apireq = (signal) => {
-        fetch(`https://sstapi.pythonanywhere.com/api/programs/${option}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Token ${token}`,
-            },
-            signal: signal,
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setData(data.data);
-                setLoading(false);
-            })
-            .catch((e) => {
-                console.log(e);
-            });
-    };
-    const register = () => {
-        setRegisterLoading(true);
-        let toast_msg = '';
-        fetch(`https://sstapi.pythonanywhere.com/api/register/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Token ${token}`,
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setRegisterLoading(false);
-                if (data.data) toast_msg = data.data;
-                else if (data.error) toast_msg = data.error;
-                toast(toast_msg, {
-                    description: 'tip :you can see your registerations in profile',
-                    action: {
-                        label: 'Close',
-                        onClick: () => {
-                            console.log('close');
-                        },
-                    },
-                });
-                apireq();
-                setID(0);
-            })
-            .catch((e) => {
-                console.log(e);
-            });
-    };
-    const createTeam = () => {
-        setRegisterLoading(true);
-        let toast_msg = '';
-        fetch(`https://sstapi.pythonanywhere.com/api/team/create/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Token ${token}`,
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setRegisterLoading(false);
-                if (data.data) {
-                    toast_msg = data.data;
-                    if (toast_msg != 'You cant lead multiple teams.') setShowDialog(true);
-                } else if (data.error) {
-                    toast_msg = data.error;
-                }
-                toast(toast_msg, {
-                    description: 'tip :you can see your registerations in profile',
-                    action: {
-                        label: 'Close',
-                        onClick: () => {
-                            console.log('close');
-                        },
-                    },
-                });
-                setID(0);
-                apireq();
-            })
-            .catch((e) => {
-                console.log(e);
-            });
-    };
-    const getTeam = () => {
-        setDrawerLoading(true);
-        let toast_msg = '';
-        fetch(`https://sstapi.pythonanywhere.com/api/team/members/${profile.username}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Token ${token}`,
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setDrawerLoading(false);
-                if (data.data) {
-                    setMembers(data.data);
-                } else if (data.error) {
-                    toast_msg = data.error;
-                    toast(toast_msg, {
-                        description: 'error/bug: try contacting admins',
-                        action: {
-                            label: 'Close',
-                            onClick: () => {
-                                console.log('close');
-                            },
-                        },
-                    });
-                }
-            })
-            .catch((e) => {
-                console.log(e);
-            });
-    };
-    useEffect(() => {
-        // apireqProfile();
+    const apireq = async () => {
         const controller = new AbortController();
-        apireq(controller.signal);
+        try{
+            setLoading(true);
+            const eventAPI = await fetch(`https://sstapi.pythonanywhere.com/api/programs/${option}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Token ${token}`,
+                },
+            });
+            const eventResponse = await eventAPI.json();
+            setData(eventResponse.data);
+           
+        }catch(err){
+            toast.error(err);
+        }
+        setLoading(false);
         return () => {
             controller.abort();
         };
+    };
+    useEffect(() => {
+        apireq();
     }, []);
 
     return (
@@ -184,35 +77,20 @@ export default function BlogCardComponent({ option }) {
                     loading...
                 </p>
             )}
-            <Dialog
-                open={showDialog == true ? true : false}
-                onOpenChange={() => {
-                    setShowDialog(false);
-                }}
-            >
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Your team code</DialogTitle>
-                        <DialogDescription>
-                            You can copy/paste and share this code with your team members to join your team
-                        </DialogDescription>
-                        <div className="flex w-full max-w-sm items-center space-x-2">
-                            <Input type="text" disabled value={`https://sctarts.in/e/${profile.username}`} />
-                            <Button
-                                type="submit"
-                                onClick={() => {
-                                    window.open(
-                                        `whatsapp://send?text=Hi, link to join my team is https://sctarts.in/e/${profile.username} do not share with outside team members`,
-                                    );
-                                }}
-                            >
-                                Share
-                            </Button>
-                        </div>
-                    </DialogHeader>
-                </DialogContent>
-            </Dialog>
-            {Data.map((i) => {
+            {Data?.map((i) => {
+                if(i.first===profile.name || i.second===profile.name || i.third===profile.name){
+                    console.log(i.name);
+                    toast(`Congrats 🎉 ${profile.name} you won for ${i.name} `, {
+                        description: 'go to view winners to see your position',
+                        action: {
+                            label: 'Close',
+                            onClick: () => {
+                                console.log('close');
+                            },
+                        },
+                    });
+                    
+                }
                 if (i.program_gender_type == profile.gender || i.program_gender_type == 'a') {
                     return (
                         <Card className="w-auto dark mb-5" key={i.id}>
