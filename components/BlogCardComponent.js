@@ -1,17 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
-} from '@/components/ui/drawer';
 import { toast } from 'sonner';
+import DrawerComponent from './DrawerComponent';
 
 export default function BlogCardComponent({ option }) {
     const [Data, setData] = useState([]);
@@ -102,50 +92,7 @@ export default function BlogCardComponent({ option }) {
                                 </div>
                             </CardContent>
                             <CardFooter className="flex justify-between">
-                            <Drawer>
-                              <DrawerTrigger>
-                                <Button
-                                    disabled={i.first == "None" ? true : false}
-                                    onClick={() => {
-                                        console.log("opened");
-                                    }}
-                                >
-                                    {i.first == "None" ? 'Result will come soon' : 'View Winners'}
-                                </Button>
-                              </DrawerTrigger>
-                            <DrawerContent className="dark text-white h-[500px]">
-                                  <div className="mx-auto w-full max-w-sm">
-                                    <DrawerHeader>
-                                      <DrawerTitle>{i.name}</DrawerTitle>
-                                      <DrawerDescription>Winners</DrawerDescription>
-                                    </DrawerHeader>
-                                    <Card className="w-auto dark mb-5" >
-                                          <CardHeader>
-                                              <CardTitle className="text-2xl font-medium">#First {i.first}</CardTitle>
-                                          </CardHeader>
-                                    </Card>
-                                    {i.second!="None" && 
-                                      <Card className="w-auto dark mb-5" >
-                                        <CardHeader>
-                                            <CardTitle className="text-2xl font-medium">#Second {i.second}</CardTitle>
-                                        </CardHeader>
-                                      </Card>
-                                    }
-                                    {i.third!="None" && 
-                                      <Card className="w-auto dark mb-5" >
-                                        <CardHeader>
-                                            <CardTitle className="text-2xl font-medium">#Third {i.third}</CardTitle>
-                                        </CardHeader>
-                                      </Card>
-                                    }
-                                  </div>
-                              <DrawerFooter>
-                                  <DrawerClose>
-                                    <Button className="w-full">Close</Button>
-                                  </DrawerClose>
-                                </DrawerFooter>
-                            </DrawerContent>
-                          </Drawer>
+                                <DrawerComponent data={i}/>
                             </CardFooter>
                         </Card>
                     );

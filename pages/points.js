@@ -16,6 +16,7 @@ import Footer from '@/components/FooterComponent';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/router';
+import DrawerComponent from '@/components/DrawerComponent';
 
 /**
  *
@@ -108,19 +109,20 @@ export default function About() {
                 </Table>
                 )}
 
-                <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold', marginTop: 55 }}>Live</h1>
-                <p className="text-gray-500 font-medium">Events now happening swipe to see more</p>
+                <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold', marginTop: 55 }}>Results</h1>
+                <p className="text-gray-500 font-medium">Events with results announced swipe to see more</p>
                 <ScrollArea className="w-full whitespace-nowrap ">
                     <div className="flex w-max space-x-4 p-4">
                         {liveData?.map((data,index)=>{
-                            console.log(data);
                             return(
                                 <Card className="w-auto dark mb-5" key={index}>
                                     <CardHeader>
                                         <CardTitle className="text-3xl font-medium">{data.name}</CardTitle>
                                         <CardDescription>on {data.slot_time}</CardDescription>
                                     </CardHeader>
-                                    <Button className="m-5">Stage not available</Button>
+                                    <div className='m-5'>
+                                        <DrawerComponent data={data}/>
+                                    </div>
                                 </Card>
                                 );
                         })}
