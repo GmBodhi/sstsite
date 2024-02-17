@@ -15,6 +15,7 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import Footer from '@/components/FooterComponent';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { useRouter } from 'next/router';
 
 /**
  *
@@ -35,17 +36,47 @@ const fetchPoints = async () => {
 
     return data?.sort((b,a) => (a.solo_event_score + a.group_event_score) - (b.solo_event_score + b.group_event_score));
 };
-
+/**
+ * 
+ * @returns {Promise<{
+ *              id:string,
+ *              name:string,
+ *              slot_time:Date,           
+ *          }>} 
+ */
+const fetchLivePrograms = async ()=>{
+    const programs = await fetch('https://sstapi.pythonanywhere.com/api/programs/live/',{
+        method:'GET',
+    })
+    const programResponse = await programs.json();
+    if(!programResponse)
+        return; 
+    return programResponse.data;
+}
 export default function About() {
     const [data, setData] = useState(null);
+    const [liveData,setLiveData] = useState([]);
     const [loading,setLoading] = useState(true);
+    const router = useRouter();
+    const controller = new AbortController();
     useEffect(() => {
         fetchPoints().then((d) => {
             if (!d) toast.error('Failed to fetch points');
             setData(d);
-            setLoading(false);
         });
+        fetchLivePrograms().then((programData)=>{
+            if(!programData)
+                toast.error("Error in fetching live events !");
+            setLiveData(programData);
+        });
+        setLoading(false);
+        return ()=>{
+            controller.abort();
+        }
     }, []);
+    setTimeout(()=>{
+        router.reload();
+    },5*60*1000);
     return (
         <div className="main">
             <BottomNavBarComponent />
@@ -79,23 +110,19 @@ export default function About() {
                 <p className="text-gray-500 font-medium">Events now happening swipe to see more</p>
                 <ScrollArea className="w-full whitespace-nowrap ">
                     <div className="flex w-max space-x-4 p-4">
-                        {/* Cards */}
-                        <Card className="w-auto dark mb-5">
-                            <CardHeader>
-                                <CardTitle className="text-3xl font-medium">Thiruvathira</CardTitle>
-                                <CardDescription>on 16/2/24</CardDescription>
-                            </CardHeader>
-                            <Button className="m-5">Stage #1</Button>
-                        </Card>
-                        <Card className="w-auto dark mb-5">
-                            <CardHeader>
-                                <CardTitle className="text-3xl font-medium">Essay Writing</CardTitle>
-                                <CardDescription>on 16/2/24</CardDescription>
-                            </CardHeader>
-                            <Button className="m-5">Room No.112</Button>
-                        </Card>
-
-                        {/* Cards end */}
+                        {liveData?.map((data,index)=>{
+                            console.log(data);
+                            return(
+                                <Card className="w-auto dark mb-5" key={index}>
+                                    <CardHeader>
+                                        <CardTitle className="text-3xl font-medium">{data.name}</CardTitle>
+                                        <CardDescription>on {data.slot_time}</CardDescription>
+                                    </CardHeader>
+                                    <Button className="m-5">Stage not available</Button>
+                                </Card>
+                                );
+                        })}
+                        
                     </div>
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea>

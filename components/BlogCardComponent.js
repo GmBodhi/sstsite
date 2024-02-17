@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -19,7 +18,6 @@ export default function BlogCardComponent({ option }) {
     const [loading, setLoading] = useState(true);
     const [profile, setProfile] = useState([]);
     const token = localStorage.getItem('token');
-    const router = useRouter();
 
     const apireqProfile = async() => {
         try{
