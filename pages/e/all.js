@@ -40,9 +40,9 @@ export default function All() {
                     </h1>
                     <Tabs defaultValue="all" className="dark m-3">
                         <TabsList className="grid w-full grid-cols-5">
-                            {["all","music","instruments","dance","literary"].map((programTypes)=>{
+                            {["all","music","instruments","dance","literary"].map((index,programTypes)=>{
                                 return(
-                                    <TabsTrigger value={programTypes} onClick={() => setOption(programTypes)}>
+                                    <TabsTrigger key={index} value={programTypes} onClick={() => setOption(programTypes)}>
                                         {programTypes}
                                     </TabsTrigger>
                                 );
