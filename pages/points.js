@@ -63,13 +63,15 @@ export default function About() {
         fetchPoints().then((d) => {
             if (!d) toast.error('Failed to fetch points');
             setData(d);
+            setLoading(false);
         });
         fetchLivePrograms().then((programData)=>{
             if(!programData)
                 toast.error("Error in fetching live events !");
             setLiveData(programData);
+            setLoading(false);
         });
-        setLoading(false);
+        
         return ()=>{
             controller.abort();
         }
