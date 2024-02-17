@@ -16,8 +16,6 @@ import Footer from '@/components/FooterComponent';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-const allDept = ['CS', 'CL', 'ME', 'MA', 'MP', 'BT', 'ECA', 'ECB'];
-
 /**
  *
  * @returns {Promise<{id: string, department: string, group_event_score: number, solo_event_score: number, overall_score: number}[]>}
@@ -40,11 +38,12 @@ const fetchPoints = async () => {
 
 export default function About() {
     const [data, setData] = useState(null);
-
+    const [loading,setLoading] = useState(true);
     useEffect(() => {
         fetchPoints().then((d) => {
             if (!d) toast.error('Failed to fetch points');
             setData(d);
+            setLoading(false);
         });
     }, []);
     return (
@@ -52,6 +51,7 @@ export default function About() {
             <BottomNavBarComponent />
             <div className="m-10 flex flex-col justify-items-center">
                 <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold', marginTop: 0 }}>Points</h1>
+                {loading==true ? <p className='text-white text-[20px] font-medium text-center'>loading...</p> :(
                 <Table>
                     <TableCaption className="dark">Refresh to see updated results</TableCaption>
                     <TableHeader className="dark">
@@ -73,6 +73,8 @@ export default function About() {
                         })}
                     </TableBody>
                 </Table>
+                )}
+
                 <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold', marginTop: 55 }}>Live</h1>
                 <p className="text-gray-500 font-medium">Events now happening swipe to see more</p>
                 <ScrollArea className="w-full whitespace-nowrap ">
