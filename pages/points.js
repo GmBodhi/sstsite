@@ -103,8 +103,8 @@ export default function About() {
                            transition={{ ease: 'easeIn', duration: 1 }}
                     />
                     <CardHeader>
-                        <CardTitle className="text-3xl font-medium">Champions BT</CardTitle>
-                        <CardDescription>with score 323</CardDescription>
+                        <CardTitle className="text-3xl font-medium">Champions {data[0]?.department}</CardTitle>
+                        <CardDescription>with score {data[0]?.group_event_score+data[0]?.solo_event_score}</CardDescription>
                     </CardHeader>
                 </Card>
                 <Table>

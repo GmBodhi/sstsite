@@ -17,7 +17,7 @@ export default function DrawerComponent({data}){
           <Button
               disabled={data?.first.length==0 ? true : false}
           >
-              {data?.first.length==0 ? 'Result will come soon' : 'View Winners'}
+              {data?.first.length==0 ? 'Program cancelled' : 'View Winners'}
           </Button>
         </DrawerTrigger>
         <DrawerContent className="dark text-white h-[500px]">
