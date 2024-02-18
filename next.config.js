@@ -3,7 +3,7 @@ const path = require('path');
 const nextConfig = {
     reactStrictMode: true,
     images: {
-        domains: ['localhost', 'i.ibb.co', 'c.tenor.com'],
+        domains: ['localhost', 'i.ibb.co', 'c.tenor.com','static.vecteezy.com'],
         formats: ['image/webp'],
     },
     sassOptions: {
