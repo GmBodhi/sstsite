@@ -93,7 +93,7 @@ export default function About() {
                 <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold', marginTop: 0 }}>Points</h1>
                 {loading==true ? <p className='text-white text-[20px] font-medium text-center'>loading...</p> :(
                 <>
-                <Card className="w-auto dark mb-5" >
+                {/* <Card className="w-auto dark mb-5" >
                     <motion.img src='https://static.vecteezy.com/system/resources/previews/028/754/694/original/3d-purple-trophy-cup-winner-champion-icon-for-ui-ux-web-mobile-apps-social-media-ads-designs-png.png'
                            width={100}
                            height={100}
@@ -106,7 +106,7 @@ export default function About() {
                         <CardTitle className="text-3xl font-medium">Champions {data[0]?.department}</CardTitle>
                         <CardDescription>with score {data[0]?.group_event_score+data[0]?.solo_event_score}</CardDescription>
                     </CardHeader>
-                </Card>
+                </Card> */}
                 <Table>
                     <TableCaption className="dark">Refresh to see updated results</TableCaption>
                     <TableHeader className="dark">
@@ -130,7 +130,7 @@ export default function About() {
                         })}
                     </TableBody>
                 </Table>
-                <h2 className='text-white font-medium text-[20px] mt-10 mb-2'>Vilambara Jadha Results 🎉</h2>
+                {/* <h2 className='text-white font-medium text-[20px] mt-10 mb-2'>Vilambara Jadha Results 🎉</h2>
                 <p className='text-gray-500 text-[15px] font-medium'>Swipe to see more</p>
                 <ScrollArea className="w-full whitespace-nowrap ">
                     <div className="flex w-max space-x-4 p-4">
@@ -146,7 +146,7 @@ export default function About() {
                     })}
                     </div>
                     <ScrollBar orientation="horizontal" />
-                </ScrollArea>
+                </ScrollArea> */}
                 </>
                 )}
 
