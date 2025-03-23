@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import LoginComponent from '@/components/LoginComponent';
 import { useAuth } from '@/lib/hooks/useAuth';
@@ -10,26 +10,47 @@ import Image from 'next/image';
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, authInitialized } = useAuth();
+  const [redirectAttempted, setRedirectAttempted] = useState(false);
   
   // Get the returnUrl from query parameters
   const returnUrl = searchParams.get('returnUrl');
 
   // Redirect to returnUrl or home page if already authenticated
   useEffect(() => {
-    if (isAuthenticated && !isLoading) {
-      if (returnUrl) {
-        router.push(decodeURIComponent(returnUrl));
-      } else {
-        router.push('/');
-      }
+    if (authInitialized && isAuthenticated && !isLoading && !redirectAttempted) {
+      setRedirectAttempted(true);
+      
+      // Small delay to ensure auth state is stable
+      const redirectTimer = setTimeout(() => {
+        if (returnUrl) {
+          router.push(decodeURIComponent(returnUrl));
+        } else {
+          router.push('/');
+        }
+      }, 300);
+      
+      return () => clearTimeout(redirectTimer);
     }
-  }, [isAuthenticated, isLoading, router, returnUrl]);
+  }, [isAuthenticated, isLoading, router, returnUrl, authInitialized, redirectAttempted]);
 
-  if (isLoading) {
+  if (isLoading || !authInitialized) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-black">
-        <p className="text-xl text-white">Loading...</p>
+        <div className="animate-pulse flex space-x-2">
+          <div className="h-3 w-3 bg-red-500 rounded-full"></div>
+          <div className="h-3 w-3 bg-red-500 rounded-full"></div>
+          <div className="h-3 w-3 bg-red-500 rounded-full"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // If user is authenticated, show a redirecting message
+  if (isAuthenticated) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-black">
+        <p className="text-xl text-white">Redirecting...</p>
       </div>
     );
   }

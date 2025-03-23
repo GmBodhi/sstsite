@@ -5,7 +5,6 @@ import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import LoginComponent from '@/components/LoginComponent';
 import BottomNavBarComponent from '@/components/BottomNavBarComponent';
 import { useAuth } from '@/lib/hooks/useAuth';
 
@@ -16,7 +15,7 @@ export default function Blog() {
     const [data, setData] = useState({});
     const [loading, setLoading] = useState(true);
     
-    const { isAuthenticated, authFetch } = useAuth();
+    const { isAuthenticated, isLoading, authFetch } = useAuth();
 
     useEffect(() => {
         // Get team ID from params
@@ -24,6 +23,14 @@ export default function Blog() {
             setTeamId(params.id);
         }
     }, [params]);
+
+    // Redirect to login page if not authenticated
+    useEffect(() => {
+        if (!isLoading && !isAuthenticated && params?.id) {
+            const returnUrl = `/e/${params.id}`;
+            router.push('/login?returnUrl=' + encodeURIComponent(returnUrl));
+        }
+    }, [isAuthenticated, isLoading, router, params]);
 
     useEffect(() => {
         if (isAuthenticated && teamId) {
@@ -86,57 +93,58 @@ export default function Blog() {
         }
     };
 
+    // Show loading state while checking authentication
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <p className="text-xl text-white">Loading...</p>
+            </div>
+        );
+    }
+    
+    // Don't render the actual page content if not authenticated
+    if (!isAuthenticated) {
+        return null; // This prevents the page content from flashing before redirect
+    }
+
     return (
         <div>
             <h1>Team</h1>
-            {!isAuthenticated ? (
-                <div className="m-10 flex flex-col justify-items-center">
-                    <h1
-                        style={{ color: 'white', fontSize: 55, fontWeight: 'bold', marginTop: 55 }}
-                        className="text-white "
-                    >
-                        Team
-                    </h1>
-                    <p className="text-white mb-[10px]">Login to view the team</p>
-                    <LoginComponent />
-                </div>
-            ) : (
-                <div className="flex flex-col justify-items-center m-[10px]">
-                    {loading ? (
-                        <h1 className="text-2xl text-center text-white">loading...</h1>
-                    ) : (
-                        <>
-                            <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold' }}>Team</h1>
-                            <h1 className="text-2xl text-white">{data.program}</h1>
-                            <p className="text-1xl text-slate-200 mb-[10px]">Created by {data.team_lead}</p>
-                            <ScrollArea>
-                                {data.members && data.members.length === 0 && (
-                                    <Card className="w-auto dark m-5">
-                                        <CardHeader>
-                                            <CardTitle className="text-2xl font-medium">
-                                                No members in your team
-                                            </CardTitle>
-                                        </CardHeader>
-                                    </Card>
-                                )}
-                                {data.members &&
-                                    data.members.map((i, index) => {
-                                        return (
-                                            <Card className="w-auto dark mb-5" key={index}>
-                                                <CardHeader>
-                                                    <CardTitle className="text-3xl font-medium">{i}</CardTitle>
-                                                </CardHeader>
-                                            </Card>
-                                        );
-                                    })}
-                            </ScrollArea>
-                            <Button className="dark mb-20" onClick={joinTeam}>
-                                Join Team
-                            </Button>
-                        </>
-                    )}
-                </div>
-            )}
+            <div className="flex flex-col justify-items-center m-[10px]">
+                {loading ? (
+                    <h1 className="text-2xl text-center text-white">loading...</h1>
+                ) : (
+                    <>
+                        <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold' }}>Team</h1>
+                        <h1 className="text-2xl text-white">{data.program}</h1>
+                        <p className="text-1xl text-slate-200 mb-[10px]">Created by {data.team_lead}</p>
+                        <ScrollArea>
+                            {data.members && data.members.length === 0 && (
+                                <Card className="w-auto dark m-5">
+                                    <CardHeader>
+                                        <CardTitle className="text-2xl font-medium">
+                                            No members in your team
+                                        </CardTitle>
+                                    </CardHeader>
+                                </Card>
+                            )}
+                            {data.members &&
+                                data.members.map((i, index) => {
+                                    return (
+                                        <Card className="w-auto dark mb-5" key={index}>
+                                            <CardHeader>
+                                                <CardTitle className="text-3xl font-medium">{i}</CardTitle>
+                                            </CardHeader>
+                                        </Card>
+                                    );
+                                })}
+                        </ScrollArea>
+                        <Button className="dark mb-20" onClick={joinTeam}>
+                            Join Team
+                        </Button>
+                    </>
+                )}
+            </div>
             <BottomNavBarComponent />
         </div>
     );

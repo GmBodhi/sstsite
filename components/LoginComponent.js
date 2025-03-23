@@ -16,6 +16,7 @@ export default function LoginComponent({ returnUrl }) {
     const router = useRouter();
     const pathname = usePathname();
     const { setAuthToken, isAuthenticated } = useAuth();
+    const loginAttemptedRef = useRef(false);
 
     // Check if we're on the login page
     const isLoginPage = pathname === '/login';
@@ -35,13 +36,15 @@ export default function LoginComponent({ returnUrl }) {
     }, [isAuthenticated]);
 
     const validateLogin = async () => {
+        if (loading) return; // Prevent multiple submissions
+        
         setLoading(true);
+        loginAttemptedRef.current = true;
+        
         try {
             const data = await login(username, password);
             
             if (data && data.token && data.token.token) {
-                console.log(data.token);
-                
                 // Use auth hook to set token
                 setAuthToken(data.token.token);
                 
@@ -51,12 +54,15 @@ export default function LoginComponent({ returnUrl }) {
                 // Close drawer if it's open
                 setIsOpen(false);
                 
-                // Redirect to return URL or home
-                if (returnUrl) {
-                    router.push(decodeURIComponent(returnUrl));
-                } else {
-                    router.push('/');
-                }
+                // Small delay to ensure token is properly set before redirecting
+                setTimeout(() => {
+                    // Redirect to return URL or home
+                    if (returnUrl) {
+                        router.push(decodeURIComponent(returnUrl));
+                    } else {
+                        router.push('/');
+                    }
+                }, 300);
             } else {
                 // Show error toast
                 toast.error("Login failed. Please check your credentials.");
@@ -66,6 +72,13 @@ export default function LoginComponent({ returnUrl }) {
             toast.error("An error occurred during login.");
         } finally {
             setLoading(false);
+        }
+    };
+
+    // Handler for keypress events (for Enter key)
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' && username && password) {
+            validateLogin();
         }
     };
 
@@ -79,6 +92,7 @@ export default function LoginComponent({ returnUrl }) {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Etlab username"
+                    onKeyDown={handleKeyDown}
                 />
                 <Input
                     className="dark p-6 rounded-lg bg-gray-800 border-gray-700"
@@ -86,14 +100,16 @@ export default function LoginComponent({ returnUrl }) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Etlab password"
+                    onKeyDown={handleKeyDown}
                 />
                 <Button
                     className="h-12 w-full bg-red-600 hover:bg-red-700 text-white py-4 mt-4 font-medium transition-colors"
                     onClick={() => {
                         if (username !== '' && password !== '') validateLogin();
                     }}
+                    disabled={loading}
                 >
-                    {loading ? 'Loading...' : 'Login'}
+                    {loading ? 'Logging in...' : 'Login'}
                 </Button>
             </div>
         );
@@ -117,22 +133,27 @@ export default function LoginComponent({ returnUrl }) {
                             <Input
                                 className="dark p-6 rounded-lg bg-gray-800 border-gray-700"
                                 type="text"
+                                value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 placeholder="Etlab username"
+                                onKeyDown={handleKeyDown}
                             />
                             <Input
                                 className="dark p-6 rounded-lg bg-gray-800 border-gray-700"
                                 type="password"
+                                value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Etlab password"
+                                onKeyDown={handleKeyDown}
                             />
                             <Button
                                 className="h-12 w-full bg-red-600 hover:bg-red-700 text-white py-4 mt-4 font-medium transition-colors"
                                 onClick={() => {
                                     if (username !== '' && password !== '') validateLogin();
                                 }}
+                                disabled={loading}
                             >
-                                {loading ? 'Loading...' : 'Login'}
+                                {loading ? 'Logging in...' : 'Login'}
                             </Button>
                         </div>
                         <div className="w-full mt-auto pt-4">
