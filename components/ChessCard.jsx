@@ -45,14 +45,15 @@ const ProfileChessCard = ({
             <img 
               src="/sst.png" 
               alt="SST Logo" 
-              className="h-20 w-20 object-cover filter brightness-0 invert opacity-80"
+              className="h-20 w-20 object-cover filter brightness-0 invert opacity-80 select-none"
+              draggable="false"
             />
           </div>
           <div className="flex flex-col items-start">
             <div>
-              <h2 className="text-3xl font-medium text-white mb-2">{data.name}</h2>
-              <p className="text-lg text-white mb-1 font-bold">Chest Number: {data.chest_number}</p>
-              <p className="text-lg text-white mb-4">
+              <h2 className="text-3xl font-medium text-white mb-2 select-none">{data.name}</h2>
+              <p className="text-lg text-white mb-1 font-bold select-none">Chest Number: {data.chest_number}</p>
+              <p className="text-lg text-white mb-4 select-none">
                 Department: {data.department} 
               </p>
             </div>
