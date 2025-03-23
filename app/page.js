@@ -7,9 +7,54 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/hooks/useAuth';
 import TopNavBarComponent from '@/components/TopNavBarComponent';
 import Script from 'next/script';
+import { useEffect, useRef } from 'react';
+
 export default function Home() {
     const router = useRouter();
     const { isAuthenticated } = useAuth();
+    const sceneRef = useRef(null);
+    
+    // Initialize parallax effect
+    useEffect(() => {
+        // Only run on client side
+        if (typeof window !== 'undefined') {
+            const loadParallax = async () => {
+                try {
+                    // Check if Parallax is already defined
+                    if (typeof window.Parallax === 'undefined') {
+                        // Wait for the script to load
+                        await new Promise((resolve) => {
+                            if (document.querySelector('script[src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"]')) {
+                                resolve();
+                            } else {
+                                const checkScript = setInterval(() => {
+                                    if (typeof window.Parallax !== 'undefined') {
+                                        clearInterval(checkScript);
+                                        resolve();
+                                    }
+                                }, 100);
+                            }
+                        });
+                    }
+                    
+                    // Initialize parallax after confirming Parallax is available
+                    if (sceneRef.current && typeof window.Parallax !== 'undefined') {
+                        const parallaxInstance = new window.Parallax(sceneRef.current, {
+                            relativeInput: true,
+                            hoverOnly: false
+                        });
+                        
+                        // Clean up on unmount
+                        return () => parallaxInstance.destroy();
+                    }
+                } catch (error) {
+                    console.error("Failed to initialize parallax:", error);
+                }
+            };
+            
+            loadParallax();
+        }
+    }, []);
 
     // Handle redirect to events page if logged in
     const handleRedirectToEvents = () => {
@@ -20,35 +65,62 @@ export default function Home() {
 
     return (
         <div className="min-h-screen flex flex-1 flex-col">
-
             
             <TopNavBarComponent />
             <div className="md:ml-[250px]">
-                <motion.div
-                    id="scene"
-                    className="bg-black h-screen flex flex-col justify-center items-center bg-[url('https://i.ibb.co/bmM9VqK/sst-side-pic.jpg')] bg-no-repeat bg-cover bg-fixed w-full [mask-image:radial-gradient(89%_181%_at_56%_20%,#000_16%,transparent_115%)]"
-                    initial={{ opacity: 0, transform: 'translateZ(-120px)' }}
-                    whileInView={{ opacity: 1, transform: 'translateZ(0px)' }}
-                    transition={{ ease: 'easeIn', duration: 2 }}
+                <div 
+                    className="bg-black h-screen flex flex-col justify-center items-center relative overflow-hidden"
                 >
-                    <motion.div
-                        data-depth="0.2"
-                        className="m-[5px]"
-                        initial={{ opacity: 0, transform: 'scaleY(0.98)' }}
-                        whileInView={{ opacity: 1, transform: 'scaleY(1)' }}
-                        transition={{ ease: 'easeIn', duration: 0 }}
+                    {/* Background with parallax effect */}
+                    <div 
+                        className="absolute inset-0 w-full h-full"
+                        style={{
+                            backgroundImage: "url('https://i.ibb.co/bmM9VqK/sst-side-pic.jpg')",
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            transform: "scale(1.1)", // Slightly larger to avoid edges during parallax
+                            zIndex: 0,
+                        }}
+                        id="parallax-bg"
+                        data-depth="0.1"
+                    ></div>
+                    
+                    {/* Mask overlay */}
+                    <div 
+                        className="absolute inset-0 w-full h-full [mask-image:radial-gradient(89%_181%_at_56%_20%,#000_16%,transparent_115%)]"
+                        style={{ zIndex: 1 }}
+                    ></div>
+                    
+                    {/* Content with parallax effect */}
+                    <div 
+                        id="scene" 
+                        ref={sceneRef}
+                        className="relative w-full h-full flex flex-col justify-center items-center"
+                        style={{ zIndex: 2 }}
                     >
-                        <TextMorpher />
-                    </motion.div>
-                    <motion.img
-                        data-depth="0.6"
-                        src="https://i.ibb.co/84bZG35/sst-24-label.png"
-                        className="h-[200px] w-auto object-cover"
-                        initial={{ opacity: 0, transform: 'translateY(50px)' }}
-                        whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-                        transition={{ ease: 'linear', duration: 2 }}
-                    />
-                </motion.div>
+                        <motion.div
+                            data-depth="0.2"
+                            className="m-[5px]"
+                            initial={{ opacity: 0, transform: 'scaleY(0.98)' }}
+                            whileInView={{ opacity: 1, transform: 'scaleY(1)' }}
+                            transition={{ ease: 'easeIn', duration: 0.5 }}
+                        >
+                            <TextMorpher />
+                        </motion.div>
+                        <motion.div
+                            data-depth="0.6"
+                            initial={{ opacity: 0, transform: 'translateY(50px)' }}
+                            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
+                            transition={{ ease: 'linear', duration: 1.5 }}
+                        >
+                            <img
+                                src="https://i.ibb.co/84bZG35/sst-24-label.png"
+                                className="h-[200px] w-auto object-cover"
+                                alt="SST 24 Label"
+                            />
+                        </motion.div>
+                    </div>
+                </div>
                 <motion.div
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -84,7 +156,10 @@ export default function Home() {
                 </motion.div>
                 <Footer />
             </div>
-            <Script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"/>
+            <Script 
+                src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"
+                strategy="beforeInteractive"
+            />
         </div>
     );
 }
