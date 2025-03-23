@@ -50,7 +50,7 @@ export default function BottomNavBarComponent() {
                                 : 'text-gray-400 hover:bg-white/10 hover:rounded-3xl'
                         }`}
                     >
-                        <StarIcon className="h-6 w-6" />
+                        <StackIcon className="h-6 w-6" />
                     </Link>
                     <Link 
                         href="/profile" 

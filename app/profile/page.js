@@ -1,6 +1,5 @@
 'use client'
 import ProfileComponent from '@/components/ProfileComponent';
-import BottomNavBarComponent from '@/components/BottomNavBarComponent';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -34,7 +33,6 @@ export default function Profile() {
         <div>
             <h1 className="text-white text-5xl font-bold pt-14 pb-4 px-5">Profile</h1>
             <ProfileComponent />
-            <BottomNavBarComponent />
         </div>
     );
 }

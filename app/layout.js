@@ -3,8 +3,15 @@ import './globals.css'
 import DesktopNotice from '@/components/DesktopNotice'
 import { useAuth } from '@/lib/hooks/useAuth'
 import { Toaster } from '@/components/ui/sonner'
+import BottomNavBarComponent from '@/components/BottomNavBarComponent'
+import { usePathname } from 'next/navigation'
+
 export default function RootLayout({ children }) { 
     const { isLoading } = useAuth();
+    const pathname = usePathname();
+    
+    // Check if the current route is in the login section
+    const isLoginRoute = pathname.startsWith('/login');
     
     return (
         <html lang="en">
@@ -20,12 +27,15 @@ export default function RootLayout({ children }) {
                 <div className="">
                     {isLoading ? (
                         <div className="flex justify-center items-center min-h-screen">
-                            <p className="text-xl">Loading...</p>
+                            <img src="/sst.png" alt="logo" className="w-[150px] h-[182px] mx-auto" />
                         </div>
                     ) : (
                         children
                     )}
                 </div>
+                
+                {/* Only show bottom navigation on non-login routes */}
+                {!isLoginRoute && <BottomNavBarComponent />}
             </body>
         </html>
     )

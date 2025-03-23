@@ -1,7 +1,6 @@
 'use client'
 import BlogCardComponent from '@/components/BlogCardComponent';
 import Head from 'next/head';
-import BottomNavBarComponent from '@/components/BottomNavBarComponent';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState, useEffect} from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
@@ -36,7 +35,6 @@ export default function All() {
 
     return (
         <div>
-            <BottomNavBarComponent />
             <div className="blogContainer mb-10">
                 <div className="flex flex-col md:flex-row justify-between items-center mt-12 px-4">
                     <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 md:mb-0">

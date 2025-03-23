@@ -35,13 +35,6 @@ export default function BlogCardComponent({ option }) {
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        if (isAuthenticated && token) {
-            apireqProfile();
-        }
-    }, [isAuthenticated, token]);
-
     const apireq = async () => {
         const controller = new AbortController();
         try {
@@ -179,7 +172,7 @@ export default function BlogCardComponent({ option }) {
         }
     };
     
-    const getTeam = async (eventId) => {
+    const getTeam = async () => {
         setDrawerLoading(true);
         try {
             const response = await authFetch(`https://sstapi.pythonanywhere.com/api/team/members/${profile.username}`);
@@ -251,7 +244,7 @@ export default function BlogCardComponent({ option }) {
                         <div className="flex w-full items-center space-x-3 mt-2">
                             <Input 
                                 type="text" 
-                                value={`https://sctarts.in/e/${profile.username}`} 
+                                value={`https://sctarts.com/e/${profile.username}`} 
                                 className="py-2"
                                 readOnly
                             />
@@ -259,7 +252,7 @@ export default function BlogCardComponent({ option }) {
                                 type="submit" 
                                 className="px-4 py-2"
                                 onClick={() => {
-                                    window.open(`whatsapp://send?text=Hi, link to join my team is https://sctarts.in/e/${profile.username} do not share with outside team members`);
+                                    window.open(`whatsapp://send?text=Hi, link to join my team is https://sctarts.com/e/${profile.username} do not share with outside team members`);
                                 }}
                             >
                                 Share
@@ -404,7 +397,7 @@ export default function BlogCardComponent({ option }) {
                                                     <DrawerTrigger asChild>
                                                         <Button 
                                                             variant="outline"
-                                                            onClick={() => getTeam(event.id)}
+                                                            onClick={() => getTeam()}
                                                         >
                                                             View team
                                                         </Button>
@@ -445,7 +438,7 @@ export default function BlogCardComponent({ option }) {
                                                     </DrawerContent>
                                                 </Drawer>
                                                 <Button onClick={() => {
-                                                    window.open(`whatsapp://send?text=Hi, link to join my team is https://sctarts.in/e/${profile.username} do not share with outside team members`);
+                                                    window.open(`whatsapp://send?text=Hi, link to join my team is https://sctarts.com/e/${profile.username} do not share with outside team members`);
                                                 }} variant="outline"><ShareIcon className='w-4 h-4'/></Button>
                                                 </>
                                             )}
