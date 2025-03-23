@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tilt } from "@/components/ui/tilt";
 import { Spotlight } from "@/components/ui/spotlight";
 import { Button } from '@/components/ui/button';
@@ -57,6 +57,78 @@ const ProfileChessCard = ({
   update, 
   logout 
 }) => {
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const [hasGyroscope, setHasGyroscope] = useState(false);
+
+  useEffect(() => {
+    // Check if device has DeviceOrientationEvent
+    if (window.DeviceOrientationEvent !== undefined) {
+      setHasGyroscope(true);
+
+      // Function to handle device orientation
+      const handleDeviceOrientation = (event) => {
+        // Get the device orientation data
+        const beta = event.beta;  // Front-to-back tilt in degrees
+        const gamma = event.gamma; // Left-to-right tilt in degrees
+        
+        if (beta !== null && gamma !== null) {
+          // Limit the range of motion
+          const x = Math.min(Math.max(gamma, -15), 15);
+          const y = Math.min(Math.max(beta, -15), 15);
+          
+          setRotation({
+            x: -x / 2, // Invert for natural feeling
+            y: y / 2
+          });
+        }
+      };
+
+      // Request permission for device motion (required in iOS 13+)
+      if (typeof DeviceOrientationEvent !== 'undefined' && 
+          typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // iOS 13+ devices
+        const requestPermission = async () => {
+          try {
+            const response = await DeviceOrientationEvent.requestPermission();
+            if (response === 'granted') {
+              window.addEventListener('deviceorientation', handleDeviceOrientation);
+            }
+          } catch (error) {
+            console.error('Error requesting device orientation permission:', error);
+          }
+        };
+
+        // Add a button to request permission explicitly when needed
+        const permissionButton = document.createElement('button');
+        permissionButton.innerText = 'Enable Tilt Effect';
+        permissionButton.style.position = 'fixed';
+        permissionButton.style.bottom = '20px';
+        permissionButton.style.right = '20px';
+        permissionButton.style.zIndex = '100';
+        permissionButton.style.padding = '10px';
+        permissionButton.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+        permissionButton.style.borderRadius = '5px';
+        permissionButton.style.border = 'none';
+        permissionButton.style.color = 'white';
+        permissionButton.onclick = requestPermission;
+        
+        document.body.appendChild(permissionButton);
+        
+        return () => {
+          document.body.removeChild(permissionButton);
+        };
+      } else {
+        // Non-iOS or older iOS devices
+        window.addEventListener('deviceorientation', handleDeviceOrientation);
+        
+        // Cleanup
+        return () => {
+          window.removeEventListener('deviceorientation', handleDeviceOrientation);
+        };
+      }
+    }
+  }, []);
+
   return (
     <div className="w-auto ml-[10px] mr-[10px] mt-[10px]">
       <Tilt
@@ -64,6 +136,9 @@ const ProfileChessCard = ({
         isRevese
         style={{
           transformOrigin: 'center center',
+          ...(hasGyroscope ? {
+            transform: `perspective(1000px) rotateX(${rotation.y}deg) rotateY(${rotation.x}deg)`
+          } : {})
         }}
         springOptions={{
           stiffness: 26.7,
@@ -71,6 +146,7 @@ const ProfileChessCard = ({
           mass: 0.2,
         }}
         className="group relative rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 p-6"
+        gyroscope={hasGyroscope}
       >
         <Spotlight
           className="z-10 from-white/50 via-white/20 to-white/10 blur-2xl"
