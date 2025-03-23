@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Tilt } from "@/components/ui/tilt";
 import { Spotlight } from "@/components/ui/spotlight";
 import { Button } from '@/components/ui/button';
@@ -57,105 +57,156 @@ const ProfileChessCard = ({
   update, 
   logout 
 }) => {
+  const cardRef = useRef(null);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
-  const [hasGyroscope, setHasGyroscope] = useState(false);
+  const [debugInfo, setDebugInfo] = useState("");
+  const [isGyroActive, setIsGyroActive] = useState(false);
 
   useEffect(() => {
-    // Check if device has DeviceOrientationEvent
-    if (window.DeviceOrientationEvent !== undefined) {
-      setHasGyroscope(true);
-
-      // Function to handle device orientation
-      const handleDeviceOrientation = (event) => {
-        // Get the device orientation data
-        const beta = event.beta;  // Front-to-back tilt in degrees
-        const gamma = event.gamma; // Left-to-right tilt in degrees
+    let gyroEnabled = false;
+    let permissionGranted = false;
+    
+    // Function to directly manipulate the card tilt based on device orientation
+    const handleDeviceOrientation = (event) => {
+      if (!permissionGranted) return;
+      
+      // Extract orientation values - these will vary by device orientation
+      const x = event.beta; // -180 to 180 (front/back tilt)
+      const y = event.gamma; // -90 to 90 (left/right tilt)
+      
+      if (x !== null && y !== null) {
+        // Convert the values to a reasonable rotation range
+        const tiltX = Math.max(-10, Math.min(10, y / 3)); // Divide to reduce sensitivity
+        const tiltY = Math.max(-10, Math.min(10, x / 6)); // Front/back needs more dampening
         
-        if (beta !== null && gamma !== null) {
-          // Limit the range of motion
-          const x = Math.min(Math.max(gamma, -15), 15);
-          const y = Math.min(Math.max(beta, -15), 15);
-          
-          setRotation({
-            x: -x / 2, // Invert for natural feeling
-            y: y / 2
-          });
+        // Apply transformation directly to the card element for more responsive effect
+        if (cardRef.current) {
+          cardRef.current.style.transform = `perspective(1000px) rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
         }
-      };
+        
+        // Update debug info
+        setDebugInfo(`Beta: ${x.toFixed(1)}°, Gamma: ${y.toFixed(1)}°, Tilt: ${tiltX.toFixed(1)}°, ${tiltY.toFixed(1)}°`);
+      }
+    };
 
-      // Request permission for device motion (required in iOS 13+)
-      if (typeof DeviceOrientationEvent !== 'undefined' && 
-          typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // iOS 13+ devices
-        const requestPermission = async () => {
-          try {
-            const response = await DeviceOrientationEvent.requestPermission();
-            if (response === 'granted') {
-              window.addEventListener('deviceorientation', handleDeviceOrientation);
-            }
-          } catch (error) {
-            console.error('Error requesting device orientation permission:', error);
+    // Function to request gyroscope permission on iOS
+    const requestGyroPermission = async () => {
+      try {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+          // For iOS 13+
+          const permission = await DeviceOrientationEvent.requestPermission();
+          if (permission === 'granted') {
+            permissionGranted = true;
+            window.addEventListener('deviceorientation', handleDeviceOrientation, true);
+            setDebugInfo("iOS permission granted");
+            setIsGyroActive(true);
+            gyroEnabled = true;
+          } else {
+            setDebugInfo("Permission denied");
           }
-        };
+        } else {
+          // For non-iOS devices, permission is not required
+          permissionGranted = true;
+          window.addEventListener('deviceorientation', handleDeviceOrientation, true);
+          setDebugInfo("Non-iOS device - gyro active");
+          setIsGyroActive(true);
+          gyroEnabled = true;
+        }
+      } catch (error) {
+        setDebugInfo(`Error: ${error.message}`);
+        console.error("Gyroscope error:", error);
+      }
+    };
 
-        // Add a button to request permission explicitly when needed
-        const permissionButton = document.createElement('button');
-        permissionButton.innerText = 'Enable Tilt Effect';
-        permissionButton.style.position = 'fixed';
-        permissionButton.style.bottom = '20px';
-        permissionButton.style.right = '20px';
-        permissionButton.style.zIndex = '100';
-        permissionButton.style.padding = '10px';
-        permissionButton.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-        permissionButton.style.borderRadius = '5px';
-        permissionButton.style.border = 'none';
-        permissionButton.style.color = 'white';
-        permissionButton.onclick = requestPermission;
+    // Create a button for iOS permission
+    const createPermissionButton = () => {
+      const existingButton = document.getElementById('gyro-permission-btn');
+      
+      if (!existingButton) {
+        const btn = document.createElement('button');
+        btn.id = 'gyro-permission-btn';
+        btn.innerText = 'Enable Tilt';
+        btn.style.position = 'fixed';
+        btn.style.bottom = '20px';
+        btn.style.right = '20px';
+        btn.style.backgroundColor = 'rgba(59, 130, 246, 0.7)';
+        btn.style.color = 'white';
+        btn.style.padding = '8px 16px';
+        btn.style.borderRadius = '8px';
+        btn.style.border = 'none';
+        btn.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+        btn.style.zIndex = '9999';
+        btn.style.fontSize = '14px';
         
-        document.body.appendChild(permissionButton);
+        btn.addEventListener('click', async () => {
+          await requestGyroPermission();
+          btn.style.display = 'none'; // Hide after permission granted
+        });
         
-        return () => {
-          document.body.removeChild(permissionButton);
-        };
+        document.body.appendChild(btn);
+        return btn;
+      }
+      
+      return existingButton;
+    };
+
+    // Check if device orientation is available
+    if (window.DeviceOrientationEvent !== undefined) {
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // iOS requires explicit permission
+        const permissionBtn = createPermissionButton();
       } else {
-        // Non-iOS or older iOS devices
-        window.addEventListener('deviceorientation', handleDeviceOrientation);
-        
-        // Cleanup
-        return () => {
-          window.removeEventListener('deviceorientation', handleDeviceOrientation);
-        };
+        // Android and other devices
+        requestGyroPermission();
+      }
+    } else {
+      setDebugInfo("Device orientation not supported");
+    }
+
+    // Cleanup function
+    return () => {
+      if (gyroEnabled) {
+        window.removeEventListener('deviceorientation', handleDeviceOrientation, true);
+      }
+      
+      const btn = document.getElementById('gyro-permission-btn');
+      if (btn) {
+        document.body.removeChild(btn);
+      }
+    };
+  }, []);
+
+  // Function to manually trigger permission if needed
+  const triggerPermission = async () => {
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      try {
+        const permission = await DeviceOrientationEvent.requestPermission();
+        if (permission === 'granted') {
+          setDebugInfo("Permission granted via button");
+          setIsGyroActive(true);
+          const btn = document.getElementById('gyro-permission-btn');
+          if (btn) btn.style.display = 'none';
+        }
+      } catch (error) {
+        setDebugInfo(`Error: ${error.message}`);
       }
     }
-  }, []);
+  };
 
   return (
     <div className="w-auto ml-[10px] mr-[10px] mt-[10px]">
-      <Tilt
-        rotationFactor={6}
-        isRevese
+      <div
+        ref={cardRef}
+        className="group relative rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 p-6 transition-all duration-200"
         style={{
+          transformStyle: 'preserve-3d',
+          transform: 'perspective(1000px)',
           transformOrigin: 'center center',
-          ...(hasGyroscope ? {
-            transform: `perspective(1000px) rotateX(${rotation.y}deg) rotateY(${rotation.x}deg)`
-          } : {})
         }}
-        springOptions={{
-          stiffness: 26.7,
-          damping: 4.1,
-          mass: 0.2,
-        }}
-        className="group relative rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 p-6"
-        gyroscope={hasGyroscope}
       >
         <Spotlight
           className="z-10 from-white/50 via-white/20 to-white/10 blur-2xl"
           size={248}
-          springOptions={{
-            stiffness: 26.7,
-            damping: 4.1,
-            mass: 0.2,
-          }}
         />
         <div className="relative z-20">
           <h2 className="text-3xl font-medium text-white mb-2">{data.name}</h2>
@@ -250,9 +301,19 @@ const ProfileChessCard = ({
             >
               Log Out
             </Button>
+
+            {!isGyroActive && (
+              <Button
+                className="bg-blue-500/70 hover:bg-blue-600/70 backdrop-blur-sm"
+                onClick={triggerPermission}
+              >
+                Enable Tilt
+              </Button>
+            )}
           </div>
+
         </div>
-      </Tilt>
+      </div>
     </div>
   );
 };
