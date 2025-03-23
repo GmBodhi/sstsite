@@ -1,52 +1,52 @@
 import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { Button } from './ui/button';
+import { useAuth } from '@/lib/hooks/useAuth';
+
 export default function TopNavBarComponent() {
-    const router = useRouter();
+    const pathname = usePathname();
+    const { isAuthenticated } = useAuth();
 
     return (
-        <div>
-            <Head>
-                <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
-            </Head>
-            <header className="topnavheader">
-                <motion.nav
-                    className="w3-top w3-bar topnav"
-                    initial={{ opacity: 0, transform: 'translateY(-20px)' }}
-                    whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-                    transition={{ ease: 'linear', duration: 0.6 }}
-                >
-                    <div
-                        className={'w3-text-grey  w3-bar-item navitemAll navtext'}
-                        style={{ display: 'flex', flexDirection: 'row' }}
-                    >
-                        <Image
-                            alt=""
-                            width={50}
-                            height={50}
-                            src="https://i.ibb.co/PMDzyY1/student-union.png"
-                            style={{ filter: 'brightness(0) invert(1)' }}
-                        />
-                        <div
-                            style={{
-                                borderLeft: '1px solid  hsla(0,0%,100%,.155)',
-                                height: 50,
-                                marginLeft: 5,
-                                marginRight: 5,
-                            }}
-                        ></div>
-                        <Image
-                            alt=""
-                            height={50}
-                            width={50}
-                            src="https://i.ibb.co/GxLprT1/sctce-logo.png"
-                            style={{ filter: 'brightness(0) invert(1)', objectFit: 'cover' }}
-                        />
-                    </div>
-                </motion.nav>
-            </header>
-        </div>
+            <motion.nav
+                className="fixed top-0 left-0 right-0 w-full flex justify-between items-center py-2 px-5 bg-black/40 backdrop-blur-md border-b border-white/10 z-50"
+                initial={{ opacity: 0, transform: 'translateY(-20px)' }}
+                animate={{ opacity: 1, transform: 'translateY(0px)' }}
+                transition={{ ease: 'linear', duration: 0.6 }}
+            >
+                <div className="flex items-center space-x-4">
+                    <Image
+                        alt="Student Union"
+                        width={50}
+                        height={50}
+                        src="https://i.ibb.co/PMDzyY1/student-union.png"
+                        className="brightness-0 invert drop-shadow-md"
+                        priority
+                    />
+                    <div className="h-10 w-px bg-white/25"></div>
+                    <Image
+                        alt="SCTCE Logo"
+                        height={60}
+                        width={60}
+                        src="/sst.png"
+                        className="brightness-0 invert object-cover drop-shadow-md"
+                        priority
+                    />
+                </div>
+
+                {/* Auth buttons */}
+                <div className="flex items-center space-x-3">
+                     {!isAuthenticated && pathname !== '/login' && (
+                        <Link href="/login">
+                            <Button className="bg-red-600 hover:bg-red-700 text-white">
+                                Login
+                            </Button>
+                        </Link>
+                    )}
+                </div>
+            </motion.nav>
     );
 }

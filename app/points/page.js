@@ -1,4 +1,5 @@
-import BottomNavBarComponent from '../components/BottomNavBarComponent';
+'use client'
+import BottomNavBarComponent from '@/components/BottomNavBarComponent';
 import {
     Table,
     TableBody,

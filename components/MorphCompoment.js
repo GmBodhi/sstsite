@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import styles from '../styles/MorphComponent.module.scss';
+
 export default function TextMorpher() {
     useEffect(() => {
         const elts = {
@@ -62,9 +62,9 @@ export default function TextMorpher() {
     }, []);
     return (
         <>
-            <div className={styles.container}>
-                <span id="text1" className={styles.text1}></span>
-                <span id="text2" className={styles.text2}></span>
+            <div className="flex flex-col justify-center items-center mx-auto top-0 bottom-0 text-white filter [filter:url(#threshold)_blur(0.6px)]">
+                <span id="text1" className="absolute w-full inline-block font-['Raleway'] text-[80px] font-extrabold text-center select-none"></span>
+                <span id="text2" className="absolute w-full inline-block font-['Raleway'] text-[80px] font-extrabold text-center select-none"></span>
             </div>
             <svg id="filters">
                 <defs>

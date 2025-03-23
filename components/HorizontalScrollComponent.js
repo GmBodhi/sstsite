@@ -1,5 +1,5 @@
-import styles from '../styles/HorizontalScrollComponent.module.css';
-import globalstyles from '../styles/Home.module.css';
+import styles from '@/styles/HorizontalScrollComponent.module.css';
+import globalstyles from '@/styles/Home.module.css';
 import Image from 'next/image';
 
 const contents = [

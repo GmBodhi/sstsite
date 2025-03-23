@@ -1,94 +1,52 @@
+'use client'
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
-import { useRouter } from 'next/router';
+import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import LoginComponent from '@/components/LoginComponent';
 import BottomNavBarComponent from '@/components/BottomNavBarComponent';
+import { useAuth } from '@/lib/hooks/useAuth';
 
 export default function Blog() {
     const router = useRouter();
+    const params = useParams();
     const [teamId, setTeamId] = useState(null);
     const [data, setData] = useState({});
-    const [routerReady, setRouterReady] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [isLogged, setIsLogged] = useState(false);
-    const [token, setToken] = useState(null);
+    
+    const { isAuthenticated, authFetch } = useAuth();
 
     useEffect(() => {
-        const getToken = () => {
-            const storedToken = localStorage.getItem('token');
-            if (storedToken) {
-                setToken(storedToken);
-                setIsLogged(true);
-            }
-        };
-        getToken();
-    }, []);
-
-    useEffect(() => {
-        if (router.isReady) {
-            setRouterReady(true);
-            setTeamId(router.query.id); // Update teamId when router is ready
+        // Get team ID from params
+        if (params?.id) {
+            setTeamId(params.id);
         }
-    }, [router.isReady, router.query.id]);
+    }, [params]);
 
     useEffect(() => {
-        if (routerReady && token && teamId) {
+        if (isAuthenticated && teamId) {
             const controller = new AbortController();
             getTeam(controller.signal);
             return () => {
                 controller.abort();
             };
         }
-    }, [routerReady, token, teamId]);
+    }, [isAuthenticated, teamId]);
 
-    const getTeam = (signal) => {
+    const getTeam = async (signal) => {
         setLoading(true);
-        fetch(`https://sstapi.pythonanywhere.com/api/team/members/${teamId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Token ${token}`,
-            },
-            signal: signal,
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.data == 'Team does not exits') {
-                    toast(data.data, {
-                        description: 'tip :you can see your registerations in profile',
-                        action: {
-                            label: 'Close',
-                            onClick: () => {
-                                console.log('close');
-                            },
-                        },
-                    });
-                } else {
-                    setData(data.data);
-                    setLoading(false);
-                }
-            })
-            .catch((e) => {
-                console.log(e);
-            });
-    };
-
-    const joinTeam = () => {
-        fetch(`https://sstapi.pythonanywhere.com/api/team/join/${teamId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Token ${token}`,
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setLoading(false);
-                toast(data.data, {
-                    description: '',
+        try {
+            const response = await authFetch(
+                `https://sstapi.pythonanywhere.com/api/team/members/${teamId}`,
+                { signal }
+            );
+            const result = await response.json();
+            
+            if (result.data === 'Team does not exits') {
+                toast(result.data, {
+                    description: 'tip: you can see your registrations in profile',
                     action: {
                         label: 'Close',
                         onClick: () => {
@@ -96,17 +54,42 @@ export default function Blog() {
                         },
                     },
                 });
-                getTeam();
-            })
-            .catch((e) => {
-                console.log(e);
+            } else {
+                setData(result.data);
+            }
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const joinTeam = async () => {
+        try {
+            const response = await authFetch(
+                `https://sstapi.pythonanywhere.com/api/team/join/${teamId}`
+            );
+            const result = await response.json();
+            
+            toast(result.data, {
+                description: '',
+                action: {
+                    label: 'Close',
+                    onClick: () => {
+                        console.log('close');
+                    },
+                },
             });
+            getTeam();
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     return (
         <div>
             <h1>Team</h1>
-            {!isLogged ? (
+            {!isAuthenticated ? (
                 <div className="m-10 flex flex-col justify-items-center">
                     <h1
                         style={{ color: 'white', fontSize: 55, fontWeight: 'bold', marginTop: 55 }}
@@ -114,7 +97,7 @@ export default function Blog() {
                     >
                         Team
                     </h1>
-                    <p className="text-white mb-[10px]">Login it to view the team</p>
+                    <p className="text-white mb-[10px]">Login to view the team</p>
                     <LoginComponent />
                 </div>
             ) : (

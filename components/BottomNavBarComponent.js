@@ -1,69 +1,68 @@
 import Link from 'next/link';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { PersonIcon } from '@radix-ui/react-icons';
+import { PersonIcon,HomeIcon,StackIcon,StarIcon} from '@radix-ui/react-icons';
 export default function BottomNavBarComponent() {
     const router = useRouter();
+    const pathname = usePathname();
+
+    // Active route styling helper
+    const isActive = (path) => {
+        if (path === '/' && pathname === '/') return true;
+        if (path !== '/' && pathname === path) return true;
+        if (path === '/e/all' && pathname === '/e/all') return true;
+        if (path === '/profile' && pathname === '/profile') return true;
+        return false;
+    };
 
     return (
-        <div>
-            <Head>
-                <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
-            </Head>
-            <header className="header">
-                <motion.nav
-                    className="w3-bottom w3-bar nav"
-                    initial={{
-                        opacity: 0,
-                        transform: 'translateY(20px)',
-                        borderTopLeftRadius: 0,
-                        borderTopRightRadius: 0,
-                    }}
-                    whileInView={{
-                        opacity: 1,
-                        transform: 'translateY(0px)',
-                        borderTopLeftRadius: 25,
-                        borderTopRightRadius: 25,
-                    }}
-                    transition={{ ease: 'linear', duration: 0.5 }}
-                >
-                    <div
-                        className={` w3-bar-item navitemAll navtext ${router.asPath == '/' ? 'w3-text-white navitem' : 'w3-text-grey'}`}
+            <nav
+                className="fixed bottom-0 left-0 right-0 w-full flex justify-center py-3 bg-black/30 backdrop-blur-md border-t border-white/10 z-50 rounded-3xl"
+            >
+                <div className="w-full max-w-screen-lg flex justify-around items-center px-4">
+                    <Link 
+                        href="/" 
+                        className={`text-3xl px-4 py-2 transition-all duration-300 ${
+                            isActive('/') 
+                                ? 'text-white -translate-y-[1px] font-semibold' 
+                                : 'text-gray-400 hover:bg-white/10 hover:rounded-3xl'
+                        }`}
                     >
-                        <Link href="/">home</Link>
-                    </div>
-                    <div
-                        className={
-                            router.asPath == '/points'
-                                ? 'w3-text-white  w3-bar-item navitem navtext'
-                                : 'w3-text-grey  w3-bar-item navitemAll navtext'
-                        }
+                        <HomeIcon className="h-6 w-6" />
+                    </Link>
+                    {/* <Link 
+                        href="/points" 
+                        className={`text-3xl px-4 py-2 transition-all duration-300 ${
+                            isActive('/points') 
+                                ? 'text-white -translate-y-[1px] font-semibold' 
+                                : 'text-gray-400 hover:bg-white/10 hover:rounded-3xl'
+                        }`}
                     >
-                        <Link href="/points">points</Link>
-                    </div>
-                    <div
-                        className={
-                            router.pathname == '/e/all'
-                                ? 'w3-text-white  w3-bar-item navitem navtext'
-                                : 'w3-text-grey  w3-bar-item navitemAll navtext'
-                        }
+                        <StackIcon className="h-6 w-6" />
+                    </Link> */}
+                    <Link 
+                        href="/e/all" 
+                        className={`text-3xl px-4 py-2 transition-all duration-300 ${
+                            isActive('/e/all') 
+                                ? 'text-white -translate-y-[1px] font-semibold' 
+                                : 'text-gray-400 hover:bg-white/10 hover:rounded-3xl'
+                        }`}
                     >
-                        <Link href="/e/all">events</Link>
-                    </div>
-                    <div
-                        className={
-                            router.pathname == '/profile'
-                                ? 'w3-text-white  w3-bar-item navitem navtext'
-                                : 'w3-text-grey  w3-bar-item navitemAll navtext'
-                        }
+                        <StarIcon className="h-6 w-6" />
+                    </Link>
+                    <Link 
+                        href="/profile" 
+                        className={`text-3xl px-4 py-2 transition-all duration-300 ${
+                            isActive('/profile') 
+                                ? 'text-white -translate-y-[1px] font-semibold' 
+                                : 'text-gray-400 hover:bg-white/10 hover:rounded-3xl'
+                        }`}
                     >
-                        <Link href="/profile">
-                            <PersonIcon height={20} width={20} />
-                        </Link>
-                    </div>
-                </motion.nav>
-            </header>
-        </div>
+                        <PersonIcon className="h-6 w-6" />
+                    </Link>
+                </div>
+            </nav>
     );
 }

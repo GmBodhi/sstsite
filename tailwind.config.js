@@ -61,10 +61,15 @@ module.exports = {
                     from: { height: 'var(--radix-accordion-content-height)' },
                     to: { height: '0' },
                 },
+                'BackgroundP': {
+                    from: { transform: 'translateY(-22px) rotateX(180deg)' },
+                    to: { transform: 'translateY(0px)' },
+                },
             },
             animation: {
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out',
+                'BackgroundP': 'BackgroundP 3s',
             },
         },
     },
