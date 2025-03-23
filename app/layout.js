@@ -18,6 +18,10 @@ export default function RootLayout({ children }) {
             <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
                 <meta name="theme-color" content="#000000" />
+                <title>സർഗ്ഗം ചിത്രം താളം</title>
+                <meta property="og:title" content="സർഗ്ഗം ചിത്രം താളം" />
+                <meta property="og:image" content="https://i.ibb.co/bmM9VqK/sst-side-pic.jpg" />
+                <meta property="og:description" content="സർഗ്ഗം ചിത്രം താളം" />
             </head>
             <body className="bg-black text-white min-h-screen">
                 {/* Desktop/Landscape Notice Overlay component */}
