@@ -42,19 +42,22 @@ export default function All() {
                     </h1>
                 </div>
                 
-                <div className="backdrop-blur-sm rounded-lg mt-4 mx-4 p-4">
-                    <Tabs defaultValue="all" className="dark">
-                        <TabsList className="grid w-full grid-cols-5 mb-6">
-                            {["all","music","instruments","dance","literary"].map((programTypes,index)=>{
-                                return(
-                                    <TabsTrigger key={index} value={programTypes} onClick={() => setOption(programTypes)}>
-                                        {programTypes}
-                                    </TabsTrigger>
-                                );
-                            })}
-                        </TabsList>
+                <div className="backdrop-blur-sm rounded-lg mt-6 mx-auto max-w-4xl p-1 flex justify-center">
+                    <Tabs defaultValue="all" className="dark w-full">
+                        <div className="overflow-x-auto pb-2">
+                            <TabsList className="inline-flex min-w-max w-full">
+                                {["all", "music", "dance", "literary", "instruments"].map((programTypes, index) => {
+                                    return (
+                                        <TabsTrigger key={index} value={programTypes} onClick={() => setOption(programTypes)}
+                                            className="min-w-[100px]">
+                                            {programTypes}
+                                        </TabsTrigger>
+                                    );
+                                })}
+                            </TabsList>
+                        </div>
                         
-                        <TabsContent value={option}>
+                        <TabsContent value={option} className="mt-4 p-2">
                             <BlogCardComponent option={option} />
                         </TabsContent>
                     </Tabs>

@@ -13,7 +13,12 @@ export default function BlogCardComponent({ option }) {
     const [data, setData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [profile, setProfile] = useState([]);
+    const [profile, setProfile] = useState({
+        username: '', 
+        name: '', 
+        gender: '', // Can be 'm', 'f', or empty
+        email: ''
+    });
     const [searchQuery, setSearchQuery] = useState('');
     const [searchFocused, setSearchFocused] = useState(false);
     const { token, authFetch, isAuthenticated } = useAuth();
@@ -93,18 +98,18 @@ export default function BlogCardComponent({ option }) {
                 action: {
                     label: 'Close',
                     onClick: () => {
-                        console.log('close');
+                        // Close action
                     },
                 },
             });
         } catch (e) {
-            console.log(e);
+            // Error handling
             toast(e, {
                 description: 'tip :you can see your registerations in profile',
                 action: {
                     label: 'Close',
                     onClick: () => {
-                        console.log('close');
+                        // Close action
                     },
                 },
             });
@@ -159,11 +164,11 @@ export default function BlogCardComponent({ option }) {
                 description: "tip: you can see your registrations in profile",
                 action: {
                     label: "Close",
-                    onClick: () => { console.log('close') }
+                    onClick: () => { /* Close action */ }
                 },
             });
         } catch (e) {
-            console.log(e);
+            // Error handling
             toast.error("Failed to create team", {
                 description: "Please try again later",
             });
@@ -186,7 +191,7 @@ export default function BlogCardComponent({ option }) {
                 });
             }
         } catch (e) {
-            console.log(e);
+            // Error handling
             toast.error("Failed to load team details");
         } finally {
             setDrawerLoading(false);
@@ -196,6 +201,7 @@ export default function BlogCardComponent({ option }) {
     useEffect(() => {
         if (isAuthenticated && token) {
             apireq();
+            apireqProfile();
         }
     }, [option, isAuthenticated, token]);
 
@@ -206,15 +212,18 @@ export default function BlogCardComponent({ option }) {
         if (searchQuery.trim() === '') {
             setFilteredData(data);
         } else {
-            const filtered = data.filter(
-                (event) =>
-                    event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    (event.program_comes_under &&
-                        event.program_comes_under.toLowerCase().includes(searchQuery.toLowerCase())),
-            );
+            const filtered = data.filter((event) => {
+                // Check if event name or program_comes_under contains the search query (case insensitive)
+                const nameMatch = event.name?.toLowerCase().includes(searchQuery.toLowerCase());
+                const categoryMatch = event.program_comes_under?.toLowerCase().includes(searchQuery.toLowerCase());
+                const descriptionMatch = event.description?.toLowerCase().includes(searchQuery.toLowerCase());
+                
+                return nameMatch || categoryMatch || descriptionMatch;
+            });
+            
             setFilteredData(filtered);
         }
-    }, [searchQuery, data]);
+    }, [searchQuery, data, profile]);
 
     // Handle search input change
     const handleSearchChange = (e) => {
@@ -228,7 +237,15 @@ export default function BlogCardComponent({ option }) {
 
     // Get filtered events that match the user's gender
     const genderFilteredEvents = filteredData?.filter(
-        (event) => event.program_gender_type === profile.gender || event.program_gender_type === 'a',
+        (event) => {
+            // If profile is not loaded yet or gender not set, don't filter by gender
+            if (!profile || !profile.gender) {
+                return true; // Show all events if we don't have gender information
+            }
+            
+            // 'a' means all genders are allowed
+            return event.program_gender_type === profile.gender || event.program_gender_type === 'a';
+        }
     );
 
     return (
@@ -339,7 +356,7 @@ export default function BlogCardComponent({ option }) {
 
             {/* Event Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredData?.map((event) => {
+                {genderFilteredEvents?.map((event) => {
                     // Check if the user won for this event and show notification
                     if (event.first?.includes(profile.name) || event.second?.includes(profile.name) || event.third?.includes(profile.name)) {
                         toast.success(`Congrats 🎉 ${profile.name} you won for ${event.name}`, {
@@ -349,106 +366,102 @@ export default function BlogCardComponent({ option }) {
                         });
                     }
 
-                    // Only show events that match user's gender or are for all genders
-                    if (event.program_gender_type === profile.gender || event.program_gender_type === 'a') {
-                        const isRegistering = registeringIds[event.id] === true;
-                        const isCreatingTeam = creatingTeamIds[event.id] === true;
-                        const isLoading = isRegistering || isCreatingTeam;
-                        
-                        return (
-                            <Card
-                                className="dark border-gray-800 hover:border-gray-700 transition-all hover:shadow-md"
-                                key={event.id}
-                            >
-                                <CardHeader>
-                                    <CardTitle className="text-2xl font-medium">{event.name}</CardTitle>
-                                    <CardDescription className="text-lg">{event.program_comes_under}</CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="space-y-2">
-                                        <p className="text-sm flex items-center gap-2">
-                                            <span className="text-gray-400">Type:</span>
-                                            <span className="px-2 py-1 rounded bg-gray-800 text-white">
-                                                {event.program_type === 'g' ? 'Group' : 'Individual'}
-                                            </span>
-                                        </p>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex justify-between">
-                                    {!event.is_registered ? (
-                                        <Button
-                                            disabled={isLoading || event.is_registered}
-                                            onClick={() => {
-                                                if (event.program_type === 'g') {
-                                                    createTeam(event.id);
-                                                } else {
-                                                    register(event.id);
-                                                }
-                                            }}
-                                        >
-                                            {isLoading ? 'Processing...' : 'Register'}
-                                        </Button>
-                                    ) : (
-                                        <div className="flex gap-2">
-                                            <Button disabled>Registered</Button>
-                                            {event.program_type === 'g' && (
-                                                <>
-                                                <Drawer>
-                                                    <DrawerTrigger asChild>
-                                                        <Button 
-                                                            variant="outline"
-                                                            onClick={() => getTeam()}
-                                                        >
-                                                            View team
-                                                        </Button>
-                                                    </DrawerTrigger>
-                                                    <DrawerContent className="dark text-white h-[300px]">
-                                                        {drawerLoading ? (
-                                                            <h1 className="text-2xl text-center">loading...</h1>
-                                                        ) : (
-                                                            <div className="mx-auto w-full max-w-sm">
-                                                                <DrawerHeader>
-                                                                    <DrawerTitle>{members.program}</DrawerTitle>
-                                                                    <DrawerDescription>Lead: {members.team_lead}</DrawerDescription>
-                                                                </DrawerHeader>
-                                                                <div className="p-4">
-                                                                    {members.members.length === 0 ? (
-                                                                        <Card className="w-auto dark mb-5">
+                    const isRegistering = registeringIds[event.id] === true;
+                    const isCreatingTeam = creatingTeamIds[event.id] === true;
+                    const isLoading = isRegistering || isCreatingTeam;
+                    
+                    return (
+                        <Card
+                            className="dark border-gray-800 hover:border-gray-700 transition-all hover:shadow-md"
+                            key={event.id}
+                        >
+                            <CardHeader>
+                                <CardTitle className="text-2xl font-medium">{event.name}</CardTitle>
+                                <CardDescription className="text-lg">{event.program_comes_under}</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-2">
+                                    <p className="text-sm flex items-center gap-2">
+                                        <span className="text-gray-400">Type:</span>
+                                        <span className="px-2 py-1 rounded bg-gray-800 text-white">
+                                            {event.program_type === 'g' ? 'Group' : 'Individual'}
+                                        </span>
+                                    </p>
+                                </div>
+                            </CardContent>
+                            <CardFooter className="flex justify-between">
+                                {!event.is_registered ? (
+                                    <Button
+                                        disabled={isLoading || event.is_registered}
+                                        onClick={() => {
+                                            if (event.program_type === 'g') {
+                                                createTeam(event.id);
+                                            } else {
+                                                register(event.id);
+                                            }
+                                        }}
+                                    >
+                                        {isLoading ? 'Processing...' : 'Register'}
+                                    </Button>
+                                ) : (
+                                    <div className="flex gap-2">
+                                        <Button disabled>Registered</Button>
+                                        {event.program_type === 'g' && (
+                                            <>
+                                            <Drawer>
+                                                <DrawerTrigger asChild>
+                                                    <Button 
+                                                        variant="outline"
+                                                        onClick={() => getTeam()}
+                                                    >
+                                                        View team
+                                                    </Button>
+                                                </DrawerTrigger>
+                                                <DrawerContent className="dark text-white h-[300px]">
+                                                    {drawerLoading ? (
+                                                        <h1 className="text-2xl text-center">loading...</h1>
+                                                    ) : (
+                                                        <div className="mx-auto w-full max-w-sm">
+                                                            <DrawerHeader>
+                                                                <DrawerTitle>{members.program}</DrawerTitle>
+                                                                <DrawerDescription>Lead: {members.team_lead}</DrawerDescription>
+                                                            </DrawerHeader>
+                                                            <div className="p-4">
+                                                                {members.members.length === 0 ? (
+                                                                    <Card className="w-auto dark mb-5">
+                                                                        <CardHeader>
+                                                                            <CardTitle className="text-2xl font-medium">No members in your team</CardTitle>
+                                                                        </CardHeader>
+                                                                    </Card>
+                                                                ) : (
+                                                                    members.members.map((member, index) => (
+                                                                        <Card className="w-auto dark mb-5" key={index}>
                                                                             <CardHeader>
-                                                                                <CardTitle className="text-2xl font-medium">No members in your team</CardTitle>
+                                                                                <CardTitle className="text-xl font-medium">{member}</CardTitle>
                                                                             </CardHeader>
                                                                         </Card>
-                                                                    ) : (
-                                                                        members.members.map((member, index) => (
-                                                                            <Card className="w-auto dark mb-5" key={index}>
-                                                                                <CardHeader>
-                                                                                    <CardTitle className="text-xl font-medium">{member}</CardTitle>
-                                                                                </CardHeader>
-                                                                            </Card>
-                                                                        ))
-                                                                    )}
-                                                                </div>
-                                                                <DrawerFooter>
-                                                                    <DrawerClose asChild>
-                                                                        <Button variant="outline">Close</Button>
-                                                                    </DrawerClose>
-                                                                </DrawerFooter>
+                                                                    ))
+                                                                )}
                                                             </div>
-                                                        )}
-                                                    </DrawerContent>
-                                                </Drawer>
-                                                <Button onClick={() => {
-                                                    window.open(`whatsapp://send?text=Hi, link to join my team is https://sctarts.com/e/${profile.username} do not share with outside team members`);
-                                                }} variant="outline"><ShareIcon className='w-4 h-4'/></Button>
-                                                </>
-                                            )}
-                                        </div>
-                                    )}
-                                </CardFooter>
-                            </Card>
-                        );
-                    }
-                    return null;
+                                                            <DrawerFooter>
+                                                                <DrawerClose asChild>
+                                                                    <Button variant="outline">Close</Button>
+                                                                </DrawerClose>
+                                                            </DrawerFooter>
+                                                        </div>
+                                                    )}
+                                                </DrawerContent>
+                                            </Drawer>
+                                            <Button onClick={() => {
+                                                window.open(`whatsapp://send?text=Hi, link to join my team is https://sctarts.com/e/${profile.username} do not share with outside team members`);
+                                            }} variant="outline"><ShareIcon className='w-4 h-4'/></Button>
+                                            </>
+                                        )}
+                                    </div>
+                                )}
+                            </CardFooter>
+                        </Card>
+                    );
                 })}
             </div>
         </div>
