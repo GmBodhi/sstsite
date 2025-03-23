@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { Tilt } from "@/components/ui/tilt";
 import { Spotlight } from "@/components/ui/spotlight";
 import { Button } from '@/components/ui/button';
@@ -57,156 +57,29 @@ const ProfileChessCard = ({
   update, 
   logout 
 }) => {
-  const cardRef = useRef(null);
-  const [rotation, setRotation] = useState({ x: 0, y: 0 });
-  const [debugInfo, setDebugInfo] = useState("");
-  const [isGyroActive, setIsGyroActive] = useState(false);
-
-  useEffect(() => {
-    let gyroEnabled = false;
-    let permissionGranted = false;
-    
-    // Function to directly manipulate the card tilt based on device orientation
-    const handleDeviceOrientation = (event) => {
-      if (!permissionGranted) return;
-      
-      // Extract orientation values - these will vary by device orientation
-      const x = event.beta; // -180 to 180 (front/back tilt)
-      const y = event.gamma; // -90 to 90 (left/right tilt)
-      
-      if (x !== null && y !== null) {
-        // Convert the values to a reasonable rotation range
-        const tiltX = Math.max(-10, Math.min(10, y / 3)); // Divide to reduce sensitivity
-        const tiltY = Math.max(-10, Math.min(10, x / 6)); // Front/back needs more dampening
-        
-        // Apply transformation directly to the card element for more responsive effect
-        if (cardRef.current) {
-          cardRef.current.style.transform = `perspective(1000px) rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
-        }
-        
-        // Update debug info
-        setDebugInfo(`Beta: ${x.toFixed(1)}°, Gamma: ${y.toFixed(1)}°, Tilt: ${tiltX.toFixed(1)}°, ${tiltY.toFixed(1)}°`);
-      }
-    };
-
-    // Function to request gyroscope permission on iOS
-    const requestGyroPermission = async () => {
-      try {
-        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-          // For iOS 13+
-          const permission = await DeviceOrientationEvent.requestPermission();
-          if (permission === 'granted') {
-            permissionGranted = true;
-            window.addEventListener('deviceorientation', handleDeviceOrientation, true);
-            setDebugInfo("iOS permission granted");
-            setIsGyroActive(true);
-            gyroEnabled = true;
-          } else {
-            setDebugInfo("Permission denied");
-          }
-        } else {
-          // For non-iOS devices, permission is not required
-          permissionGranted = true;
-          window.addEventListener('deviceorientation', handleDeviceOrientation, true);
-          setDebugInfo("Non-iOS device - gyro active");
-          setIsGyroActive(true);
-          gyroEnabled = true;
-        }
-      } catch (error) {
-        setDebugInfo(`Error: ${error.message}`);
-        console.error("Gyroscope error:", error);
-      }
-    };
-
-    // Create a button for iOS permission
-    const createPermissionButton = () => {
-      const existingButton = document.getElementById('gyro-permission-btn');
-      
-      if (!existingButton) {
-        const btn = document.createElement('button');
-        btn.id = 'gyro-permission-btn';
-        btn.innerText = 'Enable Tilt';
-        btn.style.position = 'fixed';
-        btn.style.bottom = '20px';
-        btn.style.right = '20px';
-        btn.style.backgroundColor = 'rgba(59, 130, 246, 0.7)';
-        btn.style.color = 'white';
-        btn.style.padding = '8px 16px';
-        btn.style.borderRadius = '8px';
-        btn.style.border = 'none';
-        btn.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
-        btn.style.zIndex = '9999';
-        btn.style.fontSize = '14px';
-        
-        btn.addEventListener('click', async () => {
-          await requestGyroPermission();
-          btn.style.display = 'none'; // Hide after permission granted
-        });
-        
-        document.body.appendChild(btn);
-        return btn;
-      }
-      
-      return existingButton;
-    };
-
-    // Check if device orientation is available
-    if (window.DeviceOrientationEvent !== undefined) {
-      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // iOS requires explicit permission
-        const permissionBtn = createPermissionButton();
-      } else {
-        // Android and other devices
-        requestGyroPermission();
-      }
-    } else {
-      setDebugInfo("Device orientation not supported");
-    }
-
-    // Cleanup function
-    return () => {
-      if (gyroEnabled) {
-        window.removeEventListener('deviceorientation', handleDeviceOrientation, true);
-      }
-      
-      const btn = document.getElementById('gyro-permission-btn');
-      if (btn) {
-        document.body.removeChild(btn);
-      }
-    };
-  }, []);
-
-  // Function to manually trigger permission if needed
-  const triggerPermission = async () => {
-    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-      try {
-        const permission = await DeviceOrientationEvent.requestPermission();
-        if (permission === 'granted') {
-          setDebugInfo("Permission granted via button");
-          setIsGyroActive(true);
-          const btn = document.getElementById('gyro-permission-btn');
-          if (btn) btn.style.display = 'none';
-        }
-      } catch (error) {
-        setDebugInfo(`Error: ${error.message}`);
-      }
-    }
-  };
-
   return (
     <div className="w-auto ml-[10px] mr-[10px] mt-[10px]">
-      <div
-        ref={cardRef}
-        className="group relative rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 p-6 transition-all duration-200"
+      <Tilt
+        rotationFactor={6}
+        isRevese
         style={{
-          transformStyle: 'preserve-3d',
-          transform: 'perspective(1000px)',
           transformOrigin: 'center center',
         }}
+        springOptions={{
+          stiffness: 26.7,
+          damping: 4.1,
+          mass: 0.2,
+        }}
+        className="group relative rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 p-6"
       >
         <Spotlight
           className="z-10 from-white/50 via-white/20 to-white/10 blur-2xl"
           size={248}
+          springOptions={{
+            stiffness: 26.7,
+            damping: 4.1,
+            mass: 0.2,
+          }}
         />
         <div className="relative z-20">
           <h2 className="text-3xl font-medium text-white mb-2">{data.name}</h2>
@@ -301,19 +174,9 @@ const ProfileChessCard = ({
             >
               Log Out
             </Button>
-
-            {!isGyroActive && (
-              <Button
-                className="bg-blue-500/70 hover:bg-blue-600/70 backdrop-blur-sm"
-                onClick={triggerPermission}
-              >
-                Enable Tilt
-              </Button>
-            )}
           </div>
-
         </div>
-      </div>
+      </Tilt>
     </div>
   );
 };
