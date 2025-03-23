@@ -107,7 +107,7 @@ export default function Home() {
                         >
                             <TextMorpher />
                         </motion.div>
-                        <motion.div
+                        {/* <motion.div
                             data-depth="0.6"
                             initial={{ opacity: 0, transform: 'translateY(50px)' }}
                             whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
@@ -118,7 +118,7 @@ export default function Home() {
                                 className="h-[200px] w-auto object-cover"
                                 alt="SST 24 Label"
                             />
-                        </motion.div>
+                        </motion.div> */}
                     </div>
                 </div>
                 <motion.div

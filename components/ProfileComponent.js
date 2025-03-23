@@ -12,6 +12,7 @@ import { Button } from './ui/button';
 import { ScrollArea } from './ui/scroll-area';
 import Footer from './FooterComponent';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { ProfileChessCard } from './ChessCard';
 
 export default function ProfileComponent() {
     // const router = useRouter();
@@ -121,96 +122,18 @@ export default function ProfileComponent() {
                             loading...
                         </p>
                     )}
-                    <Card className="w-auto bg-gradient-to-r from-cyan-500 to-blue-500 ml-[10px] mr-[10px] mt-[10px]">
-                        <CardHeader>
-                            <CardTitle className="text-3xl font-medium text-white">{data.name}</CardTitle>
-                            <CardDescription className="text-1xl text-white">@{data.username}</CardDescription>
-                            <CardDescription className="text-1xl text-white">
-                                Department: {data.department} Chest Number: {data.chest_number}{' '}
-                            </CardDescription>
-                            <Button
-                                onClick={() => {
-                                    window.open(
-                                        `whatsapp://send?phone=+918075496634&text=Hi, my profile data is different  id : ${data.username} name : ${data.name}`,
-                                    );
-                                }}
-                            >
-                                Report Issue
-                            </Button>
-
-                            {data.department === 'default' && (
-                                <Drawer>
-                                    <DrawerTrigger asChild>
-                                        <Button variant="outline">add department</Button>
-                                    </DrawerTrigger>
-                                    <DrawerContent className="dark text-white">
-                                        <div className="h-[300px] w-full ">
-                                            <DrawerHeader>
-                                                <DrawerTitle>Add your department</DrawerTitle>
-                                            </DrawerHeader>
-                                            <div className="flex flex-col items-center m-10">
-                                                {close === false ? (
-                                                    <div className="flex flex-row justify-spaced">
-                                                        <Select
-                                                            className="dark "
-                                                            onValueChange={(value) => setSelectDepartment(value)}
-                                                        >
-                                                            <SelectTrigger className="w-[180px] dark">
-                                                                <SelectValue placeholder="Add your department" />
-                                                            </SelectTrigger>
-                                                            <SelectContent>
-                                                                {departments.map((i) => {
-                                                                    return (
-                                                                        <SelectItem
-                                                                            className="dark"
-                                                                            key={i.toString()}
-                                                                            value={i.toString()}
-                                                                        >
-                                                                            {i}
-                                                                        </SelectItem>
-                                                                    );
-                                                                })}
-                                                            </SelectContent>
-                                                        </Select>
-                                                        <Button
-                                                            disabled={updateloading === true}
-                                                            className="dark"
-                                                            type="submit"
-                                                            onClick={() => {
-                                                                update();
-                                                            }}
-                                                        >
-                                                            Submit
-                                                        </Button>
-                                                    </div>
-                                                ) : (
-                                                    <>
-                                                        <h1 className="text-2xl mb-5 text-white">
-                                                            Successfully added department 🎉
-                                                        </h1>
-                                                        <p className="text-1xl mb-5 text-white">
-                                                            reload the page to view updated data.
-                                                        </p>
-                                                        <DrawerClose asChild>
-                                                            <Button className="w-[300px]">Close</Button>
-                                                        </DrawerClose>
-                                                    </>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </DrawerContent>
-                                </Drawer>
-                            )}
-                            <Button
-                                className="dark"
-                                onClick={() => {
-                                    logout();
-                                }}
-                            >
-                                Log Out
-                            </Button>
-                        </CardHeader>
-                    </Card>
+                    
+                    <ProfileChessCard 
+                        data={data}
+                        departments={departments}
+                        selectdepartment={selectdepartment}
+                        setSelectDepartment={setSelectDepartment}
+                        close={close}
+                        updateloading={updateloading}
+                        update={update}
+                        logout={logout}
+                    />
+                    
                     <Tabs defaultValue="Individual" className="dark ml-[10px] mr-[10px] mt-[10px]">
                         <TabsList className="grid w-full grid-cols-2">
                             <TabsTrigger value="Individual" onClick={() => setOption('Individual')}>
