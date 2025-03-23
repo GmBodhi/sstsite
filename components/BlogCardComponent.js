@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
 import DrawerComponent from './DrawerComponent';
@@ -13,12 +13,14 @@ export default function BlogCardComponent({ option }) {
     const [data, setData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [profileLoading, setProfileLoading] = useState(false);
     const [profile, setProfile] = useState({
         username: '', 
         name: '', 
         gender: '', // Can be 'm', 'f', or empty
         email: ''
     });
+    const [profileLoaded, setProfileLoaded] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [searchFocused, setSearchFocused] = useState(false);
     const { token, authFetch, isAuthenticated } = useAuth();
@@ -27,46 +29,76 @@ export default function BlogCardComponent({ option }) {
     const [showDialog, setShowDialog] = useState(false);
     const [members, setMembers] = useState({ program: '', team_lead: '', members: [] });
     const [drawerLoading, setDrawerLoading] = useState(false);
+    // Create a ref to store the abort controller
+    const abortControllerRef = useRef(new AbortController());
+    
+    // Function to create a new abort controller
+    const createNewAbortController = () => {
+        abortControllerRef.current.abort(); // Abort any existing requests
+        abortControllerRef.current = new AbortController(); // Create new controller
+        return abortControllerRef.current;
+    };
     
     const apireqProfile = async () => {
+        // Skip fetching if we already have valid profile data
+        if (profileLoaded && profile && profile.username && profile.gender) {
+            return;
+        }
+        
         try {
-            setLoading(true);
-            const response = await authFetch('https://sstapi.pythonanywhere.com/accounts/api/profile/');
+            setProfileLoading(true);
+            const response = await authFetch('https://sstapi.pythonanywhere.com/accounts/api/profile/', {
+                signal: abortControllerRef.current.signal
+            });
             const profileResponse = await response.json();
-            setProfile(profileResponse.data);
+            if (profileResponse.data) {
+                setProfile(profileResponse.data);
+                setProfileLoaded(true); // Mark profile as loaded
+            } else {
+                // If we didn't get valid data, set profileLoaded to false so we can retry
+                setProfileLoaded(false);
+            }
         } catch (err) {
-            toast.error(err);
+            setProfileLoaded(false);
+            if (err.name !== 'AbortError') {
+                toast.error(err);
+            }
         } finally {
-            setLoading(false);
+            setProfileLoading(false);
         }
     };
+    
     const apireq = async () => {
-        const controller = new AbortController();
         try {
             setLoading(true);
-            const response = await authFetch(`https://sstapi.pythonanywhere.com/api/programs/${option}`);
+            const response = await authFetch(`https://sstapi.pythonanywhere.com/api/programs/${option}`, {
+                signal: abortControllerRef.current.signal
+            });
             const eventResponse = await response.json();
             setData(eventResponse.data);
             setFilteredData(eventResponse.data);
         } catch (err) {
-            toast.error(err);
+            if (err.name !== 'AbortError') {
+                toast.error(err);
+            }
         } finally {
             setLoading(false);
         }
-
-        return () => {
-            controller.abort();
-        };
     };
     
     const register = async (eventId) => {
         // Set loading state for this specific event ID
         setRegisteringIds(prev => ({ ...prev, [eventId]: true }));
         let toast_msg = '';
+        
+        // Create a new controller for this operation
+        const controller = createNewAbortController();
+        
         try {
             const response = await fetch(`https://sstapi.pythonanywhere.com/api/register/${eventId}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', Authorization: `Token ${token}` },
+                signal: controller.signal
             });
             const data = await response.json();
             if (data.data) toast_msg = data.data;
@@ -103,16 +135,19 @@ export default function BlogCardComponent({ option }) {
                 },
             });
         } catch (e) {
-            // Error handling
-            toast(e, {
-                description: 'tip :you can see your registerations in profile',
-                action: {
-                    label: 'Close',
-                    onClick: () => {
-                        // Close action
+            // Don't show error for aborted requests
+            if (e.name !== 'AbortError') {
+                // Error handling
+                toast(e, {
+                    description: 'tip :you can see your registerations in profile',
+                    action: {
+                        label: 'Close',
+                        onClick: () => {
+                            // Close action
+                        },
                     },
-                },
-            });
+                });
+            }
         } finally {
             // Clear loading state for this specific event ID
             setRegisteringIds(prev => ({ ...prev, [eventId]: false }));
@@ -123,6 +158,10 @@ export default function BlogCardComponent({ option }) {
         // Set loading state for this specific team creation
         setCreatingTeamIds(prev => ({ ...prev, [eventId]: true }));
         let toast_msg = '';
+        
+        // Create a new controller for this operation
+        const controller = createNewAbortController();
+        
         try {
             const response = await fetch(`https://sstapi.pythonanywhere.com/api/team/create/${eventId}`, {
                 method: 'GET',
@@ -130,6 +169,7 @@ export default function BlogCardComponent({ option }) {
                     'Content-Type': 'application/json',
                     'Authorization': `Token ${token}`
                 },
+                signal: controller.signal
             });
             
             const data = await response.json();
@@ -168,10 +208,13 @@ export default function BlogCardComponent({ option }) {
                 },
             });
         } catch (e) {
-            // Error handling
-            toast.error("Failed to create team", {
-                description: "Please try again later",
-            });
+            // Don't show error for aborted requests
+            if (e.name !== 'AbortError') {
+                // Error handling
+                toast.error("Failed to create team", {
+                    description: "Please try again later",
+                });
+            }
         } finally {
             setCreatingTeamIds(prev => ({ ...prev, [eventId]: false }));
         }
@@ -179,8 +222,14 @@ export default function BlogCardComponent({ option }) {
     
     const getTeam = async () => {
         setDrawerLoading(true);
+        
+        // Create a new controller for this operation
+        const controller = createNewAbortController();
+        
         try {
-            const response = await authFetch(`https://sstapi.pythonanywhere.com/api/team/members/${profile.username}`);
+            const response = await authFetch(`https://sstapi.pythonanywhere.com/api/team/members/${profile.username}`, {
+                signal: controller.signal
+            });
             const teamData = await response.json();
             
             if (teamData.data) {
@@ -191,15 +240,52 @@ export default function BlogCardComponent({ option }) {
                 });
             }
         } catch (e) {
-            // Error handling
-            toast.error("Failed to load team details");
+            // Don't show error for aborted requests
+            if (e.name !== 'AbortError') {
+                // Error handling
+                toast.error("Failed to load team details");
+            }
         } finally {
             setDrawerLoading(false);
         }
     };
     
+    // Handle search input change with abort control
+    const handleSearchChange = (e) => {
+        createNewAbortController();
+        setSearchQuery(e.target.value);
+    };
+
+    // Clear search with abort control
+    const clearSearch = () => {
+        createNewAbortController();
+        setSearchQuery('');
+    };
+    
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            abortControllerRef.current.abort();
+        };
+    }, []);
+    
+    // Reset profileLoaded when auth status changes
+    useEffect(() => {
+        if (!isAuthenticated) {
+            setProfileLoaded(false);
+            setProfile({
+                username: '', 
+                name: '', 
+                gender: '',
+                email: ''
+            });
+        }
+    }, [isAuthenticated]);
+    
+    // Fetch data when option, auth state changes
     useEffect(() => {
         if (isAuthenticated && token) {
+            const controller = createNewAbortController();
             apireq();
             apireqProfile();
         }
@@ -209,6 +295,9 @@ export default function BlogCardComponent({ option }) {
     useEffect(() => {
         if (!data) return;
 
+        // Skip filtering if profile data isn't loaded yet
+        if (!profileLoaded) return;
+        
         if (searchQuery.trim() === '') {
             setFilteredData(data);
         } else {
@@ -223,17 +312,7 @@ export default function BlogCardComponent({ option }) {
             
             setFilteredData(filtered);
         }
-    }, [searchQuery, data, profile]);
-
-    // Handle search input change
-    const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value);
-    };
-
-    // Clear search
-    const clearSearch = () => {
-        setSearchQuery('');
-    };
+    }, [searchQuery, data, profileLoaded]);
 
     // Get filtered events that match the user's gender
     const genderFilteredEvents = filteredData?.filter(

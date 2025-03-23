@@ -156,7 +156,7 @@ export default function ProfileComponent() {
                                                 </CardHeader>
                                                 <Button
                                                     onClick={() => deleteEvent(i.program.id)}
-                                                    className="m-5"
+                                                    className="m-5 bg-red-500 text-white"
                                                     disabled={isDeleting}
                                                 >
                                                     {isDeleting 
@@ -183,7 +183,7 @@ export default function ProfileComponent() {
                                                 </CardHeader>
                                                 <Button
                                                     onClick={() => deleteEvent(i.program.id)}
-                                                    className="m-5"
+                                                    className="m-5 bg-red-500 text-white"
                                                     disabled={isDeleting}
                                                 >
                                                     {isDeleting ? 'Deleting...' : 'Delete'}
