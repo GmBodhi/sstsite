@@ -108,41 +108,51 @@ export default function Blog() {
     }
 
     return (
-        <div>
-            <h1>Team</h1>
-            <div className="flex flex-col justify-items-center m-[10px]">
+        <div className="min-h-screen flex flex-col">
+            <div className="flex-1 container mx-auto px-4 py-8 md:px-6 max-w-4xl">
                 {loading ? (
-                    <h1 className="text-2xl text-center text-white">loading...</h1>
+                    <div className="flex justify-center items-center h-64">
+                        <h1 className="text-2xl text-center text-white">Loading...</h1>
+                    </div>
                 ) : (
-                    <>
-                        <h1 style={{ color: 'white', fontSize: 55, fontWeight: 'bold' }}>Team</h1>
-                        <h1 className="text-2xl text-white">{data.program}</h1>
-                        <p className="text-1xl text-slate-200 mb-[10px]">Created by {data.team_lead}</p>
-                        <ScrollArea>
-                            {data.members && data.members.length === 0 && (
-                                <Card className="w-auto dark m-5">
-                                    <CardHeader>
-                                        <CardTitle className="text-2xl font-medium">
-                                            No members in your team
-                                        </CardTitle>
-                                    </CardHeader>
-                                </Card>
-                            )}
-                            {data.members &&
-                                data.members.map((i, index) => {
-                                    return (
-                                        <Card className="w-auto dark mb-5" key={index}>
-                                            <CardHeader>
-                                                <CardTitle className="text-3xl font-medium">{i}</CardTitle>
+                    <div className="space-y-6">
+                        <div className="border-b border-gray-800 pb-4">
+                            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">Team</h1>
+                            <h2 className="text-2xl text-white mb-1">{data.program}</h2>
+                            <p className="text-lg text-slate-300">Created by {data.team_lead}</p>
+                        </div>
+                        
+                        <ScrollArea className="h-[50vh] pr-4">
+                            {data.members && data.members.length === 0 ? (
+                                <div className="text-center py-12 px-4">
+                                    <div className="inline-flex items-center justify-center p-4 bg-gray-800 rounded-full mb-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-gray-400"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                                    </div>
+                                    <h3 className="text-xl font-medium text-white mb-2">No members in your team</h3>
+                                    <p className="text-gray-400">Join the team or invite others to participate</p>
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    {data.members && data.members.map((member, index) => (
+                                        <Card key={index} className="border border-gray-800 bg-transparent">
+                                            <CardHeader className="py-4">
+                                                <CardTitle className="text-xl font-medium text-white">{member}</CardTitle>
                                             </CardHeader>
                                         </Card>
-                                    );
-                                })}
+                                    ))}
+                                </div>
+                            )}
                         </ScrollArea>
-                        <Button className="dark mb-20" onClick={joinTeam}>
-                            Join Team
-                        </Button>
-                    </>
+                        
+                        <div className="pt-4 flex justify-center">
+                            <Button 
+                                className="w-full md:w-auto px-8 py-2 h-12 dark" 
+                                onClick={joinTeam}
+                            >
+                                Join Team
+                            </Button>
+                        </div>
+                    </div>
                 )}
             </div>
             <BottomNavBarComponent />

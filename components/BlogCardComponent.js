@@ -158,7 +158,7 @@ export default function BlogCardComponent({ option }) {
         // Set loading state for this specific team creation
         setCreatingTeamIds(prev => ({ ...prev, [eventId]: true }));
         let toast_msg = '';
-        
+        let tip = '';
         // Create a new controller for this operation
         const controller = createNewAbortController();
         
@@ -176,7 +176,7 @@ export default function BlogCardComponent({ option }) {
             
             if (data.data) {
                 toast_msg = data.data;
-                setShowDialog(true);
+                tip = 'You can see your group in profile';
                 
                 // Update the local state to mark this event as registered
                 setData(prevData => {
@@ -198,10 +198,11 @@ export default function BlogCardComponent({ option }) {
                 });
             } else if (data.error) {
                 toast_msg = data.error;
+                tip = 'Delete your previous team to lead a new one';
             }
             
             toast(toast_msg, {
-                description: "tip: you can see your registrations in profile",
+                description: tip,
                 action: {
                     label: "Close",
                     onClick: () => { /* Close action */ }
@@ -335,7 +336,7 @@ export default function BlogCardComponent({ option }) {
                     <DialogHeader className="mb-4">
                         <DialogTitle className="text-xl font-semibold mb-2">Your team code</DialogTitle>
                         <DialogDescription className="text-gray-400 mb-4">
-                            You can copy/paste and share this code with your team members to join your team
+                            Share this link with your team members to join your team
                         </DialogDescription>
                         <div className="flex w-full items-center space-x-3 mt-2">
                             <Input 
@@ -348,7 +349,12 @@ export default function BlogCardComponent({ option }) {
                                 type="submit" 
                                 className="px-4 py-2"
                                 onClick={() => {
-                                    window.open(`whatsapp://send?text=Hi, link to join my team is https://sctarts.com/e/${profile.username} do not share with outside team members`);
+                                    const message = encodeURIComponent(
+                                        `Hi! I'm inviting you to join my team. \n` +
+                                        `Click here to join: https://sctarts.com/e/${profile.username} \n` +
+                                        `(Please do not share this link with anyone outside our team)`
+                                    );
+                                    window.open(`whatsapp://send?text=${message}`);
                                 }}
                             >
                                 Share
