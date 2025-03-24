@@ -173,6 +173,7 @@ export default function ProfileComponent() {
                                 {data.group_registered_events && data.group_registered_events.length > 0 ? (
                                     data.group_registered_events.map((i, index) => {
                                         const isDeleting = deletingEventIds[i.program.id] === true;
+                                        console.log(i.program.created_by,data.name);
                                         return (
                                             <Card className="w-auto dark mb-5" key={index}>
                                                 <CardHeader>
@@ -181,7 +182,7 @@ export default function ProfileComponent() {
                                                     </CardTitle>
                                                     {/* <CardDescription className="text-1xl ">created by {data.name==i.program.created_by ? 'you': i.program.created_by}</CardDescription> */}
                                                 </CardHeader>
-                                                <CardContent className="flex flex-wrap gap-7">
+                                                <CardContent className="flex flex-row justify-between">
                                                     <Button
                                                         onClick={() => deleteEvent(i.program.id)}
                                                         className="bg-red-500 hover:bg-red-600 text-white mr-4"
@@ -189,7 +190,7 @@ export default function ProfileComponent() {
                                                     >
                                                         {isDeleting
                                                             ? 'Deleting...'
-                                                            : data.name === i.program.created_by
+                                                            : data.name == i.program.created_by
                                                               ? 'Delete team'
                                                               : 'Leave team'}
                                                     </Button>
@@ -207,86 +208,6 @@ export default function ProfileComponent() {
                                                         >
                                                             <ShareIcon className="h-4 w-4" />
                                                         </Button>
-                                                        <Drawer>
-                                                            <DrawerTrigger asChild>
-                                                                <Button
-                                                                    variant="outline"
-                                                                    onClick={() => getTeamDetails(data.username)}
-                                                                >
-                                                                    View Team
-                                                                </Button>
-                                                            </DrawerTrigger>
-                                                            <DrawerContent className="dark">
-                                                                <DrawerHeader>
-                                                                    <DrawerTitle className="text-2xl font-bold text-white">
-                                                                        {teamMembers.program} Team
-                                                                    </DrawerTitle>
-                                                                </DrawerHeader>
-                                                                <div className="p-4">
-                                                                    {teamLoading ? (
-                                                                        <div className="space-y-2">
-                                                                            <Skeleton className="h-12 w-full bg-gray-700" />
-                                                                            <Skeleton className="h-12 w-full bg-gray-700" />
-                                                                            <Skeleton className="h-12 w-full bg-gray-700" />
-                                                                        </div>
-                                                                    ) : (
-                                                                        <>
-                                                                            <p className="text-white mb-2 text-center">
-                                                                                Team Lead: {teamMembers.team_lead}
-                                                                            </p>
-                                                                            <div className="border-t border-gray-700 my-2"></div>
-                                                                            <h3 className="text-white font-medium mb-2">
-                                                                                Team Members:
-                                                                            </h3>
-                                                                            {teamMembers.members &&
-                                                                            teamMembers.members.length > 0 ? (
-                                                                                <ScrollArea className="h-[50vh]">
-                                                                                    <div className="space-y-2">
-                                                                                        {teamMembers.members.map(
-                                                                                            (member, idx) => (
-                                                                                                <Card
-                                                                                                    key={idx}
-                                                                                                    className="border border-gray-800 bg-gray-900"
-                                                                                                >
-                                                                                                    <CardHeader className="py-3">
-                                                                                                        <CardTitle className="text-lg font-medium text-white">
-                                                                                                            {member}
-                                                                                                        </CardTitle>
-                                                                                                    </CardHeader>
-                                                                                                </Card>
-                                                                                            ),
-                                                                                        )}
-                                                                                    </div>
-                                                                                </ScrollArea>
-                                                                            ) : (
-                                                                                <p className="text-gray-400 text-center py-4">
-                                                                                    No team members yet
-                                                                                </p>
-                                                                            )}
-                                                                            <div className="mt-4">
-                                                                                <Button
-                                                                                    className="w-full"
-                                                                                    onClick={() => {
-                                                                                        const message =
-                                                                                            encodeURIComponent(
-                                                                                                `Hi! I'm inviting you to join my team. \n` +
-                                                                                                    `Click here to join: https://sctarts.com/e/${data.username} \n` +
-                                                                                                    `(Please do not share this link with anyone outside our team)`,
-                                                                                            );
-                                                                                        window.open(
-                                                                                            `whatsapp://send?text=${message}`,
-                                                                                        );
-                                                                                    }}
-                                                                                >
-                                                                                    <ShareIcon className="h-4 w-4 mr-2" />
-                                                                                    Share Team Invite
-                                                                                </Button>
-                                                                            </div>
-                                                                        </>
-                                                                    )}
-                                                                </div>
-                                                            </DrawerContent>
-                                                        </Drawer>
                                                     </div>
                                                 </CardContent>
                                             </Card>
