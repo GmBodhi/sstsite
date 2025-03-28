@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Ticket, User } from 'lucide-react';
+import { Home, StarIcon, Ticket, User } from 'lucide-react';
 
 export default function BottomNavBarComponent() {
     const pathname = usePathname();
@@ -32,7 +32,7 @@ export default function BottomNavBarComponent() {
                 >
                     <Home className="h-6 w-6" />
                 </Link>
-                {/* <Link 
+                <Link 
                     href="/points" 
                     className={`text-3xl px-4 py-2 transition-all duration-300 ${
                         isActive('/points') 
@@ -40,8 +40,8 @@ export default function BottomNavBarComponent() {
                             : 'text-gray-400 hover:bg-white/10 hover:rounded-3xl'
                     }`}
                 >
-                    <StackIcon className="h-6 w-6" />
-                </Link> */}
+                    <StarIcon className="h-6 w-6" />
+                </Link>
                 <Link 
                     href="/e/all" 
                     className={`text-3xl px-4 py-2 transition-all duration-300 flex items-center justify-center ${

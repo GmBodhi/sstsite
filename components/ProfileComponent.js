@@ -21,10 +21,9 @@ import { ScrollArea } from './ui/scroll-area';
 import Footer from './FooterComponent';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { ProfileChessCard } from './ChessCard';
+import DrawerComponent from './DrawerComponent';
 
 export default function ProfileComponent() {
-    // const router = useRouter();
-
     const [data, setData] = useState([]);
     const [option, setOption] = useState('individual');
     const [loading, setLoading] = useState(true);
@@ -32,9 +31,10 @@ export default function ProfileComponent() {
     const [close, setClose] = useState(false);
     const departments = ['MEA', 'MEB', 'ECA', 'ECB'];
     const [selectdepartment, setSelectDepartment] = useState('default');
-    const [deletingEventIds, setDeletingEventIds] = useState({});
     const [teamMembers, setTeamMembers] = useState({ program: '', team_lead: '', members: [] });
     const [teamLoading, setTeamLoading] = useState(false);
+    const [eventResults, setEventResults] = useState({});
+    const [resultsLoading, setResultsLoading] = useState(true);
 
     // Use the auth hook
     const { isAuthenticated, isLoading, token, logout, authFetch } = useAuth();
@@ -45,15 +45,28 @@ export default function ProfileComponent() {
             const response = await authFetch('https://sstapi.pythonanywhere.com/accounts/api/profile/');
             const resdata = await response.json();
             setData(resdata.data);
+            
+            // After getting profile data, fetch results for all registered events
+            if (resdata.data) {
+                const allEvents = [
+                    ...(resdata.data.solo_registered_events || []).map(event => event.program.id),
+                    ...(resdata.data.group_registered_events || []).map(event => event.program.id)
+                ];
+                
+                if (allEvents.length > 0) {
+                    await fetchAllEventResults(allEvents);
+                }
+            }
+            
         } catch (e) {
             console.log(e);
+            toast.error("Failed to load profile data");
         } finally {
             setLoading(false);
         }
     };
 
     const update = async () => {
-        console.log(selectdepartment);
         setUpdateLoading(true);
         try {
             const response = await authFetch(
@@ -65,59 +78,43 @@ export default function ProfileComponent() {
             apireq();
         } catch (e) {
             console.log(e);
+            toast.error("Failed to update profile");
         } finally {
             setUpdateLoading(false);
         }
     };
 
-    const deleteEvent = async (eventId) => {
-        // Set loading state for this specific event ID
-        setDeletingEventIds((prev) => ({ ...prev, [eventId]: true }));
+    const fetchAllEventResults = async (eventIds) => {
+        setResultsLoading(true);
+        
         try {
-            const response = await authFetch(`https://sstapi.pythonanywhere.com//api/program/delete/${eventId}`, {
-                method: 'DELETE',
-            });
-            const resdata = await response.json();
-            toast(resdata.data, {
-                description: 'tip: you can again register for this event if you change your mind',
-                action: {
-                    label: 'Close',
-                    onClick: () => {
-                        console.log('close');
-                    },
-                },
-            });
-            apireq();
+            // Create an object to store results
+            const results = {};
+            
+            // Use Promise.all to fetch all results in parallel
+            await Promise.all(
+                eventIds.map(async (eventId) => {
+                    try {
+                        const response = await authFetch(`https://sstapi.pythonanywhere.com/api/programs/${eventId}`);
+                        const result = await response.json();
+                        
+                        if (result.data) {
+                            results[eventId] = result.data;
+                        }
+                    } catch (error) {
+                        console.error(`Error fetching results for event ${eventId}:`, error);
+                    }
+                })
+            );
+            
+            // Update state with all results at once
+            setEventResults(results);
+            
         } catch (e) {
-            console.log(e);
-            toast(e, {
-                description: 'tip: you can again register for this event if you change your mind',
-                action: {
-                    label: 'Close',
-                    onClick: () => {
-                        console.log('close');
-                    },
-                },
-            });
+            console.error("Error fetching event results:", e);
+            toast.error("Failed to load some event results");
         } finally {
-            // Clear loading state for this specific event ID
-            setDeletingEventIds((prev) => ({ ...prev, [eventId]: false }));
-        }
-    };
-
-    const getTeamDetails = async (teamId) => {
-        setTeamLoading(true);
-        try {
-            const response = await authFetch(`https://sstapi.pythonanywhere.com/api/team/members/${teamId}`);
-            const result = await response.json();
-            setTeamMembers(result.data);
-        } catch (e) {
-            console.log(e);
-            toast('Failed to load team details', {
-                description: 'Please try again later',
-            });
-        } finally {
-            setTeamLoading(false);
+            setResultsLoading(false);
         }
     };
 
@@ -127,6 +124,15 @@ export default function ProfileComponent() {
         }
     }, [isAuthenticated, token]);
 
+    // Helper function to check if event has results
+    const hasResults = (eventData) => {
+        return eventData && (
+            (eventData.first?.length > 0) || 
+            (eventData.second?.length > 0) || 
+            (eventData.third?.length > 0)
+        );
+    };
+
     return (
         <div>
             {!isAuthenticated ? (
@@ -135,7 +141,7 @@ export default function ProfileComponent() {
                 </div>
             ) : (
                 <>
-                    {loading == true && (
+                    {loading ? (
                         <p
                             style={{
                                 color: 'white',
@@ -146,107 +152,124 @@ export default function ProfileComponent() {
                         >
                             loading...
                         </p>
+                    ) : (
+                        <>
+                            <ProfileChessCard
+                                data={data}
+                                departments={departments}
+                                selectdepartment={selectdepartment}
+                                setSelectDepartment={setSelectDepartment}
+                                close={close}
+                                updateloading={updateloading}
+                                update={update}
+                                logout={logout}
+                            />
+
+                            <Tabs defaultValue="Individual" className="dark ml-[10px] mr-[10px] mt-[10px]">
+                                <TabsList className="grid w-full grid-cols-2">
+                                    <TabsTrigger value="Individual" onClick={() => setOption('Individual')}>
+                                        Individual
+                                    </TabsTrigger>
+                                    <TabsTrigger value="Group" onClick={() => setOption('Group')}>
+                                        Group
+                                    </TabsTrigger>
+                                </TabsList>
+                                <ScrollArea>
+                                    <TabsContent value="Group">
+                                        {resultsLoading ? (
+                                            <div className="flex justify-center py-4">
+                                                <p className="text-white">Loading event results...</p>
+                                            </div>
+                                        ) : data.group_registered_events && data.group_registered_events.length > 0 ? (
+                                            data.group_registered_events.map((i, index) => {
+                                                const eventResult = eventResults[i.program.id];
+                                                const resultsAnnounced = hasResults(eventResult);
+                                                
+                                                return (
+                                                    <Card className="w-auto dark mb-5" key={index}>
+                                                        <CardHeader>
+                                                            <CardTitle className="text-3xl font-medium">
+                                                                {i.program.name}
+                                                            </CardTitle>
+                                                            <CardDescription>Group Event</CardDescription>
+                                                        </CardHeader>
+                                                        <CardContent className="flex flex-row justify-between">
+                                                            {eventResult ? (
+                                                                resultsAnnounced ? (
+                                                                    <DrawerComponent data={eventResult} />
+                                                                ) : (
+                                                                    <Button variant="secondary" disabled>Results not announced</Button>
+                                                                )
+                                                            ) : (
+                                                                <Button variant="secondary" disabled>Could not load results</Button>
+                                                            )}
+                                                            
+                                                            {i.program.created_by === data.name && (
+                                                                <Button
+                                                                    variant="outline"
+                                                                    onClick={() => {
+                                                                        const message = encodeURIComponent(
+                                                                            `Hi! I'm inviting you to join my team. \n` +
+                                                                                `Click here to join: https://sctarts.com/e/${data.username} \n` +
+                                                                                `(Please do not share this link with anyone outside our team)`,
+                                                                        );
+                                                                        window.open(`whatsapp://send?text=${message}`);
+                                                                    }}
+                                                                >
+                                                                    <ShareIcon className="h-4 w-4" />
+                                                                </Button>
+                                                            )}
+                                                        </CardContent>
+                                                    </Card>
+                                                );
+                                            })
+                                        ) : (
+                                            <p className="text-white text-center mt-5">No Group registered events found</p>
+                                        )}
+                                    </TabsContent>
+                                </ScrollArea>
+                                <ScrollArea>
+                                    <TabsContent value="Individual">
+                                        {resultsLoading ? (
+                                            <div className="flex justify-center py-4">
+                                                <p className="text-white">Loading event results...</p>
+                                            </div>
+                                        ) : data.solo_registered_events && data.solo_registered_events.length > 0 ? (
+                                            data.solo_registered_events.map((i, index) => {
+                                                const eventResult = eventResults[i.program.id];
+                                                const resultsAnnounced = hasResults(eventResult);
+                                                
+                                                return (
+                                                    <Card className="w-auto dark mb-5" key={index}>
+                                                        <CardHeader>
+                                                            <CardTitle className="text-3xl font-medium">
+                                                                {i.program.name}
+                                                            </CardTitle>
+                                                            <CardDescription>Individual Event</CardDescription>
+                                                        </CardHeader>
+                                                        <CardContent>
+                                                            {eventResult ? (
+                                                                resultsAnnounced ? (
+                                                                    <DrawerComponent data={eventResult} />
+                                                                ) : (
+                                                                    <Button variant="secondary" disabled>Results not announced</Button>
+                                                                )
+                                                            ) : (
+                                                                <Button variant="secondary" disabled>Could not load results</Button>
+                                                            )}
+                                                        </CardContent>
+                                                    </Card>
+                                                );
+                                            })
+                                        ) : (
+                                            <p className="text-white text-center mt-5">No Individual registered events found</p>
+                                        )}
+                                    </TabsContent>
+                                </ScrollArea>
+                            </Tabs>
+                            <Footer />
+                        </>
                     )}
-
-                    <ProfileChessCard
-                        data={data}
-                        departments={departments}
-                        selectdepartment={selectdepartment}
-                        setSelectDepartment={setSelectDepartment}
-                        close={close}
-                        updateloading={updateloading}
-                        update={update}
-                        logout={logout}
-                    />
-
-                    <Tabs defaultValue="Individual" className="dark ml-[10px] mr-[10px] mt-[10px]">
-                        <TabsList className="grid w-full grid-cols-2">
-                            <TabsTrigger value="Individual" onClick={() => setOption('Individual')}>
-                                Individual
-                            </TabsTrigger>
-                            <TabsTrigger value="Group" onClick={() => setOption('Group')}>
-                                Group
-                            </TabsTrigger>
-                        </TabsList>
-                        <ScrollArea>
-                            <TabsContent value="Group">
-                                {data.group_registered_events && data.group_registered_events.length > 0 ? (
-                                    data.group_registered_events.map((i, index) => {
-                                        const isDeleting = deletingEventIds[i.program.id] === true;
-                                        console.log(i.program.created_by,data.name);
-                                        return (
-                                            <Card className="w-auto dark mb-5" key={index}>
-                                                <CardHeader>
-                                                    <CardTitle className="text-3xl font-medium">
-                                                        {i.program.name}
-                                                    </CardTitle>
-                                                    {/* <CardDescription className="text-1xl ">created by {data.name==i.program.created_by ? 'you': i.program.created_by}</CardDescription> */}
-                                                </CardHeader>
-                                                <CardContent className="flex flex-row justify-between">
-                                                    <Button
-                                                        onClick={() => deleteEvent(i.program.id)}
-                                                        className="bg-red-500 hover:bg-red-600 text-white mr-4"
-                                                        disabled={isDeleting}
-                                                    >
-                                                        {isDeleting
-                                                            ? 'Deleting...'
-                                                            : data.name == i.program.created_by
-                                                              ? 'Delete team'
-                                                              : 'Leave team'}
-                                                    </Button>
-                                                    <div className="flex gap-2">
-                                                        <Button
-                                                            variant="outline"
-                                                            onClick={() => {
-                                                                const message = encodeURIComponent(
-                                                                    `Hi! I'm inviting you to join my team. \n` +
-                                                                        `Click here to join: https://sctarts.com/e/${data.username} \n` +
-                                                                        `(Please do not share this link with anyone outside our team)`,
-                                                                );
-                                                                window.open(`whatsapp://send?text=${message}`);
-                                                            }}
-                                                        >
-                                                            <ShareIcon className="h-4 w-4" />
-                                                        </Button>
-                                                    </div>
-                                                </CardContent>
-                                            </Card>
-                                        );
-                                    })
-                                ) : (
-                                    <p className="text-white text-center mt-5">No Group registered events found</p>
-                                )}
-                            </TabsContent>
-                        </ScrollArea>
-                        <ScrollArea>
-                            <TabsContent value="Individual">
-                                {data.solo_registered_events && data.solo_registered_events.length > 0 ? (
-                                    data.solo_registered_events.map((i, index) => {
-                                        const isDeleting = deletingEventIds[i.program.id] === true;
-                                        return (
-                                            <Card className="w-auto dark mb-5" key={index}>
-                                                <CardHeader>
-                                                    <CardTitle className="text-3xl font-medium">
-                                                        {i.program.name}
-                                                    </CardTitle>
-                                                </CardHeader>
-                                                <Button
-                                                    onClick={() => deleteEvent(i.program.id)}
-                                                    className="m-5 bg-red-500 text-white"
-                                                    disabled={isDeleting}
-                                                >
-                                                    {isDeleting ? 'Deleting...' : 'Delete'}
-                                                </Button>
-                                            </Card>
-                                        );
-                                    })
-                                ) : (
-                                    <p className="text-white text-center mt-5">No Individual registered events found</p>
-                                )}
-                            </TabsContent>
-                        </ScrollArea>
-                    </Tabs>
-                    {loading == false && <Footer />}
                 </>
             )}
         </div>

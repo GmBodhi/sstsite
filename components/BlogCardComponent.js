@@ -85,142 +85,7 @@ export default function BlogCardComponent({ option }) {
             setLoading(false);
         }
     };
-    
-    const register = async (eventId) => {
-        // Set loading state for this specific event ID
-        setRegisteringIds(prev => ({ ...prev, [eventId]: true }));
-        let toast_msg = '';
         
-        // Create a new controller for this operation
-        const controller = createNewAbortController();
-        
-        try {
-            const response = await fetch(`https://sstapi.pythonanywhere.com/api/register/${eventId}`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json', Authorization: `Token ${token}` },
-                signal: controller.signal
-            });
-            const data = await response.json();
-            if (data.data) toast_msg = data.data;
-            else if (data.error) toast_msg = data.error;
-
-            // Update the local state to mark this event as registered
-            if (data.data && !data.error) {
-                setData(prevData => {
-                    return prevData.map(event => {
-                        if (event.id === eventId) {
-                            return {...event, is_registered: true};
-                        }
-                        return event;
-                    });
-                });
-                
-                setFilteredData(prevData => {
-                    return prevData.map(event => {
-                        if (event.id === eventId) {
-                            return {...event, is_registered: true};
-                        }
-                        return event;
-                    });
-                });
-            }
-
-            toast(toast_msg, {
-                description: 'tip :you can see your registerations in profile',
-                action: {
-                    label: 'Close',
-                    onClick: () => {
-                        // Close action
-                    },
-                },
-            });
-        } catch (e) {
-            // Don't show error for aborted requests
-            if (e.name !== 'AbortError') {
-                // Error handling
-                toast(e, {
-                    description: 'tip :you can see your registerations in profile',
-                    action: {
-                        label: 'Close',
-                        onClick: () => {
-                            // Close action
-                        },
-                    },
-                });
-            }
-        } finally {
-            // Clear loading state for this specific event ID
-            setRegisteringIds(prev => ({ ...prev, [eventId]: false }));
-        }
-    };
-    
-    const createTeam = async (eventId) => {
-        // Set loading state for this specific team creation
-        setCreatingTeamIds(prev => ({ ...prev, [eventId]: true }));
-        let toast_msg = '';
-        let tip = '';
-        // Create a new controller for this operation
-        const controller = createNewAbortController();
-        
-        try {
-            const response = await fetch(`https://sstapi.pythonanywhere.com/api/team/create/${eventId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Token ${token}`
-                },
-                signal: controller.signal
-            });
-            
-            const data = await response.json();
-            
-            if (data.data) {
-                toast_msg = data.data;
-                tip = 'You can see your group in profile';
-                
-                // Update the local state to mark this event as registered
-                setData(prevData => {
-                    return prevData.map(event => {
-                        if (event.id === eventId) {
-                            return {...event, is_registered: true};
-                        }
-                        return event;
-                    });
-                });
-                
-                setFilteredData(prevData => {
-                    return prevData.map(event => {
-                        if (event.id === eventId) {
-                            return {...event, is_registered: true};
-                        }
-                        return event;
-                    });
-                });
-            } else if (data.error) {
-                toast_msg = data.error;
-                tip = 'Delete your previous team to lead a new one';
-            }
-            
-            toast(toast_msg, {
-                description: tip,
-                action: {
-                    label: "Close",
-                    onClick: () => { /* Close action */ }
-                },
-            });
-        } catch (e) {
-            // Don't show error for aborted requests
-            if (e.name !== 'AbortError') {
-                // Error handling
-                toast.error("Failed to create team", {
-                    description: "Please try again later",
-                });
-            }
-        } finally {
-            setCreatingTeamIds(prev => ({ ...prev, [eventId]: false }));
-        }
-    };
-    
     const getTeam = async () => {
         setDrawerLoading(true);
         
@@ -475,73 +340,62 @@ export default function BlogCardComponent({ option }) {
                                 </div>
                             </CardContent>
                             <CardFooter className="flex justify-between">
-                                {!event.is_registered ? (
-                                    <Button
-                                        disabled={isLoading || event.is_registered}
-                                        onClick={() => {
-                                            if (event.program_type === 'g') {
-                                                createTeam(event.id);
-                                            } else {
-                                                register(event.id);
-                                            }
-                                        }}
-                                    >
-                                        {isLoading ? 'Processing...' : 'Register'}
-                                    </Button>
+                                {/* Use the existing DrawerComponent for winners */}
+                                {(event.first?.length > 0 || event.second?.length > 0 || event.third?.length > 0) ? (
+                                    <DrawerComponent data={event} />
                                 ) : (
+                                    <Button variant="secondary" disabled>Results not announced</Button>
+                                )}
+                                
+                                {event.program_type === 'g' && event.is_registered && (
                                     <div className="flex gap-2">
-                                        <Button disabled>Registered</Button>
-                                        {event.program_type === 'g' && (
-                                            <>
-                                            <Drawer>
-                                                <DrawerTrigger asChild>
-                                                    <Button 
-                                                        variant="outline"
-                                                        onClick={() => getTeam()}
-                                                    >
-                                                        View team
-                                                    </Button>
-                                                </DrawerTrigger>
-                                                <DrawerContent className="dark text-white h-[300px]">
-                                                    {drawerLoading ? (
-                                                        <h1 className="text-2xl text-center">loading...</h1>
-                                                    ) : (
-                                                        <div className="mx-auto w-full max-w-sm">
-                                                            <DrawerHeader>
-                                                                <DrawerTitle>{members.program}</DrawerTitle>
-                                                                <DrawerDescription>Lead: {members.team_lead}</DrawerDescription>
-                                                            </DrawerHeader>
-                                                            <div className="p-4">
-                                                                {members.members.length === 0 ? (
-                                                                    <Card className="w-auto dark mb-5">
+                                        <Drawer>
+                                            <DrawerTrigger asChild>
+                                                <Button 
+                                                    variant="outline"
+                                                    onClick={() => getTeam()}
+                                                >
+                                                    View team
+                                                </Button>
+                                            </DrawerTrigger>
+                                            <DrawerContent className="dark text-white h-[300px]">
+                                                {drawerLoading ? (
+                                                    <h1 className="text-2xl text-center">loading...</h1>
+                                                ) : (
+                                                    <div className="mx-auto w-full max-w-sm">
+                                                        <DrawerHeader>
+                                                            <DrawerTitle>{members.program}</DrawerTitle>
+                                                            <DrawerDescription>Lead: {members.team_lead}</DrawerDescription>
+                                                        </DrawerHeader>
+                                                        <div className="p-4">
+                                                            {members.members.length === 0 ? (
+                                                                <Card className="w-auto dark mb-5">
+                                                                    <CardHeader>
+                                                                        <CardTitle className="text-2xl font-medium">No members in your team</CardTitle>
+                                                                    </CardHeader>
+                                                                </Card>
+                                                            ) : (
+                                                                members.members.map((member, index) => (
+                                                                    <Card className="w-auto dark mb-5" key={index}>
                                                                         <CardHeader>
-                                                                            <CardTitle className="text-2xl font-medium">No members in your team</CardTitle>
+                                                                            <CardTitle className="text-xl font-medium">{member}</CardTitle>
                                                                         </CardHeader>
                                                                     </Card>
-                                                                ) : (
-                                                                    members.members.map((member, index) => (
-                                                                        <Card className="w-auto dark mb-5" key={index}>
-                                                                            <CardHeader>
-                                                                                <CardTitle className="text-xl font-medium">{member}</CardTitle>
-                                                                            </CardHeader>
-                                                                        </Card>
-                                                                    ))
-                                                                )}
-                                                            </div>
-                                                            <DrawerFooter>
-                                                                <DrawerClose asChild>
-                                                                    <Button variant="outline">Close</Button>
-                                                                </DrawerClose>
-                                                            </DrawerFooter>
+                                                                ))
+                                                            )}
                                                         </div>
-                                                    )}
-                                                </DrawerContent>
-                                            </Drawer>
-                                            <Button onClick={() => {
-                                                window.open(`whatsapp://send?text=Hi, link to join my team is https://sctarts.com/e/${profile.username} do not share with outside team members`);
-                                            }} variant="outline"><ShareIcon className='w-4 h-4'/></Button>
-                                            </>
-                                        )}
+                                                        <DrawerFooter>
+                                                            <DrawerClose asChild>
+                                                                <Button variant="outline">Close</Button>
+                                                            </DrawerClose>
+                                                        </DrawerFooter>
+                                                    </div>
+                                                )}
+                                            </DrawerContent>
+                                        </Drawer>
+                                        <Button onClick={() => {
+                                            window.open(`whatsapp://send?text=Hi, link to join my team is https://sctarts.com/e/${profile.username} do not share with outside team members`);
+                                        }} variant="outline"><ShareIcon className='w-4 h-4'/></Button>
                                     </div>
                                 )}
                             </CardFooter>
