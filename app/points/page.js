@@ -157,7 +157,7 @@ export default function PointsPage() {
                 ) : (
                 <>
                 {/* Temporarily hidden Champions card */}
-                <div>
+                <div style={{ display: 'none' }}>
                 {data.length > 0 ? (
                     <Card className="w-auto dark mb-5">
                         <motion.img 
